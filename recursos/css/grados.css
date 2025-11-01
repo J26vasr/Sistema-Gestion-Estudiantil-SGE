@@ -1,0 +1,265 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f6f7fb;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+}
+/* ======= TITULO SUPERIOR ======= */
+.TituloGrado {
+  position: fixed;
+  top: 0;
+  left: 80px; /* deja espacio para el menú lateral */
+  right: 0;
+  height: 60px;
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  transition: left 0.3s ease;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+body.menu-expanded .TituloGrado {
+  left: 260px; /* se ajusta si el menú se expande */
+}
+
+/* Ajustar el contenido para que no quede debajo del título */
+.container {
+  margin-top: 80px; /* espacio para el título */
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .TituloGrado {
+    left: 60px;
+    height: 55px;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .container {
+    margin-top: 75px;
+  }
+}
+
+@media (max-width: 600px) {
+  .TituloGrado {
+    left: 0; /* el título ocupa todo el ancho */
+    height: 55px;
+    border-radius: 0;
+    font-size: 1.1rem;
+  }
+
+  .container {
+    margin-top: 70px;
+  }
+}
+
+
+/* ==== MENÚ LATERAL ==== */
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 80px; /* ajusta según tu menú */
+  background: #1f1f1f;
+  z-index: 999;
+  transition: width 0.3s ease;
+}
+
+body.menu-expanded #menu {
+  width: 260px;
+}
+
+/* ==== CONTENIDO PRINCIPAL ==== */
+.container {
+  margin-left: 80px; /* espacio del menú */
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  width: 100%;
+  transition: margin-left 0.3s ease;
+}
+
+body.menu-expanded .container {
+  margin-left: 260px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Panel principal */
+.overview {
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  color: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.overview h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: 15px;
+  flex: 1 1 150px;
+  text-align: center;
+}
+
+/* Tarjetas */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  flex: 1 1 250px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.progress-bar {
+  background: #eaeaea;
+  border-radius: 10px;
+  height: 8px;
+  margin: 10px 0;
+}
+
+.progress {
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  height: 8px;
+  border-radius: 10px;
+}
+
+/* ==== PANEL DERECHA ==== */
+.sidebar2 {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  max-height: 90vh;
+}
+
+.sidebar2 h3 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.student-list {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 10px;
+  max-height: 70vh;
+}
+
+.student {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+  background: #f7f7f9;
+  padding: 10px;
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.student:hover {
+  background: #ecebff;
+}
+
+.student img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.student .info h4 {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.student .info span {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+/* Scroll */
+.student-list::-webkit-scrollbar {
+  width: 6px;
+}
+.student-list::-webkit-scrollbar-thumb {
+  background: #bbb;
+  border-radius: 4px;
+}
+
+/* ==== RESPONSIVE ==== */
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  .sidebar2 {
+    order: -1;
+    height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  #menu {
+    width: 60px;
+  }
+  .container {
+    margin-left: 60px;
+    padding: 15px;
+  }
+  .stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    flex: 1 1 100%;
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil Docente</title>
+  
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+  <link rel="stylesheet" href="../recursos/css/perfil-docente.css">
+</head>
+
+<body>
+  <div class="perfil-container">
+
+    <!-- Encabezado -->
+    <div class="perfil-header">
+      <span class="institucion">Instituto Tecnico Ricaldone</span>
+      <div class="foto-container">
+        <div class="foto">
+          <img src="../recursos/img/perfil.jpg" alt="Foto del docente">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contenido -->
+    <div class="perfil-info">
+      <div class="campo nombre">Jeremy Leandro Castro Moreno</div>
+
+      <div class="info-grid">
+        <div class="campo">Tercer ciclo</div>
+        <div class="campo">Ciencias Naturales</div>
+        <div class="campo">78621493</div>
+        <div class="campo">jlea@gmail.com</div>
+      </div>
+
+      <button class="btn-editar">Editar</button>
+    </div>
+  </div>
+  <div id="menu"></div>
+  <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+  <script>
+    // Cargar el menú de forma dinámica
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+  <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+</body>
+
+</html>

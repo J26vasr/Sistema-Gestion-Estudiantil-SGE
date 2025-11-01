@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../recursos/css/dashboard.css">
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+</head>
+
+<body>
+
+    <!-- Menú dinámico -->
+    <div id="menu"></div>
+    <div class="container-saludo">
+      <p class="texto-saludo-user"> Bienvenid@ devuelta Jeremy Castro</p>
+      <div class="foto">
+          <img src="../recursos/img/perfil.jpg" alt="Foto del docente">
+        </div>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        
+       <section class="cards">
+      <div class="card">
+        <img src="../recursos/img/book1.jfif" alt="Tarjeta 1">
+        <div class="card-body">
+          <h3>Tareas por revisar</h3>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../recursos/img/control-horario.jpg" alt="Tarjeta 2">
+        <div class="card-body">
+          <h3>Mis Horarios</h3>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="../recursos/img/asistencia.jpg" alt="Tarjeta 3">
+        <div class="card-body">
+          <h3>Actividades</h3>
+         </div>
+      </div>
+       <div class="card">
+        <img src="../recursos/img/promedios.jpg" alt="Tarjeta 3">
+        <div class="card-body">
+          <h3>Promedios</h3>
+         </div>
+      </div>
+    </section>
+    </div>
+
+    <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+  <!-- Menú dinámico -->
+<div id="menu"></div>
+
+<script>
+  // Cargar el menú desde menu.html
+  fetch("../vista/menu.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("menu").innerHTML = data;
+      const script = document.createElement("script");
+      script.src = "../controladores/js/menu.js";
+      document.body.appendChild(script);
+    });
+</script>
+
+    
+
+</body>
+
+</html>

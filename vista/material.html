@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comunidad</title>
+  <link rel="stylesheet" href="../recursos/css/material.css">
+  <link rel="stylesheet" href="../recursos/css/menu.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Comunidades</h1>
+    <div class="grid">
+      <div class="community-card">
+        <img src="https://via.placeholder.com/150" alt="Marketing">
+        <div class="info">
+          <h3>Presentacion 1</h3>
+          <p>Semana 1</p>
+          <button>Ver Presentación</button>
+        </div>
+      </div>
+      <div class="community-card">
+        <img src="https://via.placeholder.com/150" alt="UI/UX">
+        <div class="info">
+         <h3>Presentacion 1</h3>
+          <p>Semana 1</p>
+          <button>Ver Presentación</button>
+        </div>
+      </div>
+      <div class="community-card">
+        <img src="https://via.placeholder.com/150" alt="Creativo">
+        <div class="info">
+        <h3>Presentacion 1</h3>
+          <p>Semana 1</p>
+          <button>Ver Presentación</button>
+        </div>
+      </div>
+      <div class="community-card">
+        <img src="https://via.placeholder.com/150" alt="Historia de Éxito">
+        <div class="info">
+         <h3>Presentacion 1</h3>
+          <p>Semana 1</p>
+          <button>Ver Presentación</button>
+        </div>
+      </div>
+      <div class="community-card">
+        <img src="https://via.placeholder.com/150" alt="Red Social">
+        <div class="info">
+          <h3>Presentacion 1</h3>
+          <p>Semana 1</p>
+          <button>Ver Presentación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div id="menu"></div>
+  
+  <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+
+  <script>
+    // Cargar el menú de forma dinámica
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+</body>
+</html>

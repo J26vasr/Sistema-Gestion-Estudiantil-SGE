@@ -1,0 +1,254 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f9fafc;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+/* ======= TITULO SUPERIOR ======= */
+.TituloGrado {
+  position: fixed;
+  top: 0;
+  left: 80px; /* deja espacio para el menú lateral */
+  right: 0;
+  height: 70px; /* un poco más alto */
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  transition: left 0.3s ease;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+body.menu-expanded .TituloGrado {
+  left: 260px; /* se ajusta si el menú se expande */
+}
+
+/* Ajustar el contenido para que no quede debajo del título */
+.container {
+  margin-top: 90px; /* espacio suficiente para el título */
+}
+
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .TituloGrado {
+    left: 90px;
+    height: 55px;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+  .container {
+    margin-top: 75px;
+  }
+}
+
+@media (max-width: 600px) {
+  .TituloGrado {
+    left: 0; /* el título ocupa todo el ancho */
+    height: 55px;
+    border-radius: 0;
+    font-size: 1.1rem;
+  }
+
+  .container {
+    margin-top: 70px;
+  }
+}
+
+
+.container {
+  max-width: 1100px;
+  width: 100%;
+  margin-top: -20px;
+}
+
+.container h2 {
+  font-size: 1.8rem;
+  color: #1a1a1a;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* --- GRID CONTENEDOR --- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* por defecto 1 columna */
+  gap: 25px;
+}
+
+/* --- TARJETA --- */
+.card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+/* --- IMAGEN --- */
+.card-img {
+  flex: 0 0 180px;
+  background: #f3f4ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+.card-img img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* --- CONTENIDO --- */
+.card-content {
+  flex: 1;
+  padding: 20px 25px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header h3 {
+  font-size: 1.2rem;
+  color: #2b2b2b;
+}
+
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 8px 0 10px;
+}
+
+/* --- ETIQUETAS --- */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tags span {
+  background: #eef2ff;
+  color: #4b00c7;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* --- FOOTER --- */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer p {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.footer button {
+  background: #7e4fee;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.footer button:hover {
+  background: #51087a;
+}
+
+/* --- RESPONSIVE: tarjetas verticales --- */
+@media (max-width: 664px) {
+  .card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .card-img {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+.btn-view {
+  display: inline-block;
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-view:hover {
+  background: linear-gradient(135deg, #5a3ce3, #8c6cf5);
+  transform: translateY(-2px);
+}
+
+
+/* --- RESPONSIVE: de 664px en adelante -> 2 columnas --- */
+@media (min-width: 664px) and (max-width: 90px) {
+  .cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    
+  }
+
+  .card {
+    flex-direction: column;
+    text-align: center;
+    
+  }
+
+  .card-img {
+    width: 100%;
+    padding: 25px;
+  }
+
+  .footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+

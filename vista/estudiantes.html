@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>estudiantes</title>
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/estudiantes.css">
+</head>
+
+<body>
+   <h3 class="TituloGrado">Grados Asignados</h3>
+  
+    
+  <div class="container">
+    <h2>Mis Clases</h2>
+
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-img">
+          <img src="../recursos/img/Estudiantes-img1.jpg">
+        </div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Septimo grado "A"</h3>
+          </div>
+          <div class="tags">
+            <span>Matematicas</span>
+          </div>
+          <div class="footer">
+            <p><strong>Inicio:</strong> 16 enero</p>
+            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img">
+        
+          <img src="../recursos/img/Estudiantes-img1.jpg">
+        </div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Septimo grado "C"</h3>
+          </div><div class="tags">
+            <span>Ciencias Naturales</span>
+          </div>
+          <div class="footer">
+            <p><strong>Inicio:</strong>14 enero</p>
+            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
+          
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img">
+        
+          <img src="../recursos/img/Estudiantes-img1.jpg">
+        </div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Octavo grado "D"</h3>
+          </div>
+          <div class="tags">
+            <span>Ciencias Naturales</span>
+          </div>
+          <div class="footer">
+            <p><strong>Inicia:</strong> 20 enero</p>
+            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
+          
+          </div>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-img">
+        
+          <img src="../recursos/img/Estudiantes-img1.jpg">
+        </div>
+        <div class="card-content">
+          <div class="card-header">
+            <h3>Noveno grado "A"</h3>
+          </div><div class="tags">
+            <span>Ciencias Naturales</span>
+          </div>
+          <div class="footer">
+            <p><strong>Inicio:</strong>14 enero</p>
+           <a href="../vista/7A.html" class="btn-view">Ver Más</a>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <div id="menu"></div>
+
+   
+    <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+
+    <script>
+        // Cargar el menú de forma dinámica
+        fetch("../vista/menu.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
+                const script = document.createElement("script");
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Estudiantes</title>
+  <link rel="stylesheet" href="../recursos/css/grados.css">
+</head>
+<body>
+  
+      <h3 class="TituloGrado">Septimo Grado "A"</h3>
+  <!-- Menú lateral -->
+  <div id="menu"></div>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <!-- Panel principal -->
+    <div class="main">
+      <div class="overview">
+        <h2>Resumen de Actividades</h2>
+        <div class="stats">
+          <div class="stat-box">
+            <h3>Asistencia</h3>
+            <p>9 estudiantes han faltado</p>
+          </div>
+          <div class="stat-box">
+            <h3>Tareas</h3>
+            <p>4 estudiantes no tienen entregas</p>
+          </div>
+          <div class="stat-box">
+            <h3>CUM del salon</h3>
+            <p>9.00</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Actividades por revisar</h3>
+          <p>5/40</p>
+          <div class="progress-bar"><div class="progress" style="width:45%;"></div></div>
+          <p>80% completado</p>
+        </div>
+
+        <div class="card">
+          <h3>Tareas entregadas</h3>
+          <p>20/40</p>
+          <div class="progress-bar"><div class="progress" style="width:13%;"></div></div>
+          <p>13% completado</p>
+        </div>
+
+        <div class="card">
+          <h3>Proceso de clases</h3>
+          <p>enero/noviembre</p>
+          <div class="progress-bar"><div class="progress" style="width:90%;"></div></div>
+          <p>90% completado</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho (Lista estudiantes) -->
+    <div class="sidebar2">
+      <h3>Lista de Estudiantes</h3>
+      <div class="student-list">
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Juan Pérez</h4>
+            <span>En línea</span>
+          </div>
+        </div>
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>María López</h4>
+            <span>Conectado hace 2h</span>
+          </div>
+        </div>
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Andrés Castro</h4>
+            <span>Activo</span>
+          </div>
+        </div>
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Laura Gómez</h4>
+            <span>Hace 1h</span>
+          </div>
+        </div>
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Diego Hernández</h4>
+            <span>En clase</span>
+          </div>
+        </div>
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Carla Ruiz</h4>
+            <span>Desconectada</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    // Aplica modo oscuro inmediatamente si está activado
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+
+    // Cargar el menú de forma dinámica
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+
+        const script = document.createElement("script");
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+</body>
+</html>
