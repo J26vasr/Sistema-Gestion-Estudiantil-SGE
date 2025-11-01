@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil del Estudiante - SGE</title>
+  <link rel="stylesheet" href="../recursos/css/grados.css">
+  <link rel="stylesheet" href="../recursos/css/perfil-estudiante.css">
+</head>
+<body>
+  <div class="perfil-container">
+    <div class="perfil-header">
+      <img id="fotoEstudiante" class="avatar" src="" alt="Foto del estudiante">
+      <h1 id="nombreCompleto">Cargando...</h1>
+    </div>
+
+    <div class="info-grid" id="datosEstudiante">
+      
+    </div>
+
+    <div class="botones-perfil">
+      <button class="btn-perfil btn-asistencia" id="btnAsistencia">Ver Asistencia</button>
+      <button class="btn-perfil btn-notas" id="btnBoleta">Ver Boleta de Notas</button>
+      <button class="btn-perfil btn-volver" onclick="window.history.back()">← Volver</button>
+    </div>
+  </div>
+
+  <div id="menu"></div>
+
+  <script src="../controladores/js/perfil-estudiante.js"></script>
+</body>
+</html>

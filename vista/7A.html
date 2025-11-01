@@ -110,21 +110,46 @@
 
   <!-- Scripts -->
   <script>
-    // Aplica modo oscuro inmediatamente si está activado
+document.addEventListener('DOMContentLoaded', () => {
+    // Aplica modo oscuro si está activado
     if (localStorage.getItem("darkMode") === "true") {
-      document.documentElement.classList.add("dark");
+        document.documentElement.classList.add("dark");
     }
 
-    // Cargar el menú de forma dinámica
+    // Cargar menú
     fetch("../vista/menu.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("menu").innerHTML = data;
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById("menu").innerHTML = data;
+            const script = document.createElement("script");
+            script.src = "../controladores/js/menu.js";
+            document.body.appendChild(script);
+        });
 
-        const script = document.createElement("script");
-        script.src = "../controladores/js/menu.js";
-        document.body.appendChild(script);
-      });
-  </script>
+    // --- AGREGAR EVENTO DE CLIC A LOS ESTUDIANTES ---
+    setTimeout(() => {
+        const estudiantes = document.querySelectorAll('.student');
+        
+        estudiantes.forEach((estudiante, index) => {
+            estudiante.style.cursor = 'pointer';
+            estudiante.style.transition = 'background 0.2s';
+
+            const id = `7A-${String(index + 1).padStart(3, '0')}`;
+
+            estudiante.addEventListener('click', () => {
+                localStorage.setItem('estudianteId', id);
+                window.location.href = 'perfil-estudiante.html';
+            });
+
+            estudiante.addEventListener('mouseenter', () => {
+                estudiante.style.backgroundColor = '#f0f0f0';
+            });
+            estudiante.addEventListener('mouseleave', () => {
+                estudiante.style.backgroundColor = '';
+            });
+        });
+    }, 500);
+});
+</script>
 </body>
 </html>
