@@ -1,0 +1,105 @@
+/* calificaciones.css */
+
+body {
+  background: 
+    linear-gradient(135deg, #F8F5FF 0%, #fff 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(156, 103, 224, 0.08) 10px,
+      rgba(156, 103, 224, 0.08) 20px
+    ) !important;
+  min-height: 100vh;
+  padding-top: 20px;
+  background-attachment: fixed;
+}
+
+.container-calificaciones {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.grado-title {
+  background: #9C67E0;
+  color: white;
+  text-align: center;
+  padding: 15px 20px;
+  border-radius: 12px 12px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.table-container {
+  background: white;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+th, td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #555;
+}
+
+tr:hover {
+  background: #fafafa;
+}
+
+.btn-detalle {
+  background: #9C67E0;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-detalle:hover {
+  background: #7B4AE2;
+}
+
+/* --- NUEVO: Contenedor para 2 tablas por fila con grid --- */
+.tablas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 70px;
+}
+
+/* Responsivo: en móviles, una tabla por fila */
+@media (max-width: 768px) {
+  .tablas-grid {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 10px 8px;
+  }
+
+  .btn-detalle {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}

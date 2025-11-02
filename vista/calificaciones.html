@@ -1,41 +1,23 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>calificaciones</title>
-    <link rel="stylesheet" href="../recursos/css/menu.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calificaciones - SGE</title>
+  <link rel="stylesheet" href="../recursos/css/grados.css">
+  <link rel="stylesheet" href="../recursos/css/calificaciones.css">
 </head>
-
 <body>
+  <h3 class="TituloGrado">Calificaciones por Grado</h3>
 
+  <div id="menu"></div>
 
-    <div id="menu"></div>
+  <div class="container-calificaciones">
+    <!-- Tablas se generarán con JavaScript -->
+    <div id="tablasGrados"></div>
+  </div>
 
-    <section class="home">
-        <div class="text">Calificaciones</div>
-    </section>
-
-    <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
-</script>
-
-    <script>
-        // Cargar el menú de forma dinámica
-        fetch("../vista/menu.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("menu").innerHTML = data;
-                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
-                const script = document.createElement("script");
-                script.src = "../controladores/js/menu.js";
-                document.body.appendChild(script);
-            });
-    </script>
+  <script src="../controladores/js/calificaciones.js"></script>
 </body>
-
 </html>
