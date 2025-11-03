@@ -1,0 +1,28 @@
+services:
+  mysql:
+    image: 'mysql:8.0'
+    container_name: sge-mysql
+    environment:
+      - 'MYSQL_ROOT_PASSWORD=root'
+      - 'MYSQL_DATABASE=SGE'
+      - 'MYSQL_USER=sge_user'
+      - 'MYSQL_PASSWORD=sge_password'
+    ports:
+      - '3311:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - sge-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  sge-network:
+    driver: bridge
