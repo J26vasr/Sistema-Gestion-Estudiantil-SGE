@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>asistencia-estudiantes</title>
-    <link rel="stylesheet" href="../recursos/css/menu.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistencia - SGE</title>
+<!-- Cargando los estilos de la pantalla-->
+<link rel="stylesheet" href="../recursos/css/grados.css">
+<link rel="stylesheet" href="../recursos/css/asistencia-estudiantes.css">
 </head>
-
 <body>
+<!-- Titulo de la pagina-->
+<h3 class="TituloGrado">Registro de Asistencia</h3>
 
+<!-- contenedor para el menú lateral -->
+<div id="menu"></div>
 
-    <div id="menu"></div>
+<!-- Contenedor para la asistencia -->
+<div class="container-asistencia">
+<!-- Contenedor para los botones de control -->
+<div class="controls">
+<button id="btnGuardarTodo" class="btn-guardar">Guardar Todo</button>
+<button id="btnMarcarPresentes" class="btn-secundario">Marcar Todos como Presentes</button>
+</div>
+<!-- Contenedor donde se generarán las tablas de asistencia por grado -->
+<div id="tablasAsistencia"></div>
+</div>
 
-    <section class="home">
-        <div class="text">Asistencia</div>
-    </section>
-    <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
+<!-- Carga de menu y activasion de modo oscuro si es requerido -->
+<script>
+// Verifica si el modo oscuro está activado y lo aplica
+if (localStorage.getItem("darkMode") === "true") {
+document.documentElement.classList.add("dark");
+}
+
+// Carga el menú desde el archivo menu.html y lo inserta en el elemento con id="menu"
+fetch("../vista/menu.html")
+.then(res => res.text())
+.then(data => {
+document.getElementById("menu").innerHTML = data;
+// Carga el script de funcionalidad del menú
+const script = document.createElement("script");
+script.src = "../controladores/js/menu.js";
+document.body.appendChild(script);
+});
 </script>
 
+<!-- Llamando al archivo js para que funcione la funcionalidad de asistencia -->
+<script src="../controladores/js/asistencia-estudiantes.js"></script>
 
-    <script>
-        // Cargar el menú de forma dinámica
-        fetch("../vista/menu.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("menu").innerHTML = data;
-                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
-                const script = document.createElement("script");
-                script.src = "../controladores/js/menu.js";
-                document.body.appendChild(script);
-            });
-    </script>
+<!-- Script de depuración: muestra un mensaje en la consola para confirmar que el script se cargó -->
+<script>
+console.log("asistencia.js cargado correctamente");
+</script>
 </body>
-
 </html>
