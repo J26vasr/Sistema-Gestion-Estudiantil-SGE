@@ -1,105 +1,156 @@
-/* registro.css */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
 
 body {
-  background: 
-    linear-gradient(135deg, #F8F5FF 0%, #fff 100%),
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(156, 103, 224, 0.08) 10px,
-      rgba(156, 103, 224, 0.08) 20px
-    ) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
-  padding-top: 80px;
-  background-attachment: fixed;
+  background: #ffffff;
+}
+.login-text {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 0.9rem;
 }
 
-.container-registro {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.registro-form {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
+.login-text a {
+  color: #f4b400;
+  text-decoration: none;
   font-weight: 600;
-  color: #333;
 }
 
-.form-group input,
-.form-group select {
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+.password-info {
+  font-size: 0.8rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.container {
+  display: flex;
   width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
+  max-width: 1100px;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.left-side {
+  flex: 1;
+  background: #370d6d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-side img {
+  width: 80%;
+  max-width: 400px;
+}
+
+.right-side {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-box {
+  width: 100%;
+  max-width: 350px;
+}
+
+.form-box h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000000;
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+}
+
+.google-btn {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
   border-radius: 8px;
+  padding: 10px;
   font-size: 16px;
-  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
 }
 
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #9C67E0;
-  box-shadow: 0 0 0 2px rgba(156, 103, 224, 0.15);
+.google-btn img {
+  width: 22px;
 }
 
-.btn-registrar {
+.divider {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 14px;
+  color: #999;
+}
+
+.input-box {
+  margin-bottom: 15px;
+}
+
+.input-box input {
   width: 100%;
-  padding: 14px;
-  background: #9C67E0;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #f0f0f0;
+  font-size: 15px;
+}
+
+.btn {
+  width: 100%;
+  background:#6028a8;
   color: white;
   border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-registrar:hover {
-  background: #7B4AE2;
-}
-
-.mensaje {
-  margin-top: 15px;
   padding: 10px;
   border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: rgb(71, 30, 90);
+}
+
+.login-text {
   text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-text a {
+  color: #001aff;
+  text-decoration: none;
   font-weight: 500;
-  display: none;
 }
 
-.mensaje.exito {
-  background: #d4edda;
-  color: #155724;
-  display: block;
-}
-
-.mensaje.error {
-  background: #f8d7da;
-  color: #721c24;
-  display: block;
-}
-
-/* Responsivo */
-@media (max-width: 600px) {
-  .registro-form {
-    padding: 20px;
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
   }
-
-  .btn-registrar {
-    padding: 12px;
+  .left-side {
+    display: none;
   }
 }
