@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Servicios - SGE</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .console-output {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 600px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-bottom: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .status.running {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .info-box {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Servicios API</h1>
+        <p class="subtitle">Sistema de Gestión Estudiantil</p>
+        
+        <div class="info-box">
+            <h3>ℹ️ Instrucciones</h3>
+            <p>Este módulo de pruebas te permite verificar que todos los servicios de la API estén funcionando correctamente.</p>
+            <ul>
+                <li><strong>Asegúrate</strong> de que la API esté corriendo en <code>http://localhost:8080</code></li>
+                <li>Presiona el botón correspondiente para ejecutar las pruebas</li>
+                <li>Los resultados se mostrarán en la consola de abajo</li>
+                <li>Abre también la consola del navegador (F12) para ver más detalles</li>
+            </ul>
+        </div>
+
+        <div id="status" class="status" style="display: none;"></div>
+
+        <div class="button-group">
+            <button id="btnTestRoles" onclick="ejecutarPruebasRoles()">
+                🔵 Probar Servicios de Roles
+            </button>
+            <button id="btnTestUsuarios" onclick="ejecutarPruebasUsuarios()">
+                🟢 Probar Servicios de Usuarios
+            </button>
+            <button id="btnTestEstudiantes" onclick="ejecutarPruebasEstudiantes()">
+                🟡 Probar Servicios de Estudiantes
+            </button>
+            <button id="btnTestTodos" onclick="ejecutarTodasLasPruebas()">
+                🚀 Ejecutar Todas las Pruebas
+            </button>
+            <button id="btnLimpiar" onclick="limpiarConsola()">
+                🗑️ Limpiar Consola
+            </button>
+        </div>
+
+        <div id="console" class="console-output">
+            Esperando ejecución de pruebas...
+        </div>
+    </div>
+
+    <script type="module">
+        import * as rolService from '../controladores/services/rol.service.js';
+        import * as usuarioService from '../controladores/services/usuario.service.js';
+        import * as estudianteService from '../controladores/services/estudiante.service.js';
+
+        let consoleOutput = '';
+
+        // Sobrescribir console.log para mostrar en la página
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = function(...args) {
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput += message + '\n';
+            document.getElementById('console').textContent = consoleOutput;
+            originalLog.apply(console, args);
+        };
+
+        console.error = function(...args) {
+            const message = '❌ ERROR: ' + args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            consoleOutput += message + '\n';
+            document.getElementById('console').textContent = consoleOutput;
+            originalError.apply(console, args);
+        };
+
+        function mostrarEstado(mensaje, tipo) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = mensaje;
+            statusDiv.className = `status ${tipo}`;
+            statusDiv.style.display = 'block';
+        }
+
+        function deshabilitarBotones(deshabilitar) {
+            document.querySelectorAll('button').forEach(btn => {
+                btn.disabled = deshabilitar;
+            });
+        }
+
+        window.limpiarConsola = function() {
+            consoleOutput = '';
+            document.getElementById('console').textContent = 'Consola limpiada. Esperando ejecución de pruebas...';
+            document.getElementById('status').style.display = 'none';
+        };
+
+        window.ejecutarPruebasRoles = async function() {
+            deshabilitarBotones(true);
+            mostrarEstado('🔵 Ejecutando pruebas de Roles...', 'running');
+            consoleOutput = '';
+            
+            try {
+                await testRolService();
+                mostrarEstado('✅ Pruebas de Roles completadas exitosamente', 'success');
+            } catch (error) {
+                mostrarEstado('❌ Error en las pruebas de Roles', 'error');
+            } finally {
+                deshabilitarBotones(false);
+            }
+        };
+
+        window.ejecutarPruebasUsuarios = async function() {
+            deshabilitarBotones(true);
+            mostrarEstado('🟢 Ejecutando pruebas de Usuarios...', 'running');
+            consoleOutput = '';
+            
+            try {
+                await testUsuarioService();
+                mostrarEstado('✅ Pruebas de Usuarios completadas exitosamente', 'success');
+            } catch (error) {
+                mostrarEstado('❌ Error en las pruebas de Usuarios', 'error');
+            } finally {
+                deshabilitarBotones(false);
+            }
+        };
+
+        window.ejecutarPruebasEstudiantes = async function() {
+            deshabilitarBotones(true);
+            mostrarEstado('🟡 Ejecutando pruebas de Estudiantes...', 'running');
+            consoleOutput = '';
+            
+            try {
+                await testEstudianteService();
+                mostrarEstado('✅ Pruebas de Estudiantes completadas exitosamente', 'success');
+            } catch (error) {
+                mostrarEstado('❌ Error en las pruebas de Estudiantes', 'error');
+            } finally {
+                deshabilitarBotones(false);
+            }
+        };
+
+        window.ejecutarTodasLasPruebas = async function() {
+            deshabilitarBotones(true);
+            mostrarEstado('🚀 Ejecutando todas las pruebas...', 'running');
+            consoleOutput = '';
+            
+            try {
+                console.log('=== INICIANDO PRUEBAS DE SERVICIOS ===\n');
+                await testRolService();
+                console.log('\n======================\n');
+                await testUsuarioService();
+                console.log('\n======================\n');
+                await testEstudianteService();
+                console.log('\n🎉 ¡TODAS LAS PRUEBAS FINALIZADAS!\n');
+                mostrarEstado('✅ Todas las pruebas completadas exitosamente', 'success');
+            } catch (error) {
+                mostrarEstado('❌ Error durante las pruebas', 'error');
+            } finally {
+                deshabilitarBotones(false);
+            }
+        };
+
+        async function testRolService() {
+            console.log('🔵 PRUEBAS DE ROL SERVICE\n');
+            
+            try {
+                console.log('📋 Test 1: Obtener todos los roles activos');
+                const roles = await rolService.getAllRoles();
+                console.log('✅ Roles obtenidos:', roles);
+                console.log('');
+
+                console.log('➕ Test 2: Crear un nuevo rol');
+                const nuevoRol = {
+                    nombre: 'Rol de Prueba ' + Date.now(),
+                    descripcion: 'Este es un rol creado para pruebas',
+                    permisos: ['LEER', 'ESCRIBIR']
+                };
+                const rolCreado = await rolService.createRol(nuevoRol);
+                console.log('✅ Rol creado:', rolCreado);
+                console.log('');
+
+                const rolId = rolCreado.id;
+
+                console.log('🔍 Test 3: Obtener rol por ID');
+                const rolObtenido = await rolService.getRolById(rolId);
+                console.log('✅ Rol obtenido por ID:', rolObtenido);
+                console.log('');
+
+                console.log('🔎 Test 4: Buscar roles por nombre');
+                const rolesEncontrados = await rolService.searchRoles('Prueba');
+                console.log('✅ Roles encontrados:', rolesEncontrados);
+                console.log('');
+
+                console.log('✏️ Test 5: Actualizar rol');
+                const rolActualizado = await rolService.updateRol(rolId, {
+                    nombre: 'Rol de Prueba Actualizado',
+                    descripcion: 'Descripción actualizada',
+                    permisos: ['LEER', 'ESCRIBIR', 'ELIMINAR']
+                });
+                console.log('✅ Rol actualizado:', rolActualizado);
+                console.log('');
+
+                console.log('🗑️ Test 6: Eliminar rol (soft delete)');
+                await rolService.deleteRol(rolId);
+                console.log('✅ Rol eliminado correctamente');
+                console.log('');
+
+                console.log('📋 Test 7: Obtener roles eliminados');
+                const rolesEliminados = await rolService.getAllDeletedRoles();
+                console.log('✅ Roles eliminados:', rolesEliminados);
+                console.log('');
+
+                console.log('✅ ¡TODAS LAS PRUEBAS DE ROL SERVICE COMPLETADAS!\n');
+            } catch (error) {
+                console.error('Error en pruebas de Rol Service:', error.message);
+                throw error;
+            }
+        }
+
+        async function testUsuarioService() {
+            console.log('🟢 PRUEBAS DE USUARIO SERVICE\n');
+            
+            try {
+                console.log('📋 Test 1: Obtener todos los usuarios sin paginación');
+                const usuariosSinPaginar = await usuarioService.getAllUsuarios(0, 10, false);
+                console.log('✅ Usuarios obtenidos (sin paginar):', usuariosSinPaginar);
+                console.log('Total de usuarios:', usuariosSinPaginar.length);
+                console.log('');
+
+                console.log('📄 Test 2: Obtener usuarios con paginación');
+                const usuariosPaginados = await usuarioService.getAllUsuarios(0, 5, true);
+                console.log('✅ Usuarios paginados:', usuariosPaginados);
+                console.log('Total elementos:', usuariosPaginados.totalElements);
+                console.log('');
+
+                console.log('✅ Test 3: Obtener usuarios activos');
+                const usuariosActivos = await usuarioService.getUsuariosActivos();
+                console.log('✅ Usuarios activos:', usuariosActivos);
+                console.log('Total usuarios activos:', usuariosActivos.length);
+                console.log('');
+
+                console.log('📋 Test 4: Obtener usuarios eliminados');
+                const usuariosEliminados = await usuarioService.getAllDeletedUsuarios();
+                console.log('✅ Usuarios eliminados:', usuariosEliminados);
+                console.log('Total usuarios eliminados:', usuariosEliminados.length);
+                console.log('');
+
+                // Si hay usuarios, probar búsqueda con el primero
+                if (usuariosSinPaginar.length > 0) {
+                    const primerUsuario = usuariosSinPaginar[0];
+                    
+                    console.log('� Test 5: Obtener usuario por ID');
+                    const usuarioObtenido = await usuarioService.getUsuarioById(primerUsuario.id);
+                    console.log('✅ Usuario obtenido por ID:', usuarioObtenido);
+                    console.log('');
+
+                    console.log('🔎 Test 6: Buscar usuario por username');
+                    const usuarioPorUsername = await usuarioService.getUsuarioByUsername(primerUsuario.username);
+                    console.log('✅ Usuario encontrado por username:', usuarioPorUsername);
+                    console.log('');
+
+                    console.log('� Test 7: Buscar usuario por email');
+                    const usuarioPorEmail = await usuarioService.getUsuarioByEmail(primerUsuario.email);
+                    console.log('✅ Usuario encontrado por email:', usuarioPorEmail);
+                    console.log('');
+
+                    if (primerUsuario.rolId) {
+                        console.log('👥 Test 8: Obtener usuarios por rol');
+                        const usuariosPorRol = await usuarioService.getUsuariosByRol(primerUsuario.rolId);
+                        console.log('✅ Usuarios con ese rol:', usuariosPorRol);
+                        console.log('Total usuarios con rol:', usuariosPorRol.length);
+                        console.log('');
+                    }
+                } else {
+                    console.log('⚠️ No hay usuarios en la base de datos para probar búsquedas específicas');
+                    console.log('');
+                }
+
+                console.log('✅ ¡TODAS LAS PRUEBAS DE USUARIO SERVICE COMPLETADAS!\n');
+            } catch (error) {
+                console.error('Error en pruebas de Usuario Service:', error.message);
+                throw error;
+            }
+        }
+
+        async function testEstudianteService() {
+            console.log('🟡 PRUEBAS DE ESTUDIANTE SERVICE\n');
+            
+            try {
+                console.log('📋 Test 1: Obtener todos los estudiantes con paginación');
+                const estudiantesPaginados = await estudianteService.getAllEstudiantes(0, 5);
+                console.log('✅ Estudiantes paginados:', estudiantesPaginados);
+                console.log('Total elementos:', estudiantesPaginados.totalElements || 'N/A');
+                console.log('');
+
+                console.log('✅ Test 2: Obtener estudiantes activos');
+                const estudiantesActivos = await estudianteService.getEstudiantesActivos();
+                console.log('✅ Estudiantes activos:', estudiantesActivos);
+                console.log('Total estudiantes activos:', estudiantesActivos.length);
+                console.log('');
+
+                console.log('� Test 3: Obtener estudiantes masculinos');
+                const estudiantesMasculinos = await estudianteService.getEstudiantesByGenero('M');
+                console.log('✅ Estudiantes masculinos:', estudiantesMasculinos);
+                console.log('Total:', estudiantesMasculinos.length);
+                console.log('');
+
+                console.log('👥 Test 4: Obtener estudiantes femeninos');
+                const estudiantesFemeninos = await estudianteService.getEstudiantesByGenero('F');
+                console.log('✅ Estudiantes femeninos:', estudiantesFemeninos);
+                console.log('Total:', estudiantesFemeninos.length);
+                console.log('');
+
+                // Si hay estudiantes, probar búsqueda con el primero
+                if (estudiantesActivos.length > 0) {
+                    const primerEstudiante = estudiantesActivos[0];
+                    
+                    console.log('🔍 Test 5: Obtener estudiante por ID');
+                    const estudianteObtenido = await estudianteService.getEstudianteById(primerEstudiante.id);
+                    console.log('✅ Estudiante obtenido por ID:', estudianteObtenido);
+                    console.log('');
+
+                    console.log('� Test 6: Buscar estudiante por código');
+                    const estudiantePorCodigo = await estudianteService.getEstudianteByCodigo(primerEstudiante.codigoEstudiante);
+                    console.log('✅ Estudiante encontrado por código:', estudiantePorCodigo);
+                    console.log('');
+                } else {
+                    console.log('⚠️ No hay estudiantes en la base de datos para probar búsquedas específicas');
+                    console.log('');
+                }
+
+                console.log('✅ ¡TODAS LAS PRUEBAS DE ESTUDIANTE SERVICE COMPLETADAS!\n');
+            } catch (error) {
+                console.error('Error en pruebas de Estudiante Service:', error.message);
+                throw error;
+            }
+        }
+    </script>
+</body>
+</html>
