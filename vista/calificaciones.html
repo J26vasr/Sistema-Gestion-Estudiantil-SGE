@@ -1,23 +1,246 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calificaciones - SGE</title>
-  <link rel="stylesheet" href="../recursos/css/grados.css">
+  <title>calificaciones</title>
+  <link rel="stylesheet" href="../recursos/css/menu.css">
   <link rel="stylesheet" href="../recursos/css/calificaciones.css">
 </head>
+
 <body>
-  <h3 class="TituloGrado">Calificaciones por Grado</h3>
+
+  <h3 class="TituloGrado">Calificaciones</h3>
 
   <div id="menu"></div>
 
-  <div class="container-calificaciones">
-    <!-- Tablas se generarán con JavaScript -->
-    <div id="tablasGrados"></div>
+  <div class="container">
+
+    <!-- Panel principal -->
+    <div class="sidebar2">
+      <div class="buscador-btn-container">
+        <div class="buscador-container">
+          <input type="text" id="buscador" placeholder="🔍 Buscar estudiante." />
+        </div>
+        <a href="../vista/agregar-actividad.html" class="btn-view-cal">Buscar</a>
+        <a href="#" id="btnAgregarCal" class="btn-view-cal">Agregar</a>
+        <a href="../vista/agregar-actividad.html" class="btn-view-cal">Eliminar</a>
+      </div>
+
+
+      <div class="table-header">
+        <h3>Foto</h3>
+        <h3>Estudiante</h3>
+        <h3>Carnet</h3>
+        <h3>Materia</h3>
+        <h3>Laboratorio 1</h3>
+        <h3>Parcial 1</h3>
+        <h3>Laboratorio 2</h3>
+        <h3>Parcial 2</h3>
+        <h3>Aprobado</h3>
+      </div>
+
+
+      <div class="student-list">
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Andrés Castro</h4>
+          </div>
+          <div class="info">
+            <h4>AC260322</h4>
+          </div>
+          <div class="info">
+            <h4>Matemáticas</h4>
+          </div>
+          <div class="info">
+            <h4>8.0</h4>
+          </div>
+          <div class="info">
+            <h4>9.0</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado apr">
+            <h4>Aprobado</h4>
+          </div>
+          <!-- apr es para el color de aprobado -->
+          <!-- napr es para no aprobado -->
+        </div>
+
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Laura Gómez</h4>
+          </div>
+          <div class="info">
+            <h4>LG150421</h4>
+          </div>
+          <div class="info">
+            <h4>Física</h4>
+          </div>
+          <div class="info">
+            <h4>7.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado apr">
+            <h4>Aprobado</h4>
+          </div>
+        </div>
+
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Andrés Castro</h4>
+          </div>
+          <div class="info">
+            <h4>AC260322</h4>
+          </div>
+          <div class="info">
+            <h4>Matemáticas</h4>
+          </div>
+          <div class="info">
+            <h4>8.0</h4>
+          </div>
+          <div class="info">
+            <h4>9.0</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado napr">
+            <h4>No aprobado</h4>
+          </div>
+        </div>
+
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Laura Gómez</h4>
+          </div>
+          <div class="info">
+            <h4>LG150421</h4>
+          </div>
+          <div class="info">
+            <h4>Física</h4>
+          </div>
+          <div class="info">
+            <h4>7.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado napr">
+            <h4>No aprobado</h4>
+          </div>
+        </div>
+
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Andrés Castro</h4>
+          </div>
+          <div class="info">
+            <h4>AC260322</h4>
+          </div>
+          <div class="info">
+            <h4>Matemáticas</h4>
+          </div>
+          <div class="info">
+            <h4>8.0</h4>
+          </div>
+          <div class="info">
+            <h4>9.0</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado apr">
+            <h4>Aprobado</h4>
+          </div>
+        </div>
+
+        <div class="student">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Foto estudiante">
+          <div class="info">
+            <h4>Laura Gómez</h4>
+          </div>
+          <div class="info">
+            <h4>LG150421</h4>
+          </div>
+          <div class="info">
+            <h4>Física</h4>
+          </div>
+          <div class="info">
+            <h4>7.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info">
+            <h4>8.5</h4>
+          </div>
+          <div class="info aprobado apr">
+            <h4>Aprobado</h4>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <script src="../controladores/js/calificaciones.js"></script>
+
+  <script>
+    // Aplica modo oscuro inmediatamente si está activado
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+
+  <!-- Menú dinámico -->
+  <div id="menu"></div>
+
+  <script>
+    // Cargar el menú desde menu.html
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+
+
 </body>
+
 </html>
