@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Editar Actividad</title>
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/agregar-act.css">
+</head>
+
+<body>
+    <!-- Menú dinámico -->
+    <div id="menu">
+    </div>
+    <h3 class="TituloVentana">Editar Actividad</h3>
+    <div class="container">
+        <div class="column-left">
+            <div class="card-subir-imagen">
+                <img id="img" src="../recursos/img/Subir-Img-Act.png" />
+                <h4>Agregar Una imagen</h3>
+                    <input type="file" id="file" accept="image/*" onchange="mostrar() " class="btn-view" />
+            </div>
+        </div>
+
+        <div class="column-right">
+            <div class="container-materia">
+                <h2>Información actividad</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="card-header">
+                                <div class="container-ComboBox">
+                                    <h3>Actividad de la materia:</h3>
+                                    <div id="materia">
+                                        <p>Matemáticas</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>Ingrese el titulo de la actividad:</h3>
+                            <div class="custom_input">
+                                <input type="text" id="TituloActividad" name="TituloActividad" required minlength="4"
+                                    maxlength="8" size="100" class="input" />
+                            </div>
+                            <h3>Ingrese la Descripción de la actividad:</h3>
+                            <div class="custom_input">
+                                <input type="text" id="DescripAct" name="DescripAct" required minlength="4"
+                                    maxlength="8" size="100" class="input" />
+                            </div>
+                            <h3>Ingrese la fecha en que se abre la actividad:</h3>
+                            <div class="custom_input">
+                                <input id="FechaIn" name="FechaIn" type="date" class="input" />
+                            </div>
+
+                            <h3>Ingrese la fecha en que se cierra la actividad:</h3>
+                            <div class="custom_input">
+                                <input id="FechaCie" name="FechaCie" type="date" class="input" />
+                            </div>
+                            <h3>Agregar documento para subir archivo:</h3>
+                            <div class="custom_input">
+                                <input id="ArchivoSubir" name="ArchivoSubir" type="file" class="input"
+                                    onchange="mostrarDocumento()" />
+                            </div>
+                            <!-- Contenedor separado para mostrar el documento -->
+                            <div id="documento-container"
+                                style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background: #f9f9f9;">
+                                <p>Documento cargado aparecerá aquí:</p>
+                                <div id="documento"></div>
+                            </div>
+                            <div class="footer">
+                                <a href="../vista/7A.html" class="btn-view">Editar Actividad</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <script>
+        // Aplica modo oscuro inmediatamente si está activado
+        if (localStorage.getItem("darkMode") === "true") {
+            document.documentElement.classList.add("dark");
+        }
+
+        function mostrar() {
+            var archivo = document.getElementById("file").files[0];
+            var reader = new FileReader();
+            if (file) {
+                reader.readAsDataURL(archivo);
+                reader.onloadend = function () {
+                    document.getElementById("img").src = reader.result;
+                }
+            }
+        }
+
+        function mostrarDocumento() {
+            var archivo = document.getElementById("ArchivoSubir").files[0];
+            var contenedor = document.getElementById("documento");
+            contenedor.innerHTML = ""; // Limpiar contenido anterior
+
+            if (!archivo) return;
+
+            var nombre = archivo.name;
+            var tipo = archivo.type;
+
+            if (tipo === "application/pdf") {
+                // Previsualizar PDF
+                var iframe = document.createElement("iframe");
+                iframe.src = URL.createObjectURL(archivo);
+                iframe.width = "100%";
+                iframe.height = "500px";
+                iframe.style.border = "none";
+                contenedor.appendChild(iframe);
+            } else {
+                // Otros documentos: mostrar un enlace de descarga
+                var enlace = document.createElement("a");
+                enlace.href = URL.createObjectURL(archivo);
+                enlace.download = nombre;
+                enlace.textContent = "Descargar: " + nombre;
+                enlace.style.display = "block";
+                enlace.style.color = "#4B00C7";
+                enlace.style.fontWeight = "bold";
+                contenedor.appendChild(enlace);
+            }
+        }
+
+    </script>
+
+
+    <!-- Menú dinámico -->
+    <div id="menu"></div>
+
+    <script>
+        // Cargar el menú desde menu.html
+        fetch("../vista/menu.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                const script = document.createElement("script");
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+</body>
+
+</html>

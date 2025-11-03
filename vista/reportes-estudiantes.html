@@ -4,40 +4,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>reportes-estudiantes</title>
-    
+    <title>Reporte Estudiantil</title>
     <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/reportes.css">
 </head>
 
 <body>
 
+    <h3 class="TituloGrado">Reporte Estudiantes</h3>
 
     <div id="menu"></div>
 
-    <section class="home">
-        <div class="text">Reportes</div>
-    </section>
-    <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
-</script>
+    <div class="container">
+        <!-- Buscador y botones -->
+        <div class="buscador-btn-container">
+            <div class="buscador-container">
+                <input type="text" id="buscador" placeholder="🔍 Buscar estudiante." />
+            </div>
+            <div class="botones-container">
+                <a href="../vista/agregar-actividad.html" class="btn-view-cal">Buscar</a>
+                <a href="#" id="btnAgregarRepo" class="btn-view-cal">Agregar</a>
+                <!-- Ejemplo de botón que dispara la animación -->
+                <a href="#" id="btnEliminarReporte" class="btn-view-cal">Eliminar reporte</a>
+            </div>
+
+        </div>
+        <!-- Panel primera tabla (Reportes LEVES) -->
+        <div class="container-reporter">
+            <h2>Estudiantes con reportes leves 😶</h2>
+            <div class="table-header">
+                <h3>Foto</h3>
+                <h3>Estudiante</h3>
+                <h3>Carnet</h3>
+                <h3>Razón Reporte</h3>
+            </div>
 
 
+            <div class="student-list">
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observaci: El estudiante estuvo inquieto toda la hora clase de matematicas a las 10:00am
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Se recomienda evitar distracciones durante la hora de matemáticas.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Jeremy Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>JC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Sugerencia: Mantener atención en clase y participar activamente.</h4>
+                    </div>
+
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observación: Estudiante llegó tarde a la clase de matemáticas (Es la segunda vez esta
+                            semana).</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Registro: Estudiante permaneció fuera de su lugar asignado sin permiso.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Estudiante entregó trabajos incompletos, se recomienda revisar indicaciones.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="style-one">
+
+        <!-- Panel primera tabla (Reportes FUERTES) -->
+        <div class="container-reporter">
+            <h2>Estudiantes con reportes fuertes 🤐</h2>
+            <div class="table-header">
+                <h3>Foto</h3>
+                <h3>Estudiante</h3>
+                <h3>Carnet</h3>
+                <h3>Razón Reporte</h3>
+            </div>
+
+
+            <div class="student-list">
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observaci: El estudiante estuvo inquieto toda la hora clase de matematicas a las 10:00am
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Se recomienda evitar distracciones durante la hora de matemáticas.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Jeremy Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>JC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Sugerencia: Mantener atención en clase y participar activamente.</h4>
+                    </div>
+
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observación: Estudiante llegó tarde a la clase de matemáticas (Es la segunda vez esta
+                            semana).</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Registro: Estudiante permaneció fuera de su lugar asignado sin permiso.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Estudiante entregó trabajos incompletos, se recomienda revisar indicaciones.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="style-one">
+
+        <!-- Panel primera tabla (Reportes FUERTES) -->
+        <div class="container-reporter">
+            <h2>Estudiantes con reportes graves 😠</h2>
+            <div class="table-header">
+                <h3>Foto</h3>
+                <h3>Estudiante</h3>
+                <h3>Carnet</h3>
+                <h3>Razón Reporte</h3>
+            </div>
+
+
+            <div class="student-list">
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observaci: El estudiante estuvo inquieto toda la hora clase de matematicas a las 10:00am
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Se recomienda evitar distracciones durante la hora de matemáticas.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Jeremy Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>JC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Sugerencia: Mantener atención en clase y participar activamente.</h4>
+                    </div>
+
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Observación: Estudiante llegó tarde a la clase de matemáticas (Es la segunda vez esta
+                            semana).</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Andrés Castro</h4>
+                    </div>
+                    <div class="info">
+                        <h4>AC260322</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Registro: Estudiante permaneció fuera de su lugar asignado sin permiso.</h4>
+                    </div>
+                </div>
+
+                <div class="student">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Foto estudiante">
+                    <div class="info">
+                        <h4>Laura Gómez</h4>
+                    </div>
+                    <div class="info">
+                        <h4>LG150421</h4>
+                    </div>
+                    <div class="info">
+                        <h4>Nota: Estudiante entregó trabajos incompletos, se recomienda revisar indicaciones.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ANIMACION BOTON ELIMINAR-->
+    <div class="full-notif" id="fullNotif">
+        <!-- Contenedor de partículas de fondo -->
+        <div class="bg-stars"></div>
+
+        <div class="notif-content">
+            <div class="star">📃</div>
+            <p>Reporte eliminado</p>
+            <p>Se ha eliminado el reporte correctamente.</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script>
+        // Aplica modo oscuro inmediatamente si está activado
+        if (localStorage.getItem("darkMode") === "true") {
+            document.documentElement.classList.add("dark");
+        }
+
         // Cargar el menú de forma dinámica
         fetch("../vista/menu.html")
             .then(res => res.text())
             .then(data => {
                 document.getElementById("menu").innerHTML = data;
-                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
+
                 const script = document.createElement("script");
                 script.src = "../controladores/js/menu.js";
                 document.body.appendChild(script);
             });
     </script>
+    <script src="../controladores/js/reportes.js"></script>
 </body>
-
 
 </html>

@@ -1,0 +1,500 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f6f7fb;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    /* centra todo horizontalmente */
+    align-items: flex-start;
+    /* inicia desde arriba */
+}
+
+/* ======= TITULO SUPERIOR ======= */
+.TituloGrado {
+    position: fixed;
+    top: 0;
+    left: 80px;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, #6b4eff, #9d7dff);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    z-index: 998;
+    transition: left 0.3s ease;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+body.menu-expanded .TituloGrado {
+    left: 260px;
+}
+
+/* ======== Buscador ======== */
+
+/* Botón al lado del buscador */
+.btn-view-cal {
+    font-size: 1.4rem;
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-view-cal:hover {
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+    transform: translateY(-2px);
+}
+
+/* Contenedor principal del buscador y botones */
+.buscador-btn-container {
+    display: flex;
+    justify-content: flex-start; /* lo alineamos al inicio horizontalmente */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px; /* espacio debajo del buscador */
+    flex-wrap: wrap; /* para pantallas pequeñas */
+}
+
+/* Contenedor del buscador */
+.buscador-btn-container {
+    display: flex;
+    justify-content: space-between; /* buscador a la izquierda, botones a la derecha */
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap; /* si la pantalla es pequeña, los botones bajan */
+}
+
+/* Contenedor del buscador */
+.buscador-container {
+    flex: 1; /* ocupa todo el espacio disponible */
+    max-width: 600px; /* ancho máximo */
+}
+/* Input buscador */
+#buscador {
+    width: 100%;
+}
+
+/* Separar la tabla del buscador */
+.container-reporter {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    max-height: 90vh;
+    overflow-y: auto;
+    margin-top: 10px; /* espacio desde buscador */
+}
+
+.container-reporter h2{
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+#buscador {
+    padding: 12px 15px;
+    font-size: 1rem;
+    border: 2px solid #b57bee;
+    border-radius: 25px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+#buscador:focus {
+    border-color: #8e44ad;
+    box-shadow: 0 0 8px rgba(142, 68, 173, 0.3);
+}
+
+/* Contenedor de los botones */
+.botones-container {
+    display: flex;
+    gap: 10px; /* espacio entre botones */
+    flex-wrap: wrap; /* responsive, si no caben bajan */
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 768px) {
+    #buscador {
+        width: 80%;
+        font-size: 0.9rem;
+        margin-left: 80px;
+    }
+}
+
+
+/* Contenedor general */
+.container {
+    margin-top: 100px; /* espacio desde el título */
+    width: 95%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block; /* quitar flex para que no afecte al buscador */
+}
+/* ===== container-reporter ===== */
+.container-reporter {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Encabezado de la "tabla" */
+.table-header {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr;
+    /* aca se modifican las columnas*/
+    gap: 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.table-header h3 {
+    font-size: 1rem;
+    color: #444;
+    text-align: left;
+}
+
+/* Lista de estudiantes */
+.student-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Cada fila de estudiante */
+.student {
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr 1fr ;
+    /* aca se modifican las columnas */
+    align-items: center;
+    gap: 28px;
+    padding: 10px;
+    background: #f7f7f9;
+    border-radius: 10px;
+    border-bottom: 1px solid #e0e0e0;
+    transition: 0.3s;
+}
+
+.student:hover {
+    background: #ecebff;
+}
+
+.student img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Info dentro de cada columna */
+.student .info h4 {
+    font-size: 0.9rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Scroll */
+.container-reporter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.container-reporter::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 4px;
+}
+
+/* ======= HR ======= */
+hr.style-one,
+hr.style-two {
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, #ccc, #6b4eff, #ccc);
+  margin-bottom: 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+
+/*===== CODIGO PARA DISEÑO DE MODAL ====*/
+/* Fondo del modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Contenedor del modal */
+.modal {
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px 30px;
+    max-width: 1000px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    animation: modalFade 0.8s ease;
+    position: relative;
+}
+
+/* Animación de aparición */
+@keyframes modalFade {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Cerrar */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #777;
+    cursor: pointer;
+}
+
+/* Footer del modal */
+.modal-footer {
+    gap: 28px;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-footer button {
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    color: #fff;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.modal-footer button:hover {
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+}
+
+/* ======= INPUTS MODAL =========*/
+.custom_input {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 80%;
+}
+
+.input {
+    font-size: 22px;
+    padding: 5px 11px;
+    width: 100%;
+    outline: none;
+    background: #FFFFFF;
+    color: #4B00C7;
+    border: 1px outset #C4D1EB;
+    border-radius: 5px;
+    box-shadow: 2px 4px 11px 1px #7572C7;
+    transition: .3s ease;
+}
+
+.input:focus {
+    background: #F2F2F2;
+    border: 1px outset #4B00C7;
+    border-radius: 6px;
+}
+
+.input::placeholder {
+    color: #DDDDDD;
+}
+
+
+/* ======= COMBOBOX MODAL======= */
+
+.combo-wrap {
+    display: inline-block;
+    padding: 3px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background: linear-gradient(135deg, #7b5cff 0%, #b389ff 50%, #cfa7ff 100%);
+    box-shadow: 0 6px 18px rgba(123, 92, 255, 0.12);
+    transition: transform .18s ease;
+}
+
+.combo-wrap:hover {
+    transform: translateY(-2px);
+}
+
+.fancy-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 1;
+    outline: none;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
+    padding: 12px 44px 12px 16px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: #7b5cff;
+    min-width: 620px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(34, 34, 34, 0.06) inset;
+    transition: box-shadow .18s ease, transform .12s ease;
+}
+
+.fancy-select:focus {
+    box-shadow: 0 6px 18px rgba(87, 49, 255, 0.705), 0 4px 12px rgba(34, 34, 34, 0.04) inset;
+}
+
+/* ANIMACION ELIMINACION REPORTE */
+/* Overlay completo */
+.full-notif {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(75, 0, 199, 0.8); /* morado semi-transparente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+/* Mostrar overlay */
+.full-notif.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Contenido de la notificación */
+.notif-content {
+    text-align: center;
+    color: white;
+    font-size: 1.5rem;
+    animation: fadeInScale 0.5s ease;
+    position: relative;
+    z-index: 2; /* para que esté por encima de las partículas */
+}
+
+/* Estrellita mágica */
+.star {
+    font-size: 4rem;
+    display: inline-block;
+    color: #e0b0ff;
+    text-shadow: 0 0 5px #fff, 0 0 10px #d18fff, 0 0 20px #b35cff;
+    animation: starMagic 1.8s forwards;
+    margin-bottom: 15px;
+}
+
+/* Animación de la estrellita */
+@keyframes starMagic {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        transform: scale(1.2) rotate(15deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(-10deg);
+        opacity: 1;
+        text-shadow: 0 0 8px #fff, 0 0 20px #d18fff, 0 0 40px #b35cff;
+    }
+    100% {
+        transform: scale(2) rotate(360deg);
+        opacity: 0;
+        text-shadow: 0 0 2px #fff, 0 0 5px #d18fff, 0 0 10px #b35cff;
+    }
+}
+
+/* Animación fade y scale del contenedor */
+@keyframes fadeInScale {
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.full-notif p {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Fondo de partículas estilo lluvia de estrellas */
+.bg-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1; /* detrás del contenido */
+}
+
+.bg-stars span {
+    position: absolute;
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #e0b0ff;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fallStars linear infinite;
+}
+
+/* Animación de caída */
+@keyframes fallStars {
+    0% {
+        transform: translateY(-10px) scale(0.5);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(110vh) scale(1);
+        opacity: 0;
+    }
+}
