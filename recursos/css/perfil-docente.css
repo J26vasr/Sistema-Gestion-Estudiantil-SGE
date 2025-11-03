@@ -20,7 +20,8 @@ body {
 /* === Encabezado === */
 .perfil-header {
   position: relative;
-  background-color: #c77dff;
+  background: linear-gradient(135deg, #430f7e, #9d7dff);
+  
   height: 220px;
   display: flex;
   justify-content: center;
@@ -95,7 +96,7 @@ body {
 /* === Botón === */
 .btn-editar {
   margin-top: 20px;
-  background-color: #c77dff;
+  background-color: #7421b4;
   border: none;
   color: #fff;
   padding: 8px 20px;
