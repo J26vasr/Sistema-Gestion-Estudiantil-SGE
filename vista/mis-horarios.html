@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calendario Interactivo</title>
+  <link rel="stylesheet" href="../recursos/css/mis-horarios.css">
+
+
+</head>
+<body>
+
+   <h3 class="TituloGrado">Septimo Grado "A"</h3>
+   <!-- Menú lateral -->
+  <div id="menu"></div>
+  
+  <div class="main-container">
+    <!-- Sección izquierda (calendario) -->
+    <div class="calendar-container">
+      <h2 id="monthAndYear"></h2>
+      <div class="calendar-controls">
+        <button id="prev">‹</button>
+        <select id="month"></select>
+        <select id="year"></select>
+        <button id="next">›</button>
+      </div>
+
+      <table id="calendar">
+        <thead>
+          <tr>
+            <th>Dom</th>
+            <th>Lun</th>
+            <th>Mar</th>
+            <th>Mié</th>
+            <th>Jue</th>
+            <th>Vie</th>
+            <th>Sáb</th>
+          </tr>
+        </thead>
+        <tbody id="calendar-body"></tbody>
+      </table>
+    </div>
+
+    <!-- Sección derecha (tabla de actividades) -->
+    <div class="activities-container">
+      <h3>Actividades Agendadas</h3>
+      <table id="tabla-actividades">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Actividad</th>
+            <th>Prioridad</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3>Agendar Actividad</h3>
+      <label>Actividad:</label>
+      <input type="text" id="actividad" placeholder="Ej: Examen de matemáticas">
+
+      <label>Hora:</label>
+      <input type="time" id="hora">
+
+      <label>Prioridad:</label>
+      <select id="prioridad">
+        <option value="alta">Alta (Rojo)</option>
+        <option value="media">Media (Naranja)</option>
+        <option value="baja">Baja (Verde)</option>
+      </select>
+
+      <div class="modal-buttons">
+        <button id="agendar">Agendar</button>
+        <button id="cerrar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../controladores/js/mis-horarios.js"></script>
+  
+
+   
+    <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+
+    <script>
+        // Cargar el menú de forma dinámica
+        fetch("../vista/menu.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
+                const script = document.createElement("script");
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+</body>
+
+</html>

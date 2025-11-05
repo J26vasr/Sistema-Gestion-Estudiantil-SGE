@@ -1,0 +1,229 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9ff;
+  margin: 0;
+  padding: 20px;
+}
+/* ======= TITULO SUPERIOR ======= */
+.TituloGrado {
+  position: fixed;
+  top: 0;
+  left: 80px; /* deja espacio para el menú lateral */
+  right: 0;
+  height: 60px;
+  background: linear-gradient(135deg, #6b4eff, #9d7dff);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  transition: left 0.3s ease;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+
+/* ==== MENÚ LATERAL ==== */
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 80px; /* ajusta según tu menú */
+  background: #1f1f1f;
+  z-index: 999;
+  transition: width 0.3s ease;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .TituloGrado {
+    left: 60px;
+    height: 55px;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 0 10px;
+  }
+
+}
+
+@media (max-width: 600px) {
+  .TituloGrado {
+    left: 0; /* el título ocupa todo el ancho */
+    height: 55px;
+    border-radius: 0;
+    font-size: 1.1rem;
+  }
+
+}
+
+
+/* CONTENEDOR PRINCIPAL (dos columnas) */
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px;
+  flex-wrap: nowrap; /* Mantiene calendario y tabla en fila */
+}
+
+/* CALENDARIO */
+.calendar-container {
+  margin-top:100px;
+  flex: 0 0 50%; /* Ocupa 60% del espacio */
+  background: #fff;
+  margin-left: 200px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.activities-container {
+  margin-top:100px;
+  flex: 0 0 35%; /* Ocupa 35% */
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+h2 {
+  text-align: center;
+  color: #3c3cc9;
+  text-transform: capitalize;
+}
+
+.calendar-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f0ff;
+  color: #3c3cc9;
+  padding: 10px;
+}
+
+td {
+  border: 1px solid #eee;
+  height: 80px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+td:hover {
+  background-color: #e8e8ff;
+}
+
+/* Colores por prioridad */
+.alta {
+  background-color: #ffb3b3 !important;
+}
+.media {
+  background-color: #ffd9b3 !important;
+}
+.baja {
+  background-color: #b3ffb3 !important;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  background: white;
+  width: 90%;
+  max-width: 400px;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 10px;
+}
+
+.modal-content input, .modal-content select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+}
+
+.modal-buttons {
+  text-align: right;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  margin-left: 10px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#agendar {
+  background-color: #3c3cc9;
+  color: white;
+}
+
+#cerrar {
+  background-color: #ccc;
+}
+
+/* Tabla actividades */
+#tabla-actividades {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+}
+
+#tabla-actividades th, #tabla-actividades td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+#tabla-actividades th {
+  background-color: #f2f0ff;
+  color: #3c3cc9;
+}
+
+.activities-container h3 {
+  color: #3c3cc9;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 950px) {
+  .main-container {
+    flex-direction: column; /* En pantallas pequeñas, apilado */
+    align-items: center;
+  }
+
+  .calendar-container,
+  .activities-container {
+    width: 100%;
+  }
+}
