@@ -44,7 +44,7 @@
 
       <div class="student-list">
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/men/41.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Andrés Castro</h4>
           </div>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/women/63.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Laura Gómez</h4>
           </div>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/20.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/men/20.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Andrés Castro</h4>
           </div>
@@ -130,7 +130,7 @@
         </div>
 
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/40.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/women/40.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Laura Gómez</h4>
           </div>
@@ -158,7 +158,7 @@
         </div>
 
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/40.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/men/40.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Andrés Castro</h4>
           </div>
@@ -186,7 +186,7 @@
         </div>
 
         <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Foto estudiante">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg    " alt="Foto estudiante">
           <div class="info">
             <h4>Laura Gómez</h4>
           </div>
@@ -238,9 +238,20 @@
         document.body.appendChild(script);
       });
   </script>
-  <script>script.src = "../controladores/js/calificaciones.js";</script>
+  <script src="../controladores/js/calificaciones.js"></script>
 
-
+<!-- Modal de selección -->
+<div id="modalSeleccion" class="modal-overlay">
+  <div class="modal">
+    <span class="modal-close" id="cerrarModal">&times;</span>
+    <h2>¿Qué deseas hacer?</h2>
+    <p id="nombreEstudianteModal" style="margin: 15px 0; font-size: 1.1rem; color: #555;"></p>
+    <div class="modal-footer">
+      <button id="btnVerDetalles">Ver detalles</button>
+      <button id="btnAgregarNotas">Agregar notas</button>
+    </div>
+  </div>
+</div>
 
 </body>
 

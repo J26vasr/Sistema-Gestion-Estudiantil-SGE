@@ -1,54 +1,71 @@
-// Crear modal
-const modalHTML = `
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <h2>Agregar Nota</h2>
-    <p><strong>Seleccione la materia</strong></p>
-    <!-- Combobox-->
-            <div class="combo-wrap">
-                <select class="fancy-select" aria-label="Seleccione una materia">
-                    <option value="" disabled selected>Seleccione una materia...</option>
-                    <option value="1">Matematicas</option>
-                    <option value="2">Ciencias</option>
-                    <option value="3">Sociales</option>
-                </select>
-            </div>
-    <p><strong>Escriba el carnet del estudiante a agregar la nota:</strong></p>
-     <div class="custom_input">
-      <input type="text" name="carnetNota" id="carnetNota" class="input" placeholder="Carnet">
-    </div>
-    <p><strong>Escriba el tipo de nota (parcial 1, laboratorio 1,...):</strong></p>
-    <div class="custom_input">
-      <input type="text" name="tipoNota" id="tipoNota" class="input" placeholder="Tipo de nota">
-    </div>
-    <p><strong>Escriba la nota que obtuvo:</strong></p>
-    <div class="custom_input">
-      <input type="number" name="nota" id="nota" class="input" placeholder="Nota">
-    </div>
-    <div class="modal-footer">
-      <button id="guardarNota">Guardar</button>
-      <button id="cerrarModal">Cancelar</button>
-    </div>
-  </div>
-</div>
-`;
+// calificaciones.js
 
-document.body.insertAdjacentHTML('beforeend', modalHTML);
+document.addEventListener('DOMContentLoaded', () => {
+  // Aplicar modo oscuro
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
 
-// Seleccionar elementos
-const abrirModalBtn = document.getElementById('btnAgregarCal');
-const modalOverlay = document.getElementById('modalOverlay');
-const cerrarModalBtn = document.getElementById('cerrarModal');
+  // Cargar menú
+  fetch("../vista/menu.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("menu").innerHTML = data;
+      const script = document.createElement("script");
+      script.src = "../controladores/js/menu.js";
+      document.body.appendChild(script);
+    });
 
-// Abrir modal
-abrirModalBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    modalOverlay.style.display = 'flex';
+  // === Modal de selección ===
+  const modal = document.getElementById('modalSeleccion');
+  const cerrarModal = document.getElementById('cerrarModal');
+  const btnVerDetalles = document.getElementById('btnVerDetalles');
+  const btnAgregarNotas = document.getElementById('btnAgregarNotas');
+  const nombreEstudianteModal = document.getElementById('nombreEstudianteModal');
+
+  let estudianteSeleccionado = null;
+
+  // Abrir modal al hacer clic en un estudiante
+  document.querySelectorAll('.student').forEach(estudiante => {
+    estudiante.addEventListener('click', () => {
+      const nombre = estudiante.querySelector('.info h4').textContent;
+      estudianteSeleccionado = {
+        nombre: nombre,
+        // Si necesitas más datos, puedes extraerlos aquí
+      };
+      nombreEstudianteModal.textContent = nombre;
+      modal.style.display = 'flex';
+    });
+  });
+
+  // Cerrar modal
+  cerrarModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+
+  // Botón "Ver detalles"
+  btnVerDetalles.addEventListener('click', () => {
+    if (estudianteSeleccionado) {
+      // Guardar en localStorage para usar en perfil
+      localStorage.setItem('estudianteSeleccionado', JSON.stringify(estudianteSeleccionado));
+      window.location.href = '../vista/perfil-estudiante.html';
+    }
+    modal.style.display = 'none';
+  });
+
+  // Botón "Agregar notas"
+  btnAgregarNotas.addEventListener('click', () => {
+    if (estudianteSeleccionado) {
+      localStorage.setItem('estudianteSeleccionado', JSON.stringify(estudianteSeleccionado));
+      window.location.href = '../vista/agregar-calificaciones.html';
+    }
+    modal.style.display = 'none';
+  });
 });
-
-// Cerrar modal
-cerrarModalBtn.addEventListener('click', () => {
-    modalOverlay.style.display = 'none';
-});
-
 
