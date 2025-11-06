@@ -19,15 +19,13 @@ import lombok.Setter;
  */
 @Entity
 @Table(name = "actividades")
-@Getter /*Traer datos*/
-@Setter/*Asignar datos*/
-@NoArgsConstructor/*Etiqueta que funciona para no asignar argumentos al constructor */
+@Getter
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Actividad extends BaseEntity {
 
-    /*Uno a muchos */
     @ManyToOne
-    /*columna relacional JoinColum */
     @JoinColumn(name = "asignatura_id", nullable = false)
     private Asignatura asignatura;
 
@@ -38,7 +36,6 @@ public class Actividad extends BaseEntity {
     @Column(name = "titulo", nullable = false, length = 200)
     private String titulo;
 
-    /*Objeto largo para que pueda guardar mas datos en este caso la descripción */
     @Lob
     @Column(name = "descripcion", nullable = false, columnDefinition = "TEXT")
     private String descripcion;

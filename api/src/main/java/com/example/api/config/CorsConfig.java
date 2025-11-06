@@ -34,8 +34,7 @@ public class CorsConfig {
                 "http://localhost:3000",      // React/Vite común
                 "http://localhost:8081",      // Otro puerto común
                 "http://127.0.0.1:5500",      // Alternativa de localhost
-                "http://127.0.0.1:3000",
-                "http://localhost:5501"
+                "http://127.0.0.1:3000"
         ));
 
         // Métodos HTTP permitidos
