@@ -14,11 +14,13 @@
     <div class="right-side">
       <div class="form-box">
         <h2>Crear Cuenta</h2>
-        <button class="google-btn">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" />
-          Registrarse con Google
-        </button>
-        <p class="divider">O completa el formulario</p>
+
+        <!-- Contenedor circular para la foto -->
+        <div class="profile-container">
+          <img id="profile-preview" src="../recursos/img/default-user.png">
+          <label for="profile-pic" class="upload-btn">Subir foto</label>
+          <input type="file" id="profile-pic" accept="image/*">
+        </div>
 
         <form id="registroForm">
           <div class="input-box">
@@ -58,5 +60,17 @@
   </div>
 
   <script src="../controladores/js/registro.js"></script>
+  <script>
+    // Mostrar vista previa de la imagen
+    const inputFile = document.getElementById('profile-pic');
+    const preview = document.getElementById('profile-preview');
+
+    inputFile.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+      }
+    });
+  </script>
 </body>
 </html>

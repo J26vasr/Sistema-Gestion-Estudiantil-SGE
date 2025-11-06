@@ -154,3 +154,39 @@ body {
     display: none;
   }
 }
+
+/* Contenedor circular de foto de perfil */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #6028a8;
+  margin-bottom: 10px;
+}
+
+.upload-btn {
+  background: #6028a8;
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.upload-btn:hover {
+  background: #471e78;
+}
+
+#profile-pic {
+  display: none;
+}
+
