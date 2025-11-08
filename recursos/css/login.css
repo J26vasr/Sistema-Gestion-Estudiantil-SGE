@@ -136,3 +136,28 @@ body {
 .login-footer a:hover {
   text-decoration: underline;
 }
+
+.error {
+  color: #f44336;
+  font-size: 12px;
+  margin-top: 5px;
+  display: block;
+  min-height: 16px;
+}
+
+.register-text {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.register-text a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.register-text a:hover {
+  text-decoration: underline;
+}
