@@ -949,3 +949,65 @@ export function validateMultiple(value, validators) {
     messages
   };
 }
+
+/**
+ * Valida contraseña con requisitos de seguridad
+ * 
+ * @param {string} value - Contraseña a validar
+ * @param {Object} options - Opciones
+ * @param {number} [options.minLength=8] - Longitud mínima
+ * @param {boolean} [options.requireUppercase=true] - Requerir mayúsculas
+ * @param {boolean} [options.requireLowercase=true] - Requerir minúsculas
+ * @param {boolean} [options.requireNumber=true] - Requerir números
+ * @param {boolean} [options.requireSpecial=false] - Requerir caracteres especiales
+ * @returns {Object} {isValid: boolean, message: string}
+ * 
+ * @example
+ * isPassword('MyPass123'); // válido
+ * isPassword('abc123'); // inválido (falta mayúscula)
+ */
+export function isPassword(value, options = {}) {
+  const config = {
+    minLength: 8,
+    requireUppercase: true,
+    requireLowercase: true,
+    requireNumber: true,
+    requireSpecial: false,
+    ...options
+  };
+
+  const val = String(value);
+  const errors = [];
+
+  // Validar longitud mínima
+  if (val.length < config.minLength) {
+    errors.push(`mínimo ${config.minLength} caracteres`);
+  }
+
+  // Validar mayúscula
+  if (config.requireUppercase && !/[A-Z]/.test(val)) {
+    errors.push('una mayúscula');
+  }
+
+  // Validar minúscula
+  if (config.requireLowercase && !/[a-z]/.test(val)) {
+    errors.push('una minúscula');
+  }
+
+  // Validar número
+  if (config.requireNumber && !/\d/.test(val)) {
+    errors.push('un número');
+  }
+
+  // Validar caracter especial
+  if (config.requireSpecial && !/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(val)) {
+    errors.push('un caracter especial');
+  }
+
+  const isValid = errors.length === 0;
+
+  return {
+    isValid,
+    message: isValid ? '' : `Contraseña debe tener ${errors.join(', ')}.`
+  };
+}

@@ -19,7 +19,8 @@ import {
   compareDates,
   isEnum,
   isGrade,
-  isUUID
+  isUUID,
+  isPassword
 } from './validations.js';
 
 /**
@@ -208,6 +209,9 @@ export class FormValidator {
 
       case 'uuid':
         return isUUID(value);
+
+      case 'password':
+        return isPassword(value, options);
 
       case 'equals':
         // Comparar con otro campo
@@ -455,9 +459,9 @@ export const Rules = {
   /**
    * Contraseña
    */
-  password: () => ({
-    type: 'format',
-    formatType: 'password'
+  password: (options = {}) => ({
+    type: 'password',
+    ...options
   }),
 
   /**
