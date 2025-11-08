@@ -74,13 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cargar menú
   fetch("../vista/menu.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("menu").innerHTML = data;
-      const script = document.createElement("script");
-      script.src = "../controladores/js/menu.js";
-      document.body.appendChild(script);
-    });
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
+        });
 
   // Eventos de botones
   document.getElementById('btnAsistencia')?.addEventListener('click', () => {

@@ -5,6 +5,7 @@ import { createUsuario } from '../services/usuario.service.js';
 // Importar utilidades
 import { fillSelect } from '../utils/fillSelect.js';
 import { createFormValidator, Rules } from '../utils/formValidator.js';
+import { sweetAlert } from '../utils/sweetAlert.js';
 
 // Obtener referencias a elementos del DOM
 const form = document.getElementById('registroForm');
@@ -86,7 +87,7 @@ const validator = createFormValidator({
     },
     password: {
       input: '#contraseña',
-      error: '#passwordError',
+      error: '#contraseñaError',
       label: 'Contraseña',
       rules: [
         Rules.required(),
@@ -95,7 +96,7 @@ const validator = createFormValidator({
     },
     confirmPassword: {
       input: '#confirmar',
-      error: '#confirmError',
+      error: '#confirmarError',
       label: 'Confirmar contraseña',
       rules: [
         Rules.required('Debes confirmar la contraseña.'),
@@ -141,26 +142,20 @@ form.addEventListener('submit', async (e) => {
     // Llamar al servicio para crear usuario
     const response = await createUsuario(payload);
     
-    // Éxito: mostrar mensaje y redirigir
-    alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
-    //console.log('Usuario creado:', response);
-    
-    // Redirigir al login después de 1 segundo
-    setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1000);
+    // Éxito: mostrar SweetAlert y redirigir
+    await sweetAlert(1, '¡Registro exitoso! Ahora puedes iniciar sesión.', true, 'index.html');
     
   } catch (error) {
     console.error('Error en el registro:', error);
     
-    // Mostrar mensaje de error específico
+    // Mostrar mensaje de error específico con SweetAlert
     let mensajeError = 'Ocurrió un error en el registro. Por favor, intenta de nuevo.';
     
     if (error.message) {
       mensajeError = error.message;
     }
     
-    alert(mensajeError);
+    await sweetAlert(2, mensajeError, false);
     
     // Rehabilitar botón
     btnRegistro.disabled = false;

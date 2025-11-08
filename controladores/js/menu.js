@@ -1,3 +1,11 @@
+// Importar utilidades de autenticación
+import { requireAuth, handleLogout } from '../utils/authGuard.js';
+import { getUserData } from '../services/auth.service.js';
+
+// Proteger la página - solo usuarios autenticados
+requireAuth();
+
+// Obtener elementos del DOM
 const body = document.querySelector("body"),
   sidebar = body.querySelector("nav"),
   toggle = body.querySelector(".toggle"),
@@ -38,3 +46,13 @@ modeSwitch.addEventListener("click", () => {
   }
 });
 
+// === Cerrar sesión ===
+const logoutBtn = document.getElementById('btnLogout');
+logoutBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  handleLogout();
+});
+
+// === Mostrar datos del usuario (opcional) ===
+const usuario = getUserData();
+console.log('Usuario actual:', usuario);

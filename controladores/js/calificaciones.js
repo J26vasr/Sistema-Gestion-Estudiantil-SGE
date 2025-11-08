@@ -6,16 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.classList.add("dark");
   }
 
-  // Cargar menú
-  fetch("../vista/menu.html")
-    .then(res => res.text())
-    .then(data => {
-      document.getElementById("menu").innerHTML = data;
-      const script = document.createElement("script");
-      script.src = "../controladores/js/menu.js";
-      document.body.appendChild(script);
-    });
-
   // === Modal de selección ===
   const modal = document.getElementById('modalSeleccion');
   const cerrarModal = document.getElementById('cerrarModal');
