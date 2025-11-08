@@ -82,6 +82,9 @@
     </div>
   </div>
 
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
   <script src="../controladores/js/mis-horarios.js"></script>
   
 
@@ -96,15 +99,15 @@
 
     <script>
         // Cargar el menú de forma dinámica
-        fetch("../vista/menu.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("menu").innerHTML = data;
-                // Si tu menú tiene JS propio, también puedes cargarlo aquí:
-                const script = document.createElement("script");
-                script.src = "../controladores/js/menu.js";
-                document.body.appendChild(script);
-            });
+       fetch("../vista/menu.html")
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
+        });
     </script>
 </body>
 

@@ -109,6 +109,10 @@
   </div>
 
   <!-- Scripts -->
+   
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
   <script>
 document.addEventListener('DOMContentLoaded', () => {
     // Aplica modo oscuro si está activado
@@ -120,10 +124,11 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch("../vista/menu.html")
         .then(res => res.text())
         .then(data => {
-            document.getElementById("menu").innerHTML = data;
-            const script = document.createElement("script");
-            script.src = "../controladores/js/menu.js";
-            document.body.appendChild(script);
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
         });
 
     // --- AGREGAR EVENTO DE CLIC A LOS ESTUDIANTES ---

@@ -54,6 +54,9 @@
     </section>
   </div>
 
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
   <div id="menu"></div>
 
   <!-- Contenedor de la gráfica -->
@@ -84,13 +87,14 @@
   <script>
     // Cargar el menú de forma dinámica
     fetch("../vista/menu.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("menu").innerHTML = data;
-        const script = document.createElement("script");
-        script.src = "../controladores/js/menu.js";
-        document.body.appendChild(script);
-      });
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
+        });
   </script>
   <script src="../controladores/js/grafica.js"></script>
 </body>

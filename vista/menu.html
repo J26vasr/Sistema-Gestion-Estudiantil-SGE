@@ -87,7 +87,7 @@
             </div>
             <div class="bottom-content">
                 <li class="">
-                    <a href="#">
+                    <a href="#" id="btnLogout">
                         <i class="bx bx-log-out icon"></i>
                         <span class="text nav-text">Salir</span>
                     </a>
@@ -108,15 +108,16 @@
         </div>
     </nav>
 
+    <!-- SweetAlert Library -->
+    <script src="../controladores/lib/sweetalert.min.js"></script>
 
-
-    <script src="../controladores/js/menu.js"></script>
+    <script type="module" src="../controladores/js/menu.js"></script>
     <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
-</script>
+        // Aplica modo oscuro inmediatamente si está activado
+        if (localStorage.getItem("darkMode") === "true") {
+            document.documentElement.classList.add("dark");
+        }
+    </script>
 
 
 </body>

@@ -33,6 +33,9 @@
 
   <div id="menu"></div>
 
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
   <script>
     // Aplicar modo oscuro
     if (localStorage.getItem("darkMode") === "true") {
@@ -41,13 +44,14 @@
 
     // Cargar el menú
     fetch("../vista/menu.html")
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById("menu").innerHTML = data;
-        const script = document.createElement("script");
-        script.src = "../controladores/js/menu.js";
-        document.body.appendChild(script);
-      });
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
+        });
 
     // Cargar datos del perfil desde localStorage
     document.addEventListener('DOMContentLoaded', () => {

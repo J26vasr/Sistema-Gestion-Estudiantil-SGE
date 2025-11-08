@@ -26,6 +26,9 @@
 <div id="tablasAsistencia"></div>
 </div>
 
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
 <!-- Carga de menu y activasion de modo oscuro si es requerido -->
 <script>
 // Verifica si el modo oscuro está activado y lo aplica
@@ -35,14 +38,15 @@ document.documentElement.classList.add("dark");
 
 // Carga el menú desde el archivo menu.html y lo inserta en el elemento con id="menu"
 fetch("../vista/menu.html")
-.then(res => res.text())
-.then(data => {
-document.getElementById("menu").innerHTML = data;
-// Carga el script de funcionalidad del menú
-const script = document.createElement("script");
-script.src = "../controladores/js/menu.js";
-document.body.appendChild(script);
-});
+                        .then(res => res.text())
+                        .then(data => {
+                                document.getElementById("menu").innerHTML = data;
+                                // Carga el script de funcionalidad del menú
+                                const script = document.createElement("script");
+                                script.type = "module";
+                                script.src = "../controladores/js/menu.js";
+                                document.body.appendChild(script);
+                        });
 </script>
 
 <!-- Llamando al archivo js para que funcione la funcionalidad de asistencia -->

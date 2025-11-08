@@ -154,16 +154,20 @@
     <!-- Menú dinámico -->
     <div id="menu"></div>
 
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
     <script>
         // Cargar el menú desde menu.html
-        fetch("../vista/menu.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("menu").innerHTML = data;
-                const script = document.createElement("script");
-                script.src = "../controladores/js/menu.js";
-                document.body.appendChild(script);
-            });
+        ffetch("../vista/menu.html")
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById("menu").innerHTML = data;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.src = "../controladores/js/menu.js";
+          document.body.appendChild(script);
+        });
     </script>
 </body>
 </html>
