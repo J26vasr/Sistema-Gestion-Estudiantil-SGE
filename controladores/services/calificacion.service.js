@@ -1,0 +1,174 @@
+// controladores/services/calificacion.service.js
+import { fetchData, mapMethod } from '../utils/fetchData.js';
+
+// Recurso base para las calificaciones
+const RESOURCE = '/calificaciones';
+
+/**
+ * Obtiene todas las calificaciones activas con paginación.
+ * GET /api/calificaciones?page=0&size=20
+ * @param {number} page - Número de página (0-indexed).
+ * @param {number} size - Tamaño de página.
+ * @returns {Promise<Object>} Una promesa con la lista paginada de calificaciones.
+ */
+export const getAllCalificaciones = async (page = 0, size = 20) => {
+    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+};
+
+/**
+ * Obtiene una calificación por su ID.
+ * GET /api/calificaciones/:id
+ * @param {string} id - ID de la calificación.
+ * @returns {Promise<Object>} Una promesa con los detalles de la calificación.
+ */
+export const getCalificacionById = async (id) => {
+    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+};
+
+/**
+ * Obtiene todas las calificaciones de un estudiante específico.
+ * GET /api/calificaciones/estudiante/:estudianteId
+ * @param {string} estudianteId - ID del estudiante.
+ * @returns {Promise<Array<Object>>} Una promesa con la lista de calificaciones del estudiante.
+ */
+export const getCalificacionesByEstudianteId = async (estudianteId) => {
+    return await fetchData(`${RESOURCE}/estudiante/${estudianteId}`, mapMethod.GET);
+};
+
+/**
+ * Obtiene todas las calificaciones de una evaluación específica.
+ * GET /api/calificaciones/evaluacion/:evaluacionId
+ * @param {string} evaluacionId - ID de la evaluación.
+ * @returns {Promise<Array<Object>>} Una promesa con la lista de calificaciones de la evaluación.
+ */
+export const getCalificacionesByEvaluacionId = async (evaluacionId) => {
+    return await fetchData(`${RESOURCE}/evaluacion/${evaluacionId}`, mapMethod.GET);
+};
+
+/**
+ * Obtiene el historial de calificaciones de un estudiante (Lista Ligada).
+ * GET /api/calificaciones/estudiante/:estudianteId/historial
+ * @param {string} estudianteId - ID del estudiante.
+ * @returns {Promise<Array<Object>>} Una promesa con el historial de calificaciones.
+ */
+export const getHistorialEstudiante = async (estudianteId) => {
+    return await fetchData(`${RESOURCE}/estudiante/${estudianteId}/historial`, mapMethod.GET);
+};
+
+/**
+ * Calcula el promedio de calificaciones de un estudiante.
+ * GET /api/calificaciones/estudiante/:estudianteId/promedio
+ * @param {string} estudianteId - ID del estudiante.
+ * @returns {Promise<Object>} Una promesa con el promedio del estudiante.
+ */
+export const calcularPromedioEstudiante = async (estudianteId) => {
+    return await fetchData(`${RESOURCE}/estudiante/${estudianteId}/promedio`, mapMethod.GET);
+};
+
+/**
+ * Obtiene el ranking general de estudiantes (Árbol BST).
+ * GET /api/calificaciones/ranking
+ * @returns {Promise<Array<Object>>} Una promesa con el ranking general.
+ */
+export const getRankingGeneral = async () => {
+    return await fetchData(`${RESOURCE}/ranking`, mapMethod.GET);
+};
+
+/**
+ * Obtiene el ranking de estudiantes de un curso (Árbol BST).
+ * GET /api/calificaciones/ranking/curso/:cursoId
+ * @param {string} cursoId - ID del curso.
+ * @returns {Promise<Array<Object>>} Una promesa con el ranking del curso.
+ */
+export const getRankingCurso = async (cursoId) => {
+    return await fetchData(`${RESOURCE}/ranking/curso/${cursoId}`, mapMethod.GET);
+};
+
+/**
+ * Busca calificaciones por rango de notas (Búsqueda Binaria).
+ * GET /api/calificaciones/buscar-nota?min=70&max=100
+ * @param {number} min - Nota mínima.
+ * @param {number} max - Nota máxima.
+ * @returns {Promise<Array<Object>>} Una promesa con las calificaciones en el rango.
+ */
+export const buscarPorRangoNota = async (min, max) => {
+    return await fetchData(`${RESOURCE}/buscar-nota?min=${min}&max=${max}`, mapMethod.GET);
+};
+
+/**
+ * Ordena calificaciones por nota (Algoritmo de Burbuja).
+ * GET /api/calificaciones/ordenar
+ * @returns {Promise<Array<Object>>} Una promesa con las calificaciones ordenadas.
+ */
+export const ordenarPorNota = async () => {
+    return await fetchData(`${RESOURCE}/ordenar`, mapMethod.GET);
+};
+
+/**
+ * Obtiene estadísticas de distribución de notas (Tabla Hash).
+ * GET /api/calificaciones/estadisticas
+ * @returns {Promise<Object>} Una promesa con las estadísticas.
+ */
+export const getEstadisticas = async () => {
+    return await fetchData(`${RESOURCE}/estadisticas`, mapMethod.GET);
+};
+
+/**
+ * Obtiene todas las calificaciones eliminadas.
+ * GET /api/calificaciones/deleted
+ * @returns {Promise<Array<Object>>} Una promesa con la lista de calificaciones eliminadas.
+ */
+export const getCalificacionesDeleted = async () => {
+    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+};
+
+/**
+ * Crea una nueva calificación.
+ * POST /api/calificaciones
+ * @param {Object} payload - Datos de la nueva calificación (CreateCalificacionRequest).
+ * @returns {Promise<Object>} Una promesa con la calificación creada.
+ */
+export const createCalificacion = async (payload) => {
+    return await fetchData(RESOURCE, mapMethod.POST, payload);
+};
+
+/**
+ * Actualiza una calificación existente.
+ * PUT /api/calificaciones/:id
+ * @param {string} id - ID de la calificación a actualizar.
+ * @param {Object} payload - Datos actualizados de la calificación (UpdateCalificacionRequest).
+ * @returns {Promise<Object>} Una promesa con la calificación actualizada.
+ */
+export const updateCalificacion = async (id, payload) => {
+    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+};
+
+/**
+ * Elimina lógicamente (soft delete) una calificación.
+ * DELETE /api/calificaciones/:id
+ * @param {string} id - ID de la calificación a eliminar.
+ * @returns {Promise<void>} Una promesa vacía.
+ */
+export const deleteCalificacion = async (id) => {
+    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+};
+
+/**
+ * Elimina permanentemente una calificación de la base de datos.
+ * DELETE /api/calificaciones/:id/permanent
+ * @param {string} id - ID de la calificación a eliminar permanentemente.
+ * @returns {Promise<void>} Una promesa vacía.
+ */
+export const permanentDeleteCalificacion = async (id) => {
+    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+};
+
+/**
+ * Restaura una calificación eliminada lógicamente.
+ * PATCH /api/calificaciones/:id/restore
+ * @param {string} id - ID de la calificación a restaurar.
+ * @returns {Promise<Object>} Una promesa con la calificación restaurada.
+ */
+export const restoreCalificacion = async (id) => {
+    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+};
