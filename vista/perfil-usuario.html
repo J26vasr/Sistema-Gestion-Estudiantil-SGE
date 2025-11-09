@@ -56,32 +56,49 @@
         document.body.appendChild(script);
       });
 
-    // === Cargar datos del perfil desde localStorage ===
+    // === Cargar datos del perfil desde localStorage (usar misma lógica que el dashboard) ===
     document.addEventListener("DOMContentLoaded", () => {
-      const datosGuardados = localStorage.getItem("perfilDocente");
+      // Preferimos los datos guardados por el servicio de auth: 'userData'
+      const userDataRaw = localStorage.getItem('userData');
+      const nombreUsuarioLS = localStorage.getItem('nombreUsuario');
+      const perfilDocenteRaw = localStorage.getItem('perfilDocente'); // compatibilidad antigua
 
-      if (!datosGuardados) {
-        document.getElementById("nombreCompleto").textContent = "Sin datos de perfil";
+      let datos = null;
+      try {
+        if (userDataRaw) datos = JSON.parse(userDataRaw);
+        else if (perfilDocenteRaw) datos = JSON.parse(perfilDocenteRaw);
+      } catch (e) {
+        console.warn('Error parseando datos de localStorage:', e);
+      }
+
+      const nombreCompletoEl = document.getElementById('nombreCompleto');
+      const nombreUsuarioEl = document.getElementById('nombreUsuario');
+      const correoEl = document.getElementById('correo');
+      const telefonoEl = document.getElementById('telefono');
+      const rolEl = document.getElementById('rol');
+
+      if (!datos && !nombreUsuarioLS) {
+        nombreCompletoEl.textContent = 'Sin datos de perfil';
+        nombreUsuarioEl.textContent = 'Usuario: No disponible';
+        correoEl.textContent = 'Correo: No disponible';
+        telefonoEl.textContent = 'Teléfono: No disponible';
+        rolEl.textContent = 'Rol: No disponible';
         return;
       }
 
-      const datos = JSON.parse(datosGuardados);
+      const nombreCompleto = datos?.nombre ?? datos?.usuario ?? nombreUsuarioLS ?? 'Sin nombre';
+      const username = datos?.username ?? datos?.usuario ?? nombreUsuarioLS ?? 'No disponible';
+      const correo = datos?.email ?? datos?.correo ?? 'No disponible';
+      const telefono = datos?.telefono ?? 'No disponible';
+      const rol = datos?.rol?.nombre ?? datos?.rol ?? 'No disponible';
 
-      // Mostrar datos (sin contraseña)
-      document.getElementById("nombreCompleto").textContent = datos.nombre || "Sin nombre";
-      document.getElementById("nombreUsuario").textContent = `Usuario: ${datos.usuario || 'No disponible'}`;
-      document.getElementById("correo").textContent = `Correo: ${datos.correo || 'No disponible'}`;
-      document.getElementById("telefono").textContent = `Teléfono: ${datos.telefono || 'No disponible'}`;
-      document.getElementById("rol").textContent = `Rol: ${datos.rol || 'No disponible'}`;
+      nombreCompletoEl.textContent = nombreCompleto;
+      nombreUsuarioEl.textContent = `Usuario: ${username}`;
+      correoEl.textContent = `Correo: ${correo}`;
+      telefonoEl.textContent = `Teléfono: ${telefono}`;
+      rolEl.textContent = `Rol: ${rol}`;
     });
   </script>
-  <script type="module">
-  import { mostrarPerfilUsuario } from "../controladores/js/perfil-usuario.js";
-
-  document.addEventListener("DOMContentLoaded", () => {
-    mostrarPerfilUsuario();
-  });
-</script>
 
 </body>
 </html>
