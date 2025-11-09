@@ -1,9 +1,10 @@
 // Importar servicios
 import { getAllRoles } from '../services/rol.service.js';
 import { createUsuario } from '../services/usuario.service.js';
+import { uploadFile } from '../services/file.service.js';
 
 // Importar utilidades
-import { fillSelect } from '../utils/fillSelect.js';
+import { fillSelect, getSelectedText } from '../utils/fillSelect.js';
 import { createFormValidator, Rules } from '../utils/formValidator.js';
 import { sweetAlert } from '../utils/sweetAlert.js';
 
@@ -11,6 +12,35 @@ import { sweetAlert } from '../utils/sweetAlert.js';
 const form = document.getElementById('registroForm');
 const btnRegistro = document.getElementById('btnRegistro');
 const rolSelect = document.getElementById('rol');
+const fotoPerfilInput = document.getElementById('fotoPerfil');
+const profilePreview = document.getElementById('profilePreview');
+
+// ============================================
+// VISTA PREVIA DE LA IMAGEN DE PERFIL
+// ============================================
+fotoPerfilInput.addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  
+  if (file) {
+    // Validar que sea una imagen
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        // Mostrar la vista previa
+        profilePreview.src = e.target.result;
+      };
+      
+      reader.readAsDataURL(file);
+    } else {
+      // Restaurar imagen por defecto
+      profilePreview.src = '../../recursos/img/Subir-Img-Act.png';
+    }
+  } else {
+    // Si no hay archivo, restaurar imagen por defecto
+    profilePreview.src = '../../recursos/img/Subir-Img-Act.png';
+  }
+});
 
 // ============================================
 // CARGAR ROLES AL INICIAR LA PÁGINA
@@ -85,6 +115,14 @@ const validator = createFormValidator({
         Rules.required('Debes seleccionar un rol.')
       ]
     },
+    fotoPerfil: {
+      input: '#fotoPerfil',
+      error: '#fotoPerfilError',
+      label: 'Foto de perfil',
+      rules: [
+        Rules.image(10, false) // Max 10MB, no requerido
+      ]
+    },
     password: {
       input: '#contraseña',
       error: '#contraseñaError',
@@ -112,12 +150,23 @@ const validator = createFormValidator({
 // ============================================
 // MANEJO DEL ENVÍO DEL FORMULARIO
 // ============================================
-form.addEventListener('submit', async (e) => {
+// Prevenir submit del form SIEMPRE
+form.addEventListener('submit', (e) => {
   e.preventDefault();
+  e.stopImmediatePropagation();
+  return false;
+});
+
+// Manejar el click del botón directamente
+btnRegistro.addEventListener('click', async (e) => {
+  // PREVENIR TODO comportamiento por defecto
+  e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
 
   // Validar formulario completo
   if (!validator.validateAll()) {
-    return;
+    return false;
   }
 
   // Obtener todos los valores validados
@@ -128,6 +177,24 @@ form.addEventListener('submit', async (e) => {
   btnRegistro.textContent = 'Registrando...';
 
   try {
+    let fotoPerfilUrl = null;
+
+    // ==============================================================
+    // 📸 SUBIR FOTO DE PERFIL SI EXISTE
+    // ==============================================================
+    if (values.fotoPerfil && values.fotoPerfil instanceof File) {
+      try {
+        btnRegistro.textContent = 'Subiendo imagen...';
+        
+        const uploadResponse = await uploadFile(values.fotoPerfil, 'USUARIOS');
+        fotoPerfilUrl = uploadResponse.fileUrl;
+      } catch (uploadError) {
+        throw new Error('No se pudo subir la imagen de perfil. Por favor, intenta con otra imagen.');
+      }
+    }
+
+    btnRegistro.textContent = 'Creando usuario...';
+
     // Preparar datos según el DTO CreateUsuarioRequest
     const payload = {
       username: values.username.trim(),
@@ -136,7 +203,8 @@ form.addEventListener('submit', async (e) => {
       email: values.correo.trim(),
       telefono: values.telefono.trim(),
       rolId: values.rol,
-      activo: true
+      activo: true,
+      fotoPerfilUrl: fotoPerfilUrl // Incluir la URL de la foto si existe
     };
 
     // Llamar al servicio para crear usuario
@@ -155,6 +223,8 @@ form.addEventListener('submit', async (e) => {
 
     const datosUsuarioParaPerfil = {
       // Datos solicitados: nombre completo, nombre de usuario, gmail, telefono y rol
+      id: response.id,
+      fotoPerfilUrl: fotoPerfilUrl, // Guardar URL de la foto
       nombre: payload.nombre,
       usuario: payload.username,
       correo: payload.email,
@@ -167,12 +237,23 @@ form.addEventListener('submit', async (e) => {
 
     // ==============================================================
 
-    // Éxito: mostrar SweetAlert y redirigir
-    await sweetAlert(1, '¡Registro exitoso! Ahora puedes iniciar sesión.', true, 'index.html');
+    // Éxito: Mostrar mensaje diferente según si hay imagen o no
+    if (fotoPerfilUrl) {
+      // Con imagen: Alerta SIN timer (usuario debe cerrarla manualmente)
+      await sweetAlert(
+        1, 
+        '¡Registro exitoso con foto de perfil! Haz clic en "Aceptar" para continuar. Luego dirígete a la pantalla de login para iniciar sesión.', 
+        false  // SIN timer - requiere clic del usuario
+      );
+      // Prevenir cualquier recarga automática
+      return false;
+    } else {
+      // Sin imagen: Redirección automática
+      await sweetAlert(1, '¡Registro exitoso! Redirigiendo al login...', true, 'index.html');
+      return false;
+    }
 
   } catch (error) {
-    console.error('Error en el registro:', error);
-
     // Mostrar mensaje de error específico con SweetAlert
     let mensajeError = 'Ocurrió un error en el registro. Por favor, intenta de nuevo.';
 
@@ -181,9 +262,11 @@ form.addEventListener('submit', async (e) => {
     }
 
     await sweetAlert(2, mensajeError, false);
-
-    // Rehabilitar botón
+    
+    // Rehabilitar botón solo en caso de error
     btnRegistro.disabled = false;
-    btnRegistro.textContent = 'Registrar';
+    btnRegistro.textContent = 'Registrarse';
+    
+    return false;
   }
 });

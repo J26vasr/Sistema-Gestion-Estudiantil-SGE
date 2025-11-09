@@ -1011,3 +1011,171 @@ export function isPassword(value, options = {}) {
     message: isValid ? '' : `Contraseña debe tener ${errors.join(', ')}.`
   };
 }
+
+// ============================================
+// VALIDACIONES DE ARCHIVOS
+// ============================================
+
+/**
+ * Valida un archivo (imagen o documento)
+ * 
+ * @param {File} file - Archivo a validar
+ * @param {Object} options - Opciones
+ * @param {Array<string>} [options.allowedTypes] - Tipos MIME permitidos
+ * @param {Array<string>} [options.allowedExtensions] - Extensiones permitidas (ej: ['jpg', 'png'])
+ * @param {number} [options.maxSizeMB=10] - Tamaño máximo en MB
+ * @param {number} [options.minSizeMB] - Tamaño mínimo en MB
+ * @param {boolean} [options.required=false] - Si el archivo es requerido
+ * @returns {Object} {isValid: boolean, message: string, file: File|null}
+ * 
+ * @example
+ * isFile(fileInput.files[0], { 
+ *   allowedExtensions: ['jpg', 'png'], 
+ *   maxSizeMB: 5 
+ * });
+ */
+export function isFile(file, options = {}) {
+  const config = {
+    allowedTypes: null,
+    allowedExtensions: null,
+    maxSizeMB: 10,
+    minSizeMB: null,
+    required: false,
+    ...options
+  };
+
+  // Si no es requerido y no hay archivo, es válido
+  if (!config.required && !file) {
+    return {
+      isValid: true,
+      message: '',
+      file: null
+    };
+  }
+
+  // Si es requerido y no hay archivo
+  if (config.required && !file) {
+    return {
+      isValid: false,
+      message: 'El archivo es requerido.',
+      file: null
+    };
+  }
+
+  // Si no es un objeto File válido
+  if (!(file instanceof File)) {
+    return {
+      isValid: false,
+      message: 'Archivo inválido.',
+      file: null
+    };
+  }
+
+  // Validar tamaño
+  const fileSizeMB = file.size / (1024 * 1024);
+
+  if (config.minSizeMB !== null && fileSizeMB < config.minSizeMB) {
+    return {
+      isValid: false,
+      message: `El archivo debe pesar al menos ${config.minSizeMB} MB.`,
+      file: null
+    };
+  }
+
+  if (config.maxSizeMB !== null && fileSizeMB > config.maxSizeMB) {
+    return {
+      isValid: false,
+      message: `El archivo no debe superar los ${config.maxSizeMB} MB.`,
+      file: null
+    };
+  }
+
+  // Obtener extensión del archivo
+  const fileName = file.name;
+  const extension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+
+  // Validar extensión
+  if (config.allowedExtensions && config.allowedExtensions.length > 0) {
+    const normalizedExtensions = config.allowedExtensions.map(ext => ext.toLowerCase());
+    if (!normalizedExtensions.includes(extension)) {
+      return {
+        isValid: false,
+        message: `Solo se permiten archivos: ${config.allowedExtensions.join(', ')}.`,
+        file: null
+      };
+    }
+  }
+
+  // Validar tipo MIME
+  if (config.allowedTypes && config.allowedTypes.length > 0) {
+    if (!config.allowedTypes.includes(file.type)) {
+      return {
+        isValid: false,
+        message: `Tipo de archivo no permitido.`,
+        file: null
+      };
+    }
+  }
+
+  return {
+    isValid: true,
+    message: '',
+    file: file
+  };
+}
+
+/**
+ * Valida una imagen
+ * 
+ * @param {File} file - Archivo de imagen a validar
+ * @param {Object} options - Opciones
+ * @param {number} [options.maxSizeMB=10] - Tamaño máximo en MB
+ * @param {boolean} [options.required=false] - Si la imagen es requerida
+ * @returns {Object} {isValid: boolean, message: string, file: File|null}
+ * 
+ * @example
+ * isImage(fileInput.files[0], { maxSizeMB: 5, required: true });
+ */
+export function isImage(file, options = {}) {
+  const imageConfig = {
+    allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'avif'],
+    allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/avif'],
+    maxSizeMB: 10,
+    required: false,
+    ...options
+  };
+
+  return isFile(file, imageConfig);
+}
+
+/**
+ * Valida un documento
+ * 
+ * @param {File} file - Archivo de documento a validar
+ * @param {Object} options - Opciones
+ * @param {number} [options.maxSizeMB=10] - Tamaño máximo en MB
+ * @param {boolean} [options.required=false] - Si el documento es requerido
+ * @returns {Object} {isValid: boolean, message: string, file: File|null}
+ * 
+ * @example
+ * isDocument(fileInput.files[0], { maxSizeMB: 20, required: true });
+ */
+export function isDocument(file, options = {}) {
+  const documentConfig = {
+    allowedExtensions: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt'],
+    allowedTypes: [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      'text/csv',
+      'text/plain'
+    ],
+    maxSizeMB: 10,
+    required: false,
+    ...options
+  };
+
+  return isFile(file, documentConfig);
+}

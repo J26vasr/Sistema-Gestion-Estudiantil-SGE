@@ -20,7 +20,10 @@ import {
   isEnum,
   isGrade,
   isUUID,
-  isPassword
+  isPassword,
+  isFile,
+  isImage,
+  isDocument
 } from './validations.js';
 
 /**
@@ -146,7 +149,7 @@ export class FormValidator {
 
     // Aplicar reglas en orden
     for (const rule of rules) {
-      const result = this.applyRule(value, rule, fieldName);
+      const result = this.applyRule(value, rule, fieldName, field.input);
 
       if (!result.isValid) {
         this.errors[fieldName] = result.message;
@@ -164,7 +167,7 @@ export class FormValidator {
    * Aplica una regla de validación
    * @private
    */
-  applyRule(value, rule, fieldName) {
+  applyRule(value, rule, fieldName, input) {
     const { type, ...options } = rule;
 
     switch (type) {
@@ -241,6 +244,27 @@ export class FormValidator {
         }
         return { isValid: false, message: 'Validador personalizado no encontrado.' };
 
+      case 'file':
+        // Validación de archivos genéricos
+        const file = input.files && input.files[0];
+        return isFile(file, rule);
+
+      case 'image':
+        // Validación de imágenes
+        const imageFile = input.files && input.files[0];
+        return isImage(imageFile, { 
+          maxSizeMB: rule.maxSizeMB || 10, 
+          required: rule.required || false 
+        });
+
+      case 'document':
+        // Validación de documentos
+        const docFile = input.files && input.files[0];
+        return isDocument(docFile, { 
+          maxSizeMB: rule.maxSizeMB || 10, 
+          required: rule.required || false 
+        });
+
       default:
         console.warn(`Tipo de validación "${type}" no soportado`);
         return { isValid: true, message: '' };
@@ -257,6 +281,8 @@ export class FormValidator {
     } else if (input.type === 'radio') {
       const selected = document.querySelector(`input[name="${input.name}"]:checked`);
       return selected ? selected.value : '';
+    } else if (input.type === 'file') {
+      return input.files && input.files[0] ? input.files[0] : null;
     } else {
       return input.value;
     }
@@ -593,5 +619,36 @@ export const Rules = {
     type: 'custom',
     validator,
     ...(message && { message })
+  }),
+
+  /**
+   * Validación de archivos genéricos
+   */
+  file: (options = {}) => ({
+    type: 'file',
+    allowedExtensions: null,
+    allowedTypes: null,
+    maxSizeMB: 10,
+    minSizeMB: null,
+    required: false,
+    ...options
+  }),
+
+  /**
+   * Validación de imágenes
+   */
+  image: (maxSizeMB = 10, required = false) => ({
+    type: 'image',
+    maxSizeMB,
+    required
+  }),
+
+  /**
+   * Validación de documentos
+   */
+  document: (maxSizeMB = 10, required = false) => ({
+    type: 'document',
+    maxSizeMB,
+    required
   })
 };

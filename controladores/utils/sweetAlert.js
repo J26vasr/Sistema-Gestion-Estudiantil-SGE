@@ -124,10 +124,21 @@ export const sweetAlert = async (type, text, timer, url = null) => {
     }
     
     // Se muestra el mensaje.
-    await swal(options);
+    const swalPromise = swal(options);
     
     // Se direcciona a una página web si se indica.
     if (url) {
-        location.href = url;
+        if (timer) {
+            // Esperar el tiempo del timer antes de redirigir
+            setTimeout(() => {
+                window.location.href = url;
+            }, 3000);
+        } else {
+            // Sin timer, esperar a que el usuario cierre la alerta
+            await swalPromise;
+            window.location.href = url;
+        }
+    } else {
+        await swalPromise;
     }
 };

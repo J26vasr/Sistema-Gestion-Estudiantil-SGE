@@ -26,9 +26,14 @@ public class StorageService {
     public enum FileCategory {
         ACTIVIDADES("actividades"),
         ESTUDIANTES("estudiantes"),
-        PROFESORES("profesores"),
-        ASIGNATURAS("asignaturas"),
         CURSOS("cursos"),
+        ASIGNATURAS("asignaturas"),
+        CLASES("clases"),
+        UNIDADES("unidades"),
+        TEMAS("temas"),
+        EVALUACIONES("evaluaciones"),
+        PROFESORES("profesores"),
+        USUARIOS("usuarios"),
         MATERIALES("materiales"),
         OTROS("otros");
 

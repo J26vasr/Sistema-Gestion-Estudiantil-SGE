@@ -109,13 +109,83 @@ body {
   margin-bottom: 15px;
 }
 
-.input-box input {
+.input-box input,
+.input-box select {
   width: 100%;
   padding: 10px 15px;
   border: none;
   border-radius: 8px;
   background: #f0f0f0;
   font-size: 15px;
+}
+
+.input-box input[type="file"] {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.input-box label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.file-info {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Vista previa de la imagen de perfil */
+.profile-preview-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.profile-preview-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #6028a8;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.profile-preview-img:hover {
+  transform: scale(1.05);
+  border-color: #471e78;
+}
+
+/* Estilo para el label que actúa como botón de archivo */
+.file-upload-label {
+  display: inline-block;
+  background: #6028a8;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.file-upload-label:hover {
+  background: #471e78;
+}
+
+.file-upload-label:active {
+  transform: scale(0.98);
 }
 
 .btn {
@@ -152,6 +222,10 @@ body {
   }
   .left-side {
     display: none;
+  }
+  .profile-preview-img {
+    width: 100px;
+    height: 100px;
   }
 }
 

@@ -56,20 +56,9 @@ async function fetchData(endpoint, method, form = {}, params = {}) {
     options.body = body;
   }
 
-  console.log('Request Data:', form);
-  console.log('Request Headers:', headers);
-  console.log('Request URL:', url);
-  console.log('Request Met hod:', method);
-
   try {
     const response = await fetch(url, options);
     
-    console.log('RESPONSE:', {
-      URL: url,
-      Status: response.status,
-      StatusText: response.statusText,
-    });
-
     // Leer el cuerpo de la respuesta
     const contentType = response.headers.get('content-type');
     let data;
@@ -79,8 +68,6 @@ async function fetchData(endpoint, method, form = {}, params = {}) {
     } else {
       data = await response.text();
     }
-
-    console.log('Response Data:', data);
 
     // Si la respuesta no es exitosa, lanzar error
     if (!response.ok) {
