@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Archivos</title>
+  <link rel="stylesheet" href="../recursos/css/agregar-material.css">
+</head>
+<body>
+  
+  <h2 class="titulo">📂 Gestión de Archivos</h2>
+  
+
+  <div class="container">
+    <!-- Vista previa -->
+    <div class="preview">
+      <img id="fileIcon" src="https://cdn-icons-png.flaticon.com/512/833/833524.png" alt="Vista previa">
+      <button id="btnSubir">📎 Agregar documento</button>
+      <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx" hidden>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form">
+      <label for="titulo">Título de archivo</label>
+      <input type="text" id="titulo" placeholder="Ej: Actividad Semana 1" required>
+
+      <label for="semana">Semana</label>
+      <input type="text" id="semana" placeholder="Ej: Semana 1" required>
+
+      <div class="botones">
+        <button class="btn agregar">Agregar</button>
+        <button class="btn editar">Editar</button>
+        <button class="btn eliminar">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById("fileInput");
+    const btnSubir = document.getElementById("btnSubir");
+    const fileIcon = document.getElementById("fileIcon");
+
+    btnSubir.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      const ext = file.name.split('.').pop().toLowerCase();
+
+      switch (ext) {
+        case "pdf":
+          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/337/337946.png";
+          break;
+        case "doc":
+        case "docx":
+          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/281/281760.png";
+          break;
+        case "xls":
+        case "xlsx":
+          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/732/732220.png";
+          break;
+        default:
+          alert("Formato no permitido. Solo PDF, Word o Excel.");
+          fileInput.value = "";
+          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/833/833524.png";
+      }
+    });
+  </script>
+
+  <div id="menu"></div>
+
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
+  <script>
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+</body>
+</html>
+

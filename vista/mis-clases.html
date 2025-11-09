@@ -11,12 +11,16 @@
   <link rel="stylesheet" href="../recursos/css/grafica.css">
   <!-- Agregamos Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
   <div class="buscador-container">
     <input type="text" id="buscador" placeholder="🔍 Buscar grado..." />
   </div>
+
+  
+
   <!-- Contenedor principal -->
   <div class="container">
     <section class="cards">
@@ -29,7 +33,7 @@
       </div>
 
       <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-         <img src="../recursos/img/7g.jpg" alt="7G">
+        <img src="../recursos/img/7g.jpg" alt="7G">
         <div class="card-body">
           <h3>Septimo grado C</h3>
           <p>56 Estudiantes </p>
@@ -37,14 +41,14 @@
       </div>
 
       <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-       <img src="../recursos/img/8g.jpg" alt="8G">
+        <img src="../recursos/img/8g.jpg" alt="8G">
         <div class="card-body">
           <h3>Octavo grado D</h3>
           <p>68 Estudiantes </p>
         </div>
       </div>
 
-     <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
+      <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
         <img src="../recursos/img/9g.jpg" alt="9G">
         <div class="card-body">
           <h3>Noveno Grado</h3>
@@ -75,7 +79,6 @@
     </div>
   </div>
 
-
   <script>
     // Aplica modo oscuro inmediatamente si está activado
     if (localStorage.getItem("darkMode") === "true") {
@@ -83,20 +86,31 @@
     }
   </script>
 
-
   <script>
     // Cargar el menú de forma dinámica
     fetch("../vista/menu.html")
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById("menu").innerHTML = data;
-          const script = document.createElement("script");
-          script.type = "module";
-          script.src = "../controladores/js/menu.js";
-          document.body.appendChild(script);
-        });
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
   </script>
-  <script src="../controladores/js/grafica.js"></script>
-</body>
 
+  <script src="../controladores/js/grafica.js"></script>
+
+  <!-- Acción del botón Agregar -->
+  <script>
+    document.getElementById('btnAgregar').addEventListener('click', () => {
+      // 👉 Aquí puedes cambiar la acción según lo que quieras que haga:
+      // ejemplo: abrir un modal, mostrar un formulario o redirigir
+      sweetAlert(1, 'Aquí puedes agregar una nueva clase o grupo.', false);
+      // o redirigir:
+      // window.location.href = 'agregar-clase.html';
+    });
+  </script>
+
+</body>
 </html>

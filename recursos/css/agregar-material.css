@@ -1,0 +1,182 @@
+/* Fondo general */
+body {
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+
+/* Título */
+.titulo {
+  font-size: 2em;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Estructura principal */
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 90%;
+  max-width: 1000px;
+}
+
+/* Vista previa */
+.preview {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  flex: 1;
+}
+
+.preview img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+#btnSubir {
+  background: linear-gradient(135deg, #9f67ff, #7b2ff7);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#btnSubir:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+/* Formulario */
+.form {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.form label {
+  font-weight: 600;
+  color: #fff;
+}
+
+.form input {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  color: #333;
+  background: rgba(255, 255, 255, 0.9);
+  transition: 0.3s;
+}
+
+.form input:focus {
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Botones */
+.botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  gap: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+/* --- MODO CLARO --- */
+:root {
+  --color-texto: #222;
+  --color-fondo-form: rgba(255, 255, 255, 0.8);
+  --color-fondo-preview: rgba(255, 255, 255, 0.8);
+}
+
+/* --- MODO OSCURO --- */
+.dark {
+  --color-texto: #fff;
+  --color-fondo-form: rgba(255, 255, 255, 0.15);
+  --color-fondo-preview: rgba(255, 255, 255, 0.15);
+}
+
+/* Usa las variables */
+.form label {
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.form {
+  background: var(--color-fondo-form);
+}
+
+.preview {
+  background: var(--color-fondo-preview);
+}
+
+
+/* Colores */
+.agregar {
+  background: linear-gradient(135deg, #16a34a, #22c55e);
+}
+
+.editar {
+  background: linear-gradient(135deg, #facc15, #eab308);
+  color: #333;
+}
+
+.eliminar {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .botones {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
