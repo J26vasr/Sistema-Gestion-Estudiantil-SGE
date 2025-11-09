@@ -18,7 +18,7 @@ const rolSelect = document.getElementById('rol');
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const response = await getAllRoles();
-    
+
     // Usar el módulo fillSelect para llenar el select
     const success = fillSelect(rolSelect, response, {
       valueKey: 'id',
@@ -114,19 +114,19 @@ const validator = createFormValidator({
 // ============================================
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   // Validar formulario completo
   if (!validator.validateAll()) {
     return;
   }
-  
+
   // Obtener todos los valores validados
   const values = validator.getAllValues();
-  
+
   // Deshabilitar botón y mostrar estado de carga
   btnRegistro.disabled = true;
   btnRegistro.textContent = 'Registrando...';
-  
+
   try {
     // Preparar datos según el DTO CreateUsuarioRequest
     const payload = {
@@ -138,25 +138,50 @@ form.addEventListener('submit', async (e) => {
       rolId: values.rol,
       activo: true
     };
-    
+
     // Llamar al servicio para crear usuario
     const response = await createUsuario(payload);
-    
+
+    // ==============================================================
+    // 🔑 CAMBIO: LÓGICA DE GUARDADO DE PERFIL EN LOCALSTORAGE
+    // ==============================================================
+
+    // Obtener el nombre del rol seleccionado para guardarlo.
+    let nombreRol = 'Rol Desconocido';
+    if (rolSelect && rolSelect.selectedIndex >= 0) {
+      // Obtiene el texto (nombre) del rol seleccionado
+      nombreRol = rolSelect.options[rolSelect.selectedIndex].text;
+    }
+
+    const datosUsuarioParaPerfil = {
+      // Datos solicitados: nombre completo, nombre de usuario, gmail, telefono y rol
+      nombre: payload.nombre,
+      usuario: payload.username,
+      correo: payload.email,
+      telefono: payload.telefono,
+      rol: nombreRol
+    };
+
+    // Guardar en localStorage bajo la clave "perfilDocente"
+    localStorage.setItem("perfilDocente", JSON.stringify(datosUsuarioParaPerfil));
+
+    // ==============================================================
+
     // Éxito: mostrar SweetAlert y redirigir
     await sweetAlert(1, '¡Registro exitoso! Ahora puedes iniciar sesión.', true, 'index.html');
-    
+
   } catch (error) {
     console.error('Error en el registro:', error);
-    
+
     // Mostrar mensaje de error específico con SweetAlert
     let mensajeError = 'Ocurrió un error en el registro. Por favor, intenta de nuevo.';
-    
+
     if (error.message) {
       mensajeError = error.message;
     }
-    
+
     await sweetAlert(2, mensajeError, false);
-    
+
     // Rehabilitar botón
     btnRegistro.disabled = false;
     btnRegistro.textContent = 'Registrar';

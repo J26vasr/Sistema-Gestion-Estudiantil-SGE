@@ -75,5 +75,13 @@
       document.getElementById("rol").textContent = `Rol: ${datos.rol || 'No disponible'}`;
     });
   </script>
+  <script type="module">
+  import { mostrarPerfilUsuario } from "../controladores/js/perfil-usuario.js";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    mostrarPerfilUsuario();
+  });
+</script>
+
 </body>
 </html>
