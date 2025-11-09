@@ -1,5 +1,6 @@
 // controladores/services/actividad.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las actividades
 const RESOURCE = '/actividades';
@@ -12,7 +13,7 @@ const RESOURCE = '/actividades';
  * @returns {Promise<Object>} Una promesa con la lista paginada de actividades.
  */
 export const getAllActividades = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllActividades = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la actividad.
  */
 export const getActividadById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getActividadById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de actividades de la asignatura.
  */
 export const getActividadesByAsignaturaId = async (asignaturaId) => {
-    return await fetchData(`${RESOURCE}/asignatura/${asignaturaId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/asignatura/${asignaturaId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getActividadesByAsignaturaId = async (asignaturaId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de actividades del profesor.
  */
 export const getActividadesByProfesorId = async (profesorId) => {
-    return await fetchData(`${RESOURCE}/profesor/${profesorId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/profesor/${profesorId}`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getActividadesByProfesorId = async (profesorId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de actividades abiertas.
  */
 export const getActividadesAbiertas = async () => {
-    return await fetchData(`${RESOURCE}/abiertas`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/abiertas`, mapMethod('R'));
 };
 
 /**
@@ -60,7 +61,7 @@ export const getActividadesAbiertas = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de próximas actividades.
  */
 export const getProximasActividades = async () => {
-    return await fetchData(`${RESOURCE}/proximas`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/proximas`, mapMethod('R'));
 };
 
 /**
@@ -69,7 +70,7 @@ export const getProximasActividades = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de actividades eliminadas.
  */
 export const getActividadesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -79,7 +80,7 @@ export const getActividadesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la actividad creada.
  */
 export const createActividad = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -90,7 +91,7 @@ export const createActividad = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la actividad actualizada.
  */
 export const updateActividad = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -100,7 +101,7 @@ export const updateActividad = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteActividad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -110,7 +111,7 @@ export const deleteActividad = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteActividad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -120,5 +121,5 @@ export const permanentDeleteActividad = async (id) => {
  * @returns {Promise<Object>} Una promesa con la actividad restaurada.
  */
 export const restoreActividad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

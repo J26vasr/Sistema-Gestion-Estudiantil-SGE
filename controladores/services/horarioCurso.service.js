@@ -1,5 +1,6 @@
 // controladores/services/horarioCurso.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los horarios de curso
 const RESOURCE = '/horarios-curso';
@@ -12,7 +13,7 @@ const RESOURCE = '/horarios-curso';
  * @returns {Promise<Object>} Una promesa con la lista paginada de horarios.
  */
 export const getAllHorarios = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllHorarios = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles del horario.
  */
 export const getHorarioById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getHorarioById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de horarios del curso.
  */
 export const getHorariosByCursoId = async (cursoId) => {
-    return await fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getHorariosByCursoId = async (cursoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de horarios del día.
  */
 export const getHorariosByDia = async (dia) => {
-    return await fetchData(`${RESOURCE}/dia/${dia}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/dia/${dia}`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getHorariosByDia = async (dia) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de conflictos detectados.
  */
 export const getConflictos = async () => {
-    return await fetchData(`${RESOURCE}/conflictos`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/conflictos`, mapMethod('R'));
 };
 
 /**
@@ -60,7 +61,7 @@ export const getConflictos = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de horarios eliminados.
  */
 export const getHorariosDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -70,7 +71,7 @@ export const getHorariosDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el horario creado.
  */
 export const createHorario = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -81,7 +82,7 @@ export const createHorario = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el horario actualizado.
  */
 export const updateHorario = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -91,7 +92,7 @@ export const updateHorario = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteHorario = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -101,7 +102,7 @@ export const deleteHorario = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteHorario = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -111,5 +112,5 @@ export const permanentDeleteHorario = async (id) => {
  * @returns {Promise<Object>} Una promesa con el horario restaurado.
  */
 export const restoreHorario = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

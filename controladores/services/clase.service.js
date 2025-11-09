@@ -1,5 +1,6 @@
 // controladores/services/clase.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las clases
 const RESOURCE = '/clases';
@@ -12,7 +13,7 @@ const RESOURCE = '/clases';
  * @returns {Promise<Object>} Una promesa con la lista paginada de clases.
  */
 export const getAllClases = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllClases = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la clase.
  */
 export const getClaseById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getClaseById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de clases del curso.
  */
 export const getClasesByCursoId = async (cursoId) => {
-    return await fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getClasesByCursoId = async (cursoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de clases de la fecha.
  */
 export const getClasesByFecha = async (fecha) => {
-    return await fetchData(`${RESOURCE}/fecha/${fecha}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/fecha/${fecha}`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getClasesByFecha = async (fecha) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de clases ordenadas.
  */
 export const getClasesOrdenadas = async () => {
-    return await fetchData(`${RESOURCE}/ordenadas`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/ordenadas`, mapMethod('R'));
 };
 
 /**
@@ -60,7 +61,7 @@ export const getClasesOrdenadas = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de clases eliminadas.
  */
 export const getClasesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -70,7 +71,7 @@ export const getClasesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la clase creada.
  */
 export const createClase = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -81,7 +82,7 @@ export const createClase = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la clase actualizada.
  */
 export const updateClase = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -91,7 +92,7 @@ export const updateClase = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteClase = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -101,7 +102,7 @@ export const deleteClase = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteClase = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -111,5 +112,5 @@ export const permanentDeleteClase = async (id) => {
  * @returns {Promise<Object>} Una promesa con la clase restaurada.
  */
 export const restoreClase = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

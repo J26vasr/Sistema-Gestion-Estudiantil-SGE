@@ -1,5 +1,6 @@
 // controladores/services/unidad.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las unidades
 const RESOURCE = '/unidades';
@@ -12,7 +13,7 @@ const RESOURCE = '/unidades';
  * @returns {Promise<Object>} Una promesa con la lista paginada de unidades.
  */
 export const getAllUnidades = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllUnidades = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la unidad.
  */
 export const getUnidadById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getUnidadById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de unidades del curso.
  */
 export const getUnidadesByCursoId = async (cursoId) => {
-    return await fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod('R'));
 };
 
 /**
@@ -41,7 +42,7 @@ export const getUnidadesByCursoId = async (cursoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de unidades eliminadas.
  */
 export const getUnidadesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getUnidadesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la unidad creada.
  */
 export const createUnidad = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -62,7 +63,7 @@ export const createUnidad = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la unidad actualizada.
  */
 export const updateUnidad = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -72,7 +73,7 @@ export const updateUnidad = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteUnidad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -82,7 +83,7 @@ export const deleteUnidad = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteUnidad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -92,5 +93,5 @@ export const permanentDeleteUnidad = async (id) => {
  * @returns {Promise<Object>} Una promesa con la unidad restaurada.
  */
 export const restoreUnidad = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

@@ -1,5 +1,6 @@
 // controladores/services/tipoEvaluacion.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los tipos de evaluación
 const RESOURCE = '/tipos-evaluacion';
@@ -12,7 +13,7 @@ const RESOURCE = '/tipos-evaluacion';
  * @returns {Promise<Object>} Una promesa con la lista paginada de tipos de evaluación.
  */
 export const getAllTiposEvaluacion = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllTiposEvaluacion = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles del tipo de evaluación.
  */
 export const getTipoEvaluacionById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getTipoEvaluacionById = async (id) => {
  * @returns {Promise<Object>} Una promesa con el tipo de evaluación encontrado.
  */
 export const searchTipoEvaluacionByNombre = async (nombre) => {
-    return await fetchData(`${RESOURCE}/search?nombre=${encodeURIComponent(nombre)}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/search`, mapMethod('R'), {}, { nombre });
 };
 
 /**
@@ -41,7 +42,7 @@ export const searchTipoEvaluacionByNombre = async (nombre) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de tipos de evaluación eliminados.
  */
 export const getTiposEvaluacionDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getTiposEvaluacionDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el tipo de evaluación creado.
  */
 export const createTipoEvaluacion = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -62,7 +63,7 @@ export const createTipoEvaluacion = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el tipo de evaluación actualizado.
  */
 export const updateTipoEvaluacion = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -72,7 +73,7 @@ export const updateTipoEvaluacion = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteTipoEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -82,7 +83,7 @@ export const deleteTipoEvaluacion = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteTipoEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -92,5 +93,5 @@ export const permanentDeleteTipoEvaluacion = async (id) => {
  * @returns {Promise<Object>} Una promesa con el tipo de evaluación restaurado.
  */
 export const restoreTipoEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

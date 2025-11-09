@@ -1,5 +1,6 @@
 // controladores/services/bloqueHorario.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los bloques de horario
 const RESOURCE = '/bloques-horario';
@@ -12,7 +13,7 @@ const RESOURCE = '/bloques-horario';
  * @returns {Promise<Object>} Una promesa con la lista paginada de bloques de horario.
  */
 export const getAllBloques = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllBloques = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles del bloque de horario.
  */
 export const getBloqueById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -31,7 +32,7 @@ export const getBloqueById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de bloques ordenados.
  */
 export const getBloquesOrdenados = async () => {
-    return await fetchData(`${RESOURCE}/ordenados`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/ordenados`, mapMethod('R'));
 };
 
 /**
@@ -40,7 +41,7 @@ export const getBloquesOrdenados = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de bloques eliminados.
  */
 export const getBloquesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -50,7 +51,7 @@ export const getBloquesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el bloque creado.
  */
 export const createBloque = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -61,7 +62,7 @@ export const createBloque = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el bloque actualizado.
  */
 export const updateBloque = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -71,7 +72,7 @@ export const updateBloque = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteBloque = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -81,7 +82,7 @@ export const deleteBloque = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteBloque = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -91,5 +92,5 @@ export const permanentDeleteBloque = async (id) => {
  * @returns {Promise<Object>} Una promesa con el bloque restaurado.
  */
 export const restoreBloque = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

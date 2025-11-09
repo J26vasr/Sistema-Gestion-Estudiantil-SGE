@@ -1,5 +1,6 @@
 // controladores/services/periodo.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los periodos
 const RESOURCE = '/periodos';
@@ -12,7 +13,7 @@ const RESOURCE = '/periodos';
  * @returns {Promise<Object>} Una promesa con la lista paginada de periodos.
  */
 export const getAllPeriodos = async (page = 0, size = 10) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllPeriodos = async (page = 0, size = 10) => {
  * @returns {Promise<Object>} Una promesa con los detalles del periodo.
  */
 export const getPeriodoById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getPeriodoById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de periodos encontrados.
  */
 export const searchPeriodosByNombre = async (nombre) => {
-    return await fetchData(`${RESOURCE}/search?nombre=${encodeURIComponent(nombre)}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/search`, mapMethod('R'), {}, { nombre });
 };
 
 /**
@@ -41,7 +42,7 @@ export const searchPeriodosByNombre = async (nombre) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de periodos activos.
  */
 export const getPeriodosActivos = async () => {
-    return await fetchData(`${RESOURCE}/activos`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/activos`, mapMethod('R'));
 };
 
 /**
@@ -50,7 +51,7 @@ export const getPeriodosActivos = async () => {
  * @returns {Promise<Object>} Una promesa con el periodo actual.
  */
 export const getPeriodoActual = async () => {
-    return await fetchData(`${RESOURCE}/actual`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/actual`, mapMethod('R'));
 };
 
 /**
@@ -59,7 +60,7 @@ export const getPeriodoActual = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de periodos eliminados.
  */
 export const getPeriodosDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -69,7 +70,7 @@ export const getPeriodosDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el periodo creado.
  */
 export const createPeriodo = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -80,7 +81,7 @@ export const createPeriodo = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el periodo actualizado.
  */
 export const updatePeriodo = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -90,7 +91,7 @@ export const updatePeriodo = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deletePeriodo = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -100,7 +101,7 @@ export const deletePeriodo = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeletePeriodo = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -110,5 +111,5 @@ export const permanentDeletePeriodo = async (id) => {
  * @returns {Promise<Object>} Una promesa con el periodo restaurado.
  */
 export const restorePeriodo = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

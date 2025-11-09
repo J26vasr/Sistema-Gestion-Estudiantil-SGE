@@ -1,5 +1,6 @@
 // controladores/services/asignatura.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las asignaturas
 const RESOURCE = '/asignaturas';
@@ -12,7 +13,7 @@ const RESOURCE = '/asignaturas';
  * @returns {Promise<Object>} Una promesa con la lista paginada de asignaturas.
  */
 export const getAllAsignaturas = async (page = 0, size = 10) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllAsignaturas = async (page = 0, size = 10) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la asignatura.
  */
 export const getAsignaturaById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getAsignaturaById = async (id) => {
  * @returns {Promise<Object>} Una promesa con la asignatura encontrada.
  */
 export const getAsignaturaByCodigo = async (codigo) => {
-    return await fetchData(`${RESOURCE}/codigo/${codigo}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/codigo/${codigo}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getAsignaturaByCodigo = async (codigo) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de asignaturas encontradas.
  */
 export const searchAsignaturasByNombre = async (nombre) => {
-    return await fetchData(`${RESOURCE}/search?nombre=${encodeURIComponent(nombre)}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/search`, mapMethod('R'), {}, { nombre });
 };
 
 /**
@@ -51,7 +52,7 @@ export const searchAsignaturasByNombre = async (nombre) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de asignaturas eliminadas.
  */
 export const getAsignaturasDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -61,7 +62,7 @@ export const getAsignaturasDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la asignatura creada.
  */
 export const createAsignatura = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -72,7 +73,7 @@ export const createAsignatura = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la asignatura actualizada.
  */
 export const updateAsignatura = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -82,7 +83,7 @@ export const updateAsignatura = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteAsignatura = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -92,7 +93,7 @@ export const deleteAsignatura = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteAsignatura = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -102,5 +103,5 @@ export const permanentDeleteAsignatura = async (id) => {
  * @returns {Promise<Object>} Una promesa con la asignatura restaurada.
  */
 export const restoreAsignatura = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

@@ -1,5 +1,6 @@
 // controladores/services/inscripcion.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las inscripciones
 const RESOURCE = '/inscripciones';
@@ -12,7 +13,7 @@ const RESOURCE = '/inscripciones';
  * @returns {Promise<Object>} Una promesa con la lista paginada de inscripciones.
  */
 export const getAllInscripciones = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllInscripciones = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la inscripción.
  */
 export const getInscripcionById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getInscripcionById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de inscripciones del estudiante.
  */
 export const getInscripcionesByEstudianteId = async (estudianteId) => {
-    return await fetchData(`${RESOURCE}/estudiante/${estudianteId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/estudiante/${estudianteId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getInscripcionesByEstudianteId = async (estudianteId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de inscripciones del curso.
  */
 export const getInscripcionesByCursoId = async (cursoId) => {
-    return await fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod('R'));
 };
 
 /**
@@ -52,7 +53,7 @@ export const getInscripcionesByCursoId = async (cursoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de inscripciones con el estado especificado.
  */
 export const getInscripcionesByEstado = async (estado) => {
-    return await fetchData(`${RESOURCE}/estado/${estado}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/estado/${estado}`, mapMethod('R'));
 };
 
 /**
@@ -62,7 +63,7 @@ export const getInscripcionesByEstado = async (estado) => {
  * @returns {Promise<Array<Object>>} Una promesa con el historial de inscripciones del estudiante.
  */
 export const getHistorialByEstudianteId = async (estudianteId) => {
-    return await fetchData(`${RESOURCE}/${estudianteId}/historial`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${estudianteId}/historial`, mapMethod('R'));
 };
 
 /**
@@ -71,7 +72,7 @@ export const getHistorialByEstudianteId = async (estudianteId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de inscripciones eliminadas.
  */
 export const getInscripcionesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -81,7 +82,7 @@ export const getInscripcionesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la inscripción creada.
  */
 export const createInscripcion = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -92,7 +93,7 @@ export const createInscripcion = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la inscripción actualizada.
  */
 export const updateInscripcion = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -102,7 +103,7 @@ export const updateInscripcion = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteInscripcion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -112,7 +113,7 @@ export const deleteInscripcion = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteInscripcion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -122,5 +123,5 @@ export const permanentDeleteInscripcion = async (id) => {
  * @returns {Promise<Object>} Una promesa con la inscripción restaurada.
  */
 export const restoreInscripcion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

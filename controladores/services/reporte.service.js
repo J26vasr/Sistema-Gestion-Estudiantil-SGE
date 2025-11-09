@@ -1,5 +1,6 @@
 // controladores/services/reporte.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los reportes
 const RESOURCE = '/reportes';
@@ -12,7 +13,7 @@ const RESOURCE = '/reportes';
  * @returns {Promise<Object>} Una promesa con la lista paginada de reportes.
  */
 export const getAllReportes = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllReportes = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles del reporte.
  */
 export const getReporteById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getReporteById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de reportes del tipo.
  */
 export const getReportesByTipo = async (tipo) => {
-    return await fetchData(`${RESOURCE}/tipo/${tipo}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/tipo/${tipo}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getReportesByTipo = async (tipo) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de reportes del usuario.
  */
 export const getReportesByUsuarioId = async (usuarioId) => {
-    return await fetchData(`${RESOURCE}/usuario/${usuarioId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/usuario/${usuarioId}`, mapMethod('R'));
 };
 
 /**
@@ -52,7 +53,7 @@ export const getReportesByUsuarioId = async (usuarioId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de reportes del estudiante.
  */
 export const getReportesByEstudianteId = async (estudianteId) => {
-    return await fetchData(`${RESOURCE}/estudiante/${estudianteId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/estudiante/${estudianteId}`, mapMethod('R'));
 };
 
 /**
@@ -61,7 +62,7 @@ export const getReportesByEstudianteId = async (estudianteId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de reportes recientes.
  */
 export const getReportesRecientes = async () => {
-    return await fetchData(`${RESOURCE}/recientes`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/recientes`, mapMethod('R'));
 };
 
 /**
@@ -71,7 +72,7 @@ export const getReportesRecientes = async () => {
  * @returns {Promise<Object>} Una promesa con el resultado de agregar a la cola.
  */
 export const agregarAColaGeneracion = async (payload) => {
-    return await fetchData(`${RESOURCE}/cola-generacion`, mapMethod.POST, payload);
+    return fetchData(`${RESOURCE}/cola-generacion`, mapMethod('C'), payload);
 };
 
 /**
@@ -80,7 +81,7 @@ export const agregarAColaGeneracion = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el resultado del procesamiento.
  */
 export const procesarColaReportes = async () => {
-    return await fetchData(`${RESOURCE}/procesar`, mapMethod.POST);
+    return fetchData(`${RESOURCE}/procesar`, mapMethod('C'));
 };
 
 /**
@@ -89,7 +90,7 @@ export const procesarColaReportes = async () => {
  * @returns {Promise<Object>} Una promesa con el estado de la cola.
  */
 export const getEstadoCola = async () => {
-    return await fetchData(`${RESOURCE}/cola-estado`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/cola-estado`, mapMethod('R'));
 };
 
 /**
@@ -98,7 +99,7 @@ export const getEstadoCola = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de reportes eliminados.
  */
 export const getReportesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -108,7 +109,7 @@ export const getReportesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el reporte creado.
  */
 export const createReporte = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -119,7 +120,7 @@ export const createReporte = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el reporte actualizado.
  */
 export const updateReporte = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -129,7 +130,7 @@ export const updateReporte = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteReporte = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -139,7 +140,7 @@ export const deleteReporte = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteReporte = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -149,5 +150,5 @@ export const permanentDeleteReporte = async (id) => {
  * @returns {Promise<Object>} Una promesa con el reporte restaurado.
  */
 export const restoreReporte = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

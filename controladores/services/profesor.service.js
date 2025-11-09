@@ -1,5 +1,7 @@
 // controladores/services/profesor.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los profesores
 const RESOURCE = '/profesores';
@@ -12,7 +14,7 @@ const RESOURCE = '/profesores';
  * @returns {Promise<Object>} Una promesa con la lista paginada de profesores.
  */
 export const getAllProfesores = async (page = 0, size = 10) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+  return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +24,7 @@ export const getAllProfesores = async (page = 0, size = 10) => {
  * @returns {Promise<Object>} Una promesa con los detalles del profesor.
  */
 export const getProfesorById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+  return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +34,7 @@ export const getProfesorById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de profesores encontrados.
  */
 export const searchProfesoresByEspecialidad = async (especialidad) => {
-    return await fetchData(`${RESOURCE}/search?especialidad=${encodeURIComponent(especialidad)}`, mapMethod.GET);
+  return fetchData(`${RESOURCE}/search`, mapMethod('R'), {}, { especialidad });
 };
 
 /**
@@ -41,7 +43,7 @@ export const searchProfesoresByEspecialidad = async (especialidad) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de profesores activos.
  */
 export const getProfesoresActivos = async () => {
-    return await fetchData(`${RESOURCE}/activos`, mapMethod.GET);
+  return fetchData(`${RESOURCE}/activos`, mapMethod('R'));
 };
 
 /**
@@ -50,7 +52,7 @@ export const getProfesoresActivos = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de profesores eliminados.
  */
 export const getProfesoresDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+  return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -60,7 +62,7 @@ export const getProfesoresDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el profesor creado.
  */
 export const createProfesor = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+  return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -71,7 +73,7 @@ export const createProfesor = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el profesor actualizado.
  */
 export const updateProfesor = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+  return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -81,7 +83,7 @@ export const updateProfesor = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteProfesor = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+  return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -91,7 +93,7 @@ export const deleteProfesor = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteProfesor = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+  return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -101,5 +103,5 @@ export const permanentDeleteProfesor = async (id) => {
  * @returns {Promise<Object>} Una promesa con el profesor restaurado.
  */
 export const restoreProfesor = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+  return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

@@ -1,5 +1,6 @@
 // controladores/services/tema.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para los temas
 const RESOURCE = '/temas';
@@ -12,7 +13,7 @@ const RESOURCE = '/temas';
  * @returns {Promise<Object>} Una promesa con la lista paginada de temas.
  */
 export const getAllTemas = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllTemas = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles del tema.
  */
 export const getTemaById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getTemaById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de temas de la unidad.
  */
 export const getTemasByUnidadId = async (unidadId) => {
-    return await fetchData(`${RESOURCE}/unidad/${unidadId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/unidad/${unidadId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getTemasByUnidadId = async (unidadId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de temas encontrados.
  */
 export const searchTemasByTitulo = async (titulo) => {
-    return await fetchData(`${RESOURCE}/search?titulo=${encodeURIComponent(titulo)}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/search`, mapMethod('R'), {}, { titulo });
 };
 
 /**
@@ -51,7 +52,7 @@ export const searchTemasByTitulo = async (titulo) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de temas eliminados.
  */
 export const getTemasDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -61,7 +62,7 @@ export const getTemasDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con el tema creado.
  */
 export const createTema = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -72,7 +73,7 @@ export const createTema = async (payload) => {
  * @returns {Promise<Object>} Una promesa con el tema actualizado.
  */
 export const updateTema = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -82,7 +83,7 @@ export const updateTema = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteTema = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -92,7 +93,7 @@ export const deleteTema = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteTema = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -102,5 +103,5 @@ export const permanentDeleteTema = async (id) => {
  * @returns {Promise<Object>} Una promesa con el tema restaurado.
  */
 export const restoreTema = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };

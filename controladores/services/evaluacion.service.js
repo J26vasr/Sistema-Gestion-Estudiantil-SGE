@@ -1,5 +1,6 @@
 // controladores/services/evaluacion.service.js
-import { fetchData, mapMethod } from '../utils/fetchData.js';
+import fetchData from '../utils/fetchData.js';
+import { mapMethod } from '../utils/mapMethod.js';
 
 // Recurso base para las evaluaciones
 const RESOURCE = '/evaluaciones';
@@ -12,7 +13,7 @@ const RESOURCE = '/evaluaciones';
  * @returns {Promise<Object>} Una promesa con la lista paginada de evaluaciones.
  */
 export const getAllEvaluaciones = async (page = 0, size = 20) => {
-    return await fetchData(`${RESOURCE}?page=${page}&size=${size}`, mapMethod.GET);
+    return fetchData(RESOURCE, mapMethod('R'), {}, { page, size });
 };
 
 /**
@@ -22,7 +23,7 @@ export const getAllEvaluaciones = async (page = 0, size = 20) => {
  * @returns {Promise<Object>} Una promesa con los detalles de la evaluación.
  */
 export const getEvaluacionById = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('R'));
 };
 
 /**
@@ -32,7 +33,7 @@ export const getEvaluacionById = async (id) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de evaluaciones del curso.
  */
 export const getEvaluacionesByCursoId = async (cursoId) => {
-    return await fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/curso/${cursoId}`, mapMethod('R'));
 };
 
 /**
@@ -42,7 +43,7 @@ export const getEvaluacionesByCursoId = async (cursoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de evaluaciones del tipo.
  */
 export const getEvaluacionesByTipoId = async (tipoId) => {
-    return await fetchData(`${RESOURCE}/tipo/${tipoId}`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/tipo/${tipoId}`, mapMethod('R'));
 };
 
 /**
@@ -51,7 +52,7 @@ export const getEvaluacionesByTipoId = async (tipoId) => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de próximas evaluaciones.
  */
 export const getProximasEvaluaciones = async () => {
-    return await fetchData(`${RESOURCE}/proximas`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/proximas`, mapMethod('R'));
 };
 
 /**
@@ -60,7 +61,7 @@ export const getProximasEvaluaciones = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de evaluaciones ordenadas.
  */
 export const getEvaluacionesOrdenadas = async () => {
-    return await fetchData(`${RESOURCE}/ordenadas`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/ordenadas`, mapMethod('R'));
 };
 
 /**
@@ -69,7 +70,7 @@ export const getEvaluacionesOrdenadas = async () => {
  * @returns {Promise<Array<Object>>} Una promesa con la lista de evaluaciones eliminadas.
  */
 export const getEvaluacionesDeleted = async () => {
-    return await fetchData(`${RESOURCE}/deleted`, mapMethod.GET);
+    return fetchData(`${RESOURCE}/deleted`, mapMethod('R'));
 };
 
 /**
@@ -79,7 +80,7 @@ export const getEvaluacionesDeleted = async () => {
  * @returns {Promise<Object>} Una promesa con la evaluación creada.
  */
 export const createEvaluacion = async (payload) => {
-    return await fetchData(RESOURCE, mapMethod.POST, payload);
+    return fetchData(RESOURCE, mapMethod('C'), payload);
 };
 
 /**
@@ -90,7 +91,7 @@ export const createEvaluacion = async (payload) => {
  * @returns {Promise<Object>} Una promesa con la evaluación actualizada.
  */
 export const updateEvaluacion = async (id, payload) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.PUT, payload);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('U'), payload);
 };
 
 /**
@@ -100,7 +101,7 @@ export const updateEvaluacion = async (id, payload) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const deleteEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}`, mapMethod('D'));
 };
 
 /**
@@ -110,7 +111,7 @@ export const deleteEvaluacion = async (id) => {
  * @returns {Promise<void>} Una promesa vacía.
  */
 export const permanentDeleteEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/permanent`, mapMethod.DELETE);
+    return fetchData(`${RESOURCE}/${id}/permanent`, mapMethod('D'));
 };
 
 /**
@@ -120,5 +121,5 @@ export const permanentDeleteEvaluacion = async (id) => {
  * @returns {Promise<Object>} Una promesa con la evaluación restaurada.
  */
 export const restoreEvaluacion = async (id) => {
-    return await fetchData(`${RESOURCE}/${id}/restore`, mapMethod.PATCH);
+    return fetchData(`${RESOURCE}/${id}/restore`, mapMethod('P'));
 };
