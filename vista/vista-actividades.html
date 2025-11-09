@@ -157,9 +157,17 @@
   <!-- SweetAlert Library -->
   <script src="../controladores/lib/sweetalert.min.js"></script>
 
+     <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
+
+
     <script>
-        // Cargar el menú desde menu.html
-        ffetch("../vista/menu.html")
+        // Cargar el menú de forma dinámica
+        fetch("../vista/menu.html")
         .then(res => res.text())
         .then(data => {
           document.getElementById("menu").innerHTML = data;
@@ -170,4 +178,5 @@
         });
     </script>
 </body>
+
 </html>

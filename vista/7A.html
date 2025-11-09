@@ -57,56 +57,15 @@
         </div>
       </div>
     </div>
-
-    <!-- Panel derecho (Lista estudiantes) -->
     <div class="sidebar2">
-      <h3>Lista de Estudiantes</h3>
-      <div class="student-list">
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>Juan Pérez</h4>
-            <span>En línea</span>
-          </div>
-        </div>
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>María López</h4>
-            <span>Conectado hace 2h</span>
-          </div>
-        </div>
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>Andrés Castro</h4>
-            <span>Activo</span>
-          </div>
-        </div>
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>Laura Gómez</h4>
-            <span>Hace 1h</span>
-          </div>
-        </div>
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/men/12.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>Diego Hernández</h4>
-            <span>En clase</span>
-          </div>
-        </div>
-        <div class="student">
-          <img src="https://randomuser.me/api/portraits/women/18.jpg" alt="Foto estudiante">
-          <div class="info">
-            <h4>Carla Ruiz</h4>
-            <span>Desconectada</span>
-          </div>
-        </div>
-      </div>
-    </div>
+  <h3>Lista de Estudiantes</h3>
+  <div class="student-list" id="lista-estudiantes">
+    <!-- Aquí se insertan las inscripciones dinámicamente -->
   </div>
+</div>
+
+
+   
 
   <!-- Scripts -->
    
@@ -156,5 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
 });
 </script>
+
+  <script type="module" src="../controladores/js/estudiantes.js"></script>
+
 </body>
 </html>
