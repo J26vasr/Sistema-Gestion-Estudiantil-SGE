@@ -1,78 +1,61 @@
-// editar-perfil.js
+// Obtener referencias a elementos del DOM
+const nombreInput = document.getElementById('nombre');
+const usernameInput = document.getElementById('username');
+const correoInput = document.getElementById('correo');
+const telefonoInput = document.getElementById('telefono');
+// Nota: El rol no se incluye aquí ya que típicamente no se edita directamente
 
+
+// ============================================
+// CARGAR DATOS DEL USUARIO AL INICIAR LA PÁGINA
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('perfilForm');
-  const mensaje = document.getElementById('mensaje');
+    // 1. Intentar obtener los datos del usuario de localStorage
+    const datosGuardados = localStorage.getItem("perfilDocente");
 
-  // Cargar datos guardados o usar valores por defecto
-  const datosGuardados = localStorage.getItem('perfilDocente');
-  const datosDocente = datosGuardados ? JSON.parse(datosGuardados) : {
-    nombre: "Jeremy Leandro",
-    apellido: "Castro Moreno",
-    username: "jlea",
-    email: "jlea@gmail.com",
-    telefono: "+503 7862-1493",
-    especialidad: "Ciencias Naturales",
-    contrato: "tiempo_completo"
-  };
+    if (!datosGuardados) {
+        console.warn("No se encontraron datos del perfil en localStorage.");
+         return;
+    }
 
-  // Rellenar formulario
-  document.getElementById('nombre').value = datosDocente.nombre;
-  document.getElementById('apellido').value = datosDocente.apellido;
-  document.getElementById('username').value = datosDocente.username;
-  document.getElementById('email').value = datosDocente.email;
-  document.getElementById('telefono').value = datosDocente.telefono;
-  document.getElementById('especialidad').value = datosDocente.especialidad;
-  document.getElementById('contrato').value = datosDocente.contrato;
+    try {
+        const datos = JSON.parse(datosGuardados);
 
-  // Validación y envío
-  form.addEventListener('submit', (e) => {
+        // 2. Pre-llenar los campos del formulario con los datos
+        // Usamos el operador '?? ""' para asegurar que si un dato es null/undefined,
+        // el input quede vacío, no con la cadena "null".
+
+        nombreInput.value = datos.nombre ?? "";
+        usernameInput.value = datos.usuario ?? ""; // En registro.js lo guardamos como 'usuario'
+        correoInput.value = datos.correo ?? "";
+        telefonoInput.value = datos.telefono ?? "";
+        
+      
+
+    } catch (error) {
+        console.error("Error al parsear datos del perfil de localStorage:", error);
+    }
+});
+
+
+// ============================================
+// MANEJO DEL ENVÍO DEL FORMULARIO (UPDATE)
+// ============================================
+
+// validar el formulario 
+// (usando Rules y createFormValidator, similar al registro)
+// y luego la llamada al servicio para actualizar los datos.
+
+const perfilForm = document.getElementById('perfilForm');
+
+perfilForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const password = document.getElementById('password').value;
-    const password2 = document.getElementById('password2').value;
-
-    if (password && password.length < 8) {
-      mostrarMensaje('La contraseña debe tener al menos 8 caracteres.', 'error');
-      return;
-    }
-
-    if (password !== password2) {
-      mostrarMensaje('Las contraseñas no coinciden.', 'error');
-      return;
-    }
-
-    const datos = {
-      nombre: document.getElementById('nombre').value,
-      apellido: document.getElementById('apellido').value,
-      username: document.getElementById('username').value,
-      email: document.getElementById('email').value,
-      telefono: document.getElementById('telefono').value || null,
-      especialidad: document.getElementById('especialidad').value || null,
-      contrato: document.getElementById('contrato').value
-    };
-
-    if (password) {
-      datos.password = password;
-    }
-
-    // Guardar en localStorage
-    localStorage.setItem('perfilDocente', JSON.stringify(datos));
-
-    mostrarMensaje('Perfil actualizado con éxito.', 'exito');
-
-    // Redirigir al perfil
-    setTimeout(() => {
-      window.location.href = 'perfil-usuario.html';
-    }, 1500);
-  });
-
-  function mostrarMensaje(texto, tipo) {
-    mensaje.textContent = texto;
-    mensaje.className = 'mensaje ' + tipo;
-    mensaje.style.display = 'block';
-    setTimeout(() => {
-      mensaje.style.display = 'none';
-    }, 5000);
-  }
+    
+    // **IMPORTANTE:** Una vez que la actualización sea exitosa, 
+    // se debe actualizar el localStorage con los nuevos datos 
+    // para que la vista de perfil refleje los cambios.
+    
+    
+    // Por ahora, solo puedes ver los datos cargados.
+    console.log("Formulario de perfil enviado.");
 });
