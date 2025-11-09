@@ -11,7 +11,7 @@
   <div class="perfil-container">
     <!-- Encabezado -->
     <div class="perfil-header">
-      <span class="institucion">Instituto Tecnico Ricaldone</span>
+      <span class="institucion">Instituto Técnico Ricaldone</span>
       <div class="foto-container">
         <div class="foto">
           <img id="fotoDocente" src="../recursos/img/perfil.jpg" alt="Foto del docente">
@@ -24,7 +24,10 @@
       <div class="campo nombre" id="nombreCompleto">Cargando...</div>
 
       <div class="info-grid" id="infoGrid">
-        <!-- Se llenará con JS -->
+        <div class="campo" id="nombreUsuario">Cargando usuario...</div>
+        <div class="campo" id="correo">Cargando correo...</div>
+        <div class="campo" id="telefono">Cargando teléfono...</div>
+        <div class="campo" id="rol">Cargando rol...</div>
       </div>
 
       <a href="editar-perfil.html" class="btn-editar">Editar</a>
@@ -37,45 +40,39 @@
   <script src="../controladores/lib/sweetalert.min.js"></script>
 
   <script>
-    // Aplicar modo oscuro
+    // === Aplicar modo oscuro si está activo ===
     if (localStorage.getItem("darkMode") === "true") {
       document.documentElement.classList.add("dark");
     }
 
-    // Cargar el menú
+    // === Cargar menú dinámico ===
     fetch("../vista/menu.html")
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById("menu").innerHTML = data;
-          const script = document.createElement("script");
-          script.type = "module";
-          script.src = "../controladores/js/menu.js";
-          document.body.appendChild(script);
-        });
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
 
-    // Cargar datos del perfil desde localStorage
-    document.addEventListener('DOMContentLoaded', () => {
-      const datosGuardados = localStorage.getItem('perfilDocente');
-      const datos = datosGuardados ? JSON.parse(datosGuardados) : {
-        nombre: "Jeremy Leandro",
-        apellido: "Castro Moreno",
-        ciclo: "Tercer ciclo",
-        materia: "Ciencias Naturales",
-        codigo: "78621493",
-        email: "jlea@gmail.com"
-      };
+    // === Cargar datos del perfil desde localStorage ===
+    document.addEventListener("DOMContentLoaded", () => {
+      const datosGuardados = localStorage.getItem("perfilDocente");
 
-      // Actualizar nombre completo
-      document.getElementById('nombreCompleto').textContent = `${datos.nombre} ${datos.apellido}`;
+      if (!datosGuardados) {
+        document.getElementById("nombreCompleto").textContent = "Sin datos de perfil";
+        return;
+      }
 
-      // Actualizar campos en la cuadrícula
-      const grid = document.getElementById('infoGrid');
-      grid.innerHTML = `
-        <div class="campo">${datos.ciclo || 'Tercer ciclo'}</div>
-        <div class="campo">${datos.materia || 'Ciencias Naturales'}</div>
-        <div class="campo">${datos.codigo || '78621493'}</div>
-        <div class="campo">${datos.email || 'jlea@gmail.com'}</div>
-      `;
+      const datos = JSON.parse(datosGuardados);
+
+      // Mostrar datos (sin contraseña)
+      document.getElementById("nombreCompleto").textContent = datos.nombre || "Sin nombre";
+      document.getElementById("nombreUsuario").textContent = `Usuario: ${datos.usuario || 'No disponible'}`;
+      document.getElementById("correo").textContent = `Correo: ${datos.correo || 'No disponible'}`;
+      document.getElementById("telefono").textContent = `Teléfono: ${datos.telefono || 'No disponible'}`;
+      document.getElementById("rol").textContent = `Rol: ${datos.rol || 'No disponible'}`;
     });
   </script>
 </body>
