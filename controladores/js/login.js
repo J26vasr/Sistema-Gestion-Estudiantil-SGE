@@ -57,22 +57,28 @@ loginForm.addEventListener('submit', async (e) => {
   btnLogin.textContent = 'Iniciando sesión...';
   
   try {
-    // Login
+    // Llamada al servicio de login
     const response = await login({
       username: values.username.trim(),
       password: values.password
     });
-    
-    // Guardar datos
+
+    // Guardar token y datos de usuario
     saveAuthData(response.token, response.usuario);
-    
-    // Éxito - mostrar SweetAlert y redirigir
+
+    // 💾 Guardar nombre de usuario en localStorage para usarlo en el dashboard
+    if (response.usuario && response.usuario.nombre) {
+      localStorage.setItem('nombreUsuario', response.usuario.nombre);
+    } else if (response.usuario && response.usuario.username) {
+      localStorage.setItem('nombreUsuario', response.usuario.username);
+    }
+
+    // Éxito - mostrar mensaje y redirigir al dashboard
     await sweetAlert(1, '¡Login exitoso! Redirigiendo...', true, 'menu.html');
     
   } catch (error) {
     console.error('Error en login:', error);
     
-    // Mostrar error con SweetAlert
     await sweetAlert(2, error.message || 'Credenciales incorrectas. Intenta de nuevo.', false);
     
     btnLogin.disabled = false;

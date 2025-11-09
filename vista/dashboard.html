@@ -2,28 +2,32 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="../recursos/css/dashboard.css">
-    <link rel="stylesheet" href="../recursos/css/menu.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="../recursos/css/dashboard.css">
+  <link rel="stylesheet" href="../recursos/css/menu.css">
 </head>
 
 <body>
 
-    <!-- Menú dinámico -->
-    <div id="menu"></div>
-    <div class="container-saludo">
-      <p class="texto-saludo-user"> Bienvenid@ devuelta Jeremy Castro</p>
-      <div class="foto">
-          <img src="../recursos/img/perfil.jpg" alt="Foto del docente">
-        </div>
-    </div>
+  <!-- Menú dinámico -->
+  <div id="menu"></div>
 
-    <!-- Contenedor principal -->
-    <div class="container">
-        
-       <section class="cards">
+  <!-- Contenedor de saludo -->
+  <div class="container-saludo">
+    <p class="texto-saludo-user">
+      Bienvenid@ de vuelta <span id="nombreUsuario"></span>
+    </p>
+    <div class="foto">
+      <img src="../recursos/img/perfil.jpg" alt="Foto del usuario">
+    </div>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <section class="cards">
+
       <div class="card">
         <img src="../recursos/img/book1.jfif" alt="Tarjeta 1">
         <div class="card-body">
@@ -44,47 +48,55 @@
         <img src="../recursos/img/asistencia.jpg" alt="Tarjeta 3">
         <div class="card-body">
           <h3>Actividades</h3>
-            <a href="../vista/vista-actividades.html" class="btn-view">Ver Más</a>
-         </div>
+          <a href="../vista/vista-actividades.html" class="btn-view">Ver Más</a>
+        </div>
       </div>
-       <div class="card">
-        <img src="../recursos/img/promedios.jpg" alt="Tarjeta 3">
+
+      <div class="card">
+        <img src="../recursos/img/promedios.jpg" alt="Tarjeta 4">
         <div class="card-body">
           <h3>Promedios</h3>
-            <a href="../vista/" class="btn-view">Ver Más</a>
-         </div>
+          <a href="../vista/" class="btn-view">Ver Más</a>
+        </div>
       </div>
+
     </section>
-    </div>
+  </div>
 
   <!-- SweetAlert Library -->
   <script src="../controladores/lib/sweetalert.min.js"></script>
 
-    <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
-</script>
+  <!-- Activar modo oscuro si está guardado -->
+  <script>
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
 
-  <!-- Menú dinámico -->
-<div id="menu"></div>
+  <!-- Cargar el menú dinámico -->
+  <script>
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
 
-<script>
-  // Cargar el menú desde menu.html
-  fetch("../vista/menu.html")
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById("menu").innerHTML = data;
-          const script = document.createElement("script");
-          script.type = "module";
-          script.src = "../controladores/js/menu.js";
-          document.body.appendChild(script);
-        });
-</script>
+  <!-- Muestra el nombre del usuario logueado en el mensaje-->
+  <script>
+    const nombreUsuario = localStorage.getItem('nombreUsuario');
+    const spanNombre = document.getElementById('nombreUsuario');
 
-    
+    if (nombreUsuario && spanNombre) {
+      spanNombre.textContent = nombreUsuario;
+    } else if (spanNombre) {
+      spanNombre.textContent = 'Usuario';
+    }
+  </script>
 
 </body>
-
 </html>
