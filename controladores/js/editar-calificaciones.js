@@ -1,11 +1,8 @@
 // Importar servicios
-import { createCalificacion } from '../services/calificacion.service.js';
-import { getAllEstudiantes } from '../services/estudiante.service.js';
-import { getEvaluacionById } from '../services/evaluacion.service.js';
+import { getCalificacionById, updateCalificacion } from '../services/calificacion.service.js';
 
 // Importar utilidades
 import { sweetAlert } from '../utils/sweetAlert.js';
-import { fillSelect } from '../utils/fillSelect.js';
 import { createFormValidator, Rules } from '../utils/formValidator.js';
 
 // Obtener referencias a elementos del DOM
@@ -17,15 +14,15 @@ const comentarioCount = document.getElementById('comentarioCount');
 const evaluacionInfo = document.getElementById('evaluacionInfo');
 
 // Variables globales
-let evaluacionId = null;
-let evaluacionData = null;
+let calificacionId = null;
+let calificacionOriginal = null;
 
 // ============================================
-// OBTENER ID DE LA EVALUACIÓN DE LA URL
+// OBTENER ID DE LA CALIFICACIÓN DE LA URL
 // ============================================
-const obtenerEvaluacionIdDeURL = () => {
+const obtenerIdDeURL = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('evaluacionId');
+    return params.get('id');
 };
 
 // ============================================
@@ -40,38 +37,38 @@ comentarioTextarea.addEventListener('input', () => {
 // CARGAR DATOS INICIALES
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    evaluacionId = obtenerEvaluacionIdDeURL();
+    calificacionId = obtenerIdDeURL();
     
-    if (!evaluacionId) {
-        await sweetAlert(2, 'No se especificó la evaluación', false);
+    if (!calificacionId) {
+        await sweetAlert(2, 'No se especificó la calificación a editar', false);
         window.location.href = 'calificaciones.html';
         return;
     }
     
     try {
-        // Cargar información de la evaluación
-        evaluacionData = await getEvaluacionById(evaluacionId);
+        // Cargar calificación
+        calificacionOriginal = await getCalificacionById(calificacionId);
         
+        // Mostrar información de la evaluación
+        const evaluacion = calificacionOriginal.evaluacion;
         evaluacionInfo.innerHTML = `
-            <strong>Evaluación:</strong> ${evaluacionData.nombre} | 
-            <strong>Curso:</strong> ${evaluacionData.curso.asignatura.nombre} - ${evaluacionData.curso.nombreGrupo} | 
-            <strong>Fecha:</strong> ${new Date(evaluacionData.fecha).toLocaleDateString('es-ES')} |
-            <strong>Peso:</strong> ${evaluacionData.peso}%
+            <strong>Evaluación:</strong> ${evaluacion.nombre} | 
+            <strong>Curso:</strong> ${evaluacion.curso.asignatura.nombre} - ${evaluacion.curso.nombreGrupo} | 
+            <strong>Fecha:</strong> ${new Date(evaluacion.fecha).toLocaleDateString('es-ES')} |
+            <strong>Peso:</strong> ${evaluacion.peso}%
         `;
         
-        // Cargar estudiantes
-        const estudiantesResponse = await getAllEstudiantes(0, 100);
-        const estudiantes = estudiantesResponse.content || estudiantesResponse;
-        
-        fillSelect('estudiante', estudiantes, {
-            valueKey: 'id',
-            textFormatter: (est) => `${est.usuario.nombre} (${est.codigoEstudiante})`,
-            defaultOption: 'Seleccionar estudiante...'
-        });
+        // Llenar formulario con datos existentes
+        document.getElementById('estudiante').value = 
+            `${calificacionOriginal.estudiante.usuario.nombre} (${calificacionOriginal.estudiante.codigoEstudiante})`;
+        document.getElementById('nota').value = calificacionOriginal.nota;
+        document.getElementById('comentario').value = calificacionOriginal.comentario || '';
+        comentarioCount.textContent = calificacionOriginal.comentario ? calificacionOriginal.comentario.length : 0;
         
     } catch (error) {
-        console.error('Error al cargar datos:', error);
-        await sweetAlert(2, 'Error al cargar los datos iniciales', false);
+        console.error('Error al cargar calificación:', error);
+        await sweetAlert(2, 'Error al cargar los datos de la calificación', false);
+        window.location.href = 'calificaciones.html';
     }
 });
 
@@ -80,12 +77,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================
 const validator = createFormValidator({
     fields: {
-        estudiante: {
-            input: '#estudiante',
-            error: '#estudianteError',
-            label: 'Estudiante',
-            rules: [Rules.required('Debes seleccionar un estudiante.')]
-        },
         nota: {
             input: '#nota',
             error: '#notaError',
@@ -125,32 +116,30 @@ form.addEventListener('submit', async (e) => {
     
     // Deshabilitar botón de guardar
     btnGuardar.disabled = true;
-    btnGuardar.textContent = 'Guardando...';
+    btnGuardar.textContent = 'Actualizando...';
     
     try {
         // Preparar datos
         const formData = {
-            evaluacionId: evaluacionId,
-            estudianteId: document.getElementById('estudiante').value,
             nota: parseFloat(document.getElementById('nota').value),
             comentario: document.getElementById('comentario').value.trim() || null
         };
         
-        // Crear calificación
-        await createCalificacion(formData);
+        // Actualizar calificación
+        await updateCalificacion(calificacionId, formData);
         
-        await sweetAlert(1, 'Calificación guardada exitosamente', true);
+        await sweetAlert(1, 'Calificación actualizada exitosamente', true);
         
         // Redirigir a lista de calificaciones
         window.location.href = 'calificaciones.html';
         
     } catch (error) {
-        console.error('Error al guardar calificación:', error);
-        await sweetAlert(2, error.message || 'Error al guardar la calificación', false);
+        console.error('Error al actualizar calificación:', error);
+        await sweetAlert(2, error.message || 'Error al actualizar la calificación', false);
         
         // Rehabilitar botón
         btnGuardar.disabled = false;
-        btnGuardar.textContent = 'Guardar Calificación';
+        btnGuardar.textContent = 'Actualizar Calificación';
     }
 });
 

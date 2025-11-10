@@ -3,30 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agregar Calificación - SGE</title>
+  <title>Editar Calificación - SGE</title>
   <link rel="stylesheet" href="../recursos/css/menu.css">
   <link rel="stylesheet" href="../recursos/css/agregar-calificaciones.css">
 </head>
 <body>
-  <h3 class="TituloGrado">Agregar Calificación</h3>
+  <h3 class="TituloGrado">Editar Calificación</h3>
 
   <div id="menu"></div>
 
   <div class="container-form">
     <div class="form-card">
       <div class="form-header">
-        <h2>Nueva Calificación</h2>
+        <h2>Editar Calificación</h2>
         <p id="evaluacionInfo" class="evaluacion-info"></p>
       </div>
 
       <form id="calificacionForm">
-        <!-- Seleccionar Estudiante -->
+        <!-- Estudiante (solo lectura) -->
         <div class="form-group">
-          <label for="estudiante">Estudiante <span class="required">*</span></label>
-          <select id="estudiante" name="estudiante" required>
-            <option value="">Seleccionar estudiante...</option>
-          </select>
-          <span id="estudianteError" class="error-message"></span>
+          <label for="estudiante">Estudiante</label>
+          <input 
+            type="text" 
+            id="estudiante" 
+            name="estudiante" 
+            readonly
+            disabled
+            style="background-color: #f5f5f5; cursor: not-allowed;">
         </div>
 
         <!-- Nota -->
@@ -61,7 +64,7 @@
         <!-- Botones -->
         <div class="form-actions">
           <button type="button" id="btnCancelar" class="btn-secondary">Cancelar</button>
-          <button type="submit" id="btnGuardar" class="btn-primary">Guardar Calificación</button>
+          <button type="submit" id="btnGuardar" class="btn-primary">Actualizar Calificación</button>
         </div>
       </form>
     </div>
@@ -87,6 +90,6 @@
         });
   </script>
 
-  <script type="module" src="../controladores/js/agregar-calificaciones.js"></script>
+  <script type="module" src="../controladores/js/editar-calificaciones.js"></script>
 </body>
 </html>

@@ -11,9 +11,7 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    /* centra todo horizontalmente */
     align-items: flex-start;
-    /* inicia desde arriba */
 }
 
 /* ======= TITULO SUPERIOR ======= */
@@ -41,52 +39,22 @@ body.menu-expanded .TituloGrado {
     left: 260px;
 }
 
-/* ======== Buscador ======== */
-
-/* Botón al lado del buscador */
-.btn-view-cal {
-    font-size: 1.4rem;
-    background: linear-gradient(135deg, #7b5cff, #b389ff);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.2s ease;
-}
-
-.btn-view-cal:hover {
-    background: linear-gradient(135deg, #6b46ff, #9c74ff);
-    transform: translateY(-2px);
-}
-
-/* Contenedor flex para buscador y botón */
+/* ======== BUSCADOR ======== */
 .buscador-btn-container {
     display: flex;
     justify-content: space-between;
-    /* separa buscador y botón */
     align-items: center;
-    /* alinea verticalmente */
-    margin-bottom: 15px;
-    /* espacio debajo */
+    margin-bottom: 20px;
     gap: 10px;
-    /* espacio entre buscador y botón */
 }
 
-/* Ajusta el ancho del buscador para que no choque con el botón */
 .buscador-container {
     flex: 1;
-    /* ocupa el espacio restante */
 }
 
 #buscador {
-    width: 80%;
-    /* llena todo el espacio disponible */
-}
-
-
-#buscador {
-    padding: 12px 15px;
+    width: 100%;
+    padding: 12px 20px;
     font-size: 1rem;
     border: 2px solid #b57bee;
     border-radius: 25px;
@@ -99,24 +67,65 @@ body.menu-expanded .TituloGrado {
     box-shadow: 0 0 8px rgba(142, 68, 173, 0.3);
 }
 
-/* Adaptación a pantallas pequeñas */
+#btnBuscar {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(123, 92, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#btnBuscar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+#btnBuscar:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+#btnBuscar:hover {
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(123, 92, 255, 0.4);
+}
+
+#btnBuscar:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(123, 92, 255, 0.3);
+}
+
 @media (max-width: 768px) {
     #buscador {
-        width: 80%;
         font-size: 0.9rem;
-        margin-left: 80px;
     }
 }
+
 
 
 /* Ajustar el contenido para que no quede debajo del título */
 .container {
     margin-top: 80px;
-    /* espacio para el título */
     display: flex;
     justify-content: center;
-    /* centra horizontalmente */
     width: 100%;
+    padding: 0 20px;
 }
 
 /* ===== SIDEBAR2 ===== */
@@ -127,67 +136,12 @@ body.menu-expanded .TituloGrado {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     max-height: 90vh;
     overflow-y: auto;
+    width: 100%;
+    max-width: 1200px;
 }
 
-/* Encabezado de la "tabla" */
-.table-header {
-    display: grid;
-    grid-template-columns: 50px 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    /* aca se modifican las columnas*/
-    gap: 18px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ccc;
-    margin-bottom: 10px;
-}
-
-.table-header h3 {
-    font-size: 1rem;
-    color: #444;
-    text-align: left;
-}
-
-/* Lista de estudiantes */
-.student-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Cada fila de estudiante */
-.student {
-    display: grid;
-    grid-template-columns: 50px 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    /* aca se modifican las columnas */
-    align-items: center;
-    gap: 28px;
-    padding: 10px;
-    background: #f7f7f9;
-    border-radius: 10px;
-    border-bottom: 1px solid #e0e0e0;
-    transition: 0.3s;
-}
-
-.student:hover {
-    background: #ecebff;
-}
-
-.student img {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-/* Info dentro de cada columna */
-.student .info h4 {
-    font-size: 0.9rem;
-    color: #333;
-    margin: 0;
-}
-
-/* Scroll */
 .sidebar2::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 .sidebar2::-webkit-scrollbar-thumb {
@@ -195,176 +149,719 @@ body.menu-expanded .TituloGrado {
     border-radius: 4px;
 }
 
-/* Columna aprobado */
-.student .aprobado h4 {
+/* ============================================ */
+/*          ESTILOS DE ACORDEÓN                */
+/* ============================================ */
+
+.evaluaciones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Tarjeta de evaluación */
+.evaluacion-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(123, 92, 255, 0.08);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.evaluacion-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #7b5cff, #b389ff, #7b5cff);
+    background-size: 200% 100%;
+    animation: gradientMove 3s ease infinite;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.evaluacion-card:hover {
+    box-shadow: 0 8px 25px rgba(123, 92, 255, 0.15);
+    transform: translateY(-2px);
+    border-color: rgba(123, 92, 255, 0.2);
+}
+
+.evaluacion-card:hover::before {
+    opacity: 1;
+}
+
+/* Encabezado del acordeón */
+.evaluacion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #fafbff 0%, #ffffff 100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-bottom: 2px solid transparent;
+    position: relative;
+}
+
+.evaluacion-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #7b5cff, #b389ff);
+    transition: width 0.4s ease;
+}
+
+.evaluacion-header:hover {
+    background: linear-gradient(135deg, #f5f3ff 0%, #fafafa 100%);
+}
+
+.evaluacion-header:hover::after {
+    width: 100%;
+}
+
+.evaluacion-card.active .evaluacion-header {
+    background: linear-gradient(135deg, #ebe5ff 0%, #f8f8f8 100%);
+    border-bottom-color: rgba(123, 92, 255, 0.2);
+}
+
+.evaluacion-card.active .evaluacion-header::after {
+    width: 100%;
+}
+
+/* Información de la evaluación (lado izquierdo) */
+.evaluacion-info {
+    flex: 1;
+}
+
+.evaluacion-nombre {
+    font-size: 1.3rem;
     font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.evaluacion-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.evaluacion-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.evaluacion-meta strong {
+    color: #7b5cff;
+}
+
+/* Estadísticas (lado derecho) */
+.evaluacion-stats {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.stat-item {
     text-align: center;
-    padding: 5px 10px;
-    border-radius: 10px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #f8f6ff 0%, #ffffff 100%);
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(123, 92, 255, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid rgba(123, 92, 255, 0.1);
+    min-width: 80px;
+}
+
+.stat-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(123, 92, 255, 0.2);
+    border-color: rgba(123, 92, 255, 0.3);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #7b5cff;
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 2px 4px rgba(123, 92, 255, 0.1);
+}
+
+.stat-item:nth-child(2) .stat-value {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-item:nth-child(3) .stat-value {
+    background: linear-gradient(135deg, #4caf50, #81c784);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Icono del acordeón */
+.accordion-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    border-radius: 50%;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-left: 15px;
+    box-shadow: 0 3px 10px rgba(123, 92, 255, 0.3);
+}
+
+.accordion-icon svg {
+    stroke: white;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.evaluacion-card.active .accordion-icon {
+    transform: rotate(180deg);
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+    box-shadow: 0 5px 15px rgba(123, 92, 255, 0.4);
+}
+
+.evaluacion-card:hover .accordion-icon {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(123, 92, 255, 0.4);
+}
+
+/* Contenido colapsable del acordeón */
+.evaluacion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: #fafafa;
+}
+
+.evaluacion-card.active .evaluacion-content {
+    border-top: 1px solid #e0e0e0;
+}
+
+.evaluacion-content-inner {
+    padding: 20px;
+}
+
+/* Botón Agregar Calificación */
+.evaluacion-actions {
+    margin-bottom: 20px;
+}
+
+.btn-agregar,
+.btn-action.btn-add {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
     color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(123, 92, 255, 0.3);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Colores */
-.student .aprobado.apr {
-    /* Aprobado */
-    background-color: #4CAF50;
-    /* verde */
-    border-radius: 10px;
+.btn-agregar::before,
+.btn-action.btn-add::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
 }
 
-.student .aprobado.napr {
-    /* No aprobado */
-    background-color: #f44336;
-    /* rojo */
-    border-radius: 10px;
-
+.btn-agregar:hover::before,
+.btn-action.btn-add:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
-/*===== CODIGO PARA DISEÑO DE MODAL ====*/
-/* Fondo del modal */
+.btn-agregar:hover,
+.btn-action.btn-add:hover {
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(123, 92, 255, 0.4);
+}
+
+.btn-agregar:active,
+.btn-action.btn-add:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(123, 92, 255, 0.3);
+}
+
+.btn-action.btn-add svg {
+    stroke-width: 2.5;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+/* Tabla de calificaciones */
+.table-header {
+    display: grid;
+    grid-template-columns: 50px 2fr 1fr 1fr 2fr 1fr 1fr;
+    gap: 15px;
+    padding: 12px 15px;
+    background: white;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #555;
+    font-size: 0.9rem;
+    border: 1px solid #e8e8e8;
+}
+
+.calificaciones-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.calificacion-item {
+    display: grid;
+    grid-template-columns: 50px 2fr 1fr 1fr 2fr 1fr 1fr;
+    gap: 15px;
+    align-items: center;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, #ffffff 0%, #fafbff 100%);
+    border-radius: 12px;
+    border: 2px solid #f0f0f0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.calificacion-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #7b5cff, #b389ff);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.calificacion-item:hover::before {
+    transform: scaleY(1);
+}
+
+.calificacion-item:hover {
+    background: linear-gradient(135deg, #fafbff 0%, #f5f3ff 100%);
+    border-color: rgba(123, 92, 255, 0.4);
+    transform: translateX(6px);
+    box-shadow: 0 4px 15px rgba(123, 92, 255, 0.1);
+}
+
+/* Foto del estudiante */
+.student-photo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid transparent;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(135deg, #7b5cff, #b389ff) border-box;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(123, 92, 255, 0.2);
+}
+
+.student-photo:hover {
+    transform: scale(1.15);
+    box-shadow: 0 5px 15px rgba(123, 92, 255, 0.3);
+}
+
+/* Nota */
+.nota-value {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 6px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    min-width: 50px;
+    transition: all 0.3s ease;
+}
+
+.nota-value.aprobado {
+    color: #4caf50;
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+    border: 2px solid rgba(76, 175, 80, 0.3);
+}
+
+.nota-value.reprobado {
+    color: #f44336;
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(244, 67, 54, 0.05));
+    border: 2px solid rgba(244, 67, 54, 0.3);
+}
+
+.nota-value:hover {
+    transform: scale(1.05);
+}
+
+/* Estado */
+.estado {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.estado.aprobado {
+    color: #2e7d32;
+    background: linear-gradient(135deg, #c8e6c9, #a5d6a7);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.estado.reprobado {
+    color: #c62828;
+    background: linear-gradient(135deg, #ffcdd2, #ef9a9a);
+    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+.estado:hover {
+    transform: scale(1.05);
+}
+
+/* Acciones */
+.calificacion-acciones,
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-action::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.btn-action:hover::before {
+    width: 150px;
+    height: 150px;
+}
+
+.btn-action svg {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.btn-action:hover svg {
+    transform: scale(1.15);
+}
+
+.btn-editar,
+.btn-action.btn-edit {
+    background: linear-gradient(135deg, #2196f3, #64b5f6);
+    color: white;
+    box-shadow: 0 3px 8px rgba(33, 150, 243, 0.3);
+}
+
+.btn-editar:hover,
+.btn-action.btn-edit:hover {
+    background: linear-gradient(135deg, #1976d2, #42a5f5);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+.btn-eliminar,
+.btn-action.btn-delete {
+    background: linear-gradient(135deg, #f44336, #ef5350);
+    color: white;
+    box-shadow: 0 3px 8px rgba(244, 67, 54, 0.3);
+}
+
+.btn-eliminar:hover,
+.btn-action.btn-delete:hover {
+    background: linear-gradient(135deg, #d32f2f, #e53935);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(244, 67, 54, 0.4);
+}
+
+.btn-action:active {
+    transform: translateY(0);
+}
+
+/* Mensaje sin datos */
+.no-calificaciones {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    font-size: 1rem;
+}
+
+.no-calificaciones::before {
+    content: "📋";
+    display: block;
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+/* ============================================ */
+/*          MODAL DE ELIMINACIÓN               */
+/* ============================================ */
+
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     display: none;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    animation: fadeIn 0.3s ease;
 }
 
-/* Contenedor del modal */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .modal {
     background: #fff;
-    border-radius: 20px;
-    padding: 20px 30px;
-    max-width: 1000px;
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 500px;
     width: 90%;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    animation: modalFade 0.8s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: modalSlideUp 0.4s ease;
     position: relative;
 }
 
-/* Animación de aparición */
-@keyframes modalFade {
+@keyframes modalSlideUp {
     from {
-        transform: translateY(-50px);
+        transform: translateY(50px);
         opacity: 0;
     }
-
     to {
         transform: translateY(0);
         opacity: 1;
     }
 }
 
-/* Cerrar */
+.modal h3 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 .modal-close {
     position: absolute;
     top: 15px;
     right: 20px;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: #777;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+    color: #f44336;
+}
+
+.delete-options {
+    margin: 20px 0;
+}
+
+.delete-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.delete-option:hover {
+    background: #f0f0f0;
+}
+
+.delete-option input[type="radio"] {
+    margin-top: 3px;
     cursor: pointer;
 }
 
-/* Footer del modal */
+.delete-option input[type="radio"]:checked + .option-info {
+    color: #7b5cff;
+}
+
+.delete-option:has(input:checked) {
+    background: #f0ebff;
+    border-color: #7b5cff;
+}
+
+.option-info h4 {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.option-info p {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.4;
+}
+
 .modal-footer {
-    gap: 28px;
     display: flex;
     justify-content: flex-end;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 25px;
 }
 
 .modal-footer button {
-    background: linear-gradient(135deg, #7b5cff, #b389ff);
-    color: #fff;
-    padding: 10px 40px;
+    padding: 10px 24px;
     border: none;
     border-radius: 8px;
-    cursor: pointer;
+    font-size: 1rem;
     font-weight: 600;
-    transition: 0.3s ease;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.modal-footer button:hover {
-    background: linear-gradient(135deg, #6b46ff, #9c74ff);
+.btn-cancelar-modal {
+    background: #e0e0e0;
+    color: #555;
 }
 
-/* ======= INPUTS MODAL =========*/
-.custom_input {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    max-width: 80%;
+.btn-cancelar-modal:hover {
+    background: #d0d0d0;
 }
 
-.input {
-    font-size: 22px;
-    padding: 5px 11px;
-    width: 100%;
-    outline: none;
-    background: #FFFFFF;
-    color: #4B00C7;
-    border: 1px outset #C4D1EB;
-    border-radius: 5px;
-    box-shadow: 2px 4px 11px 1px #7572C7;
-    transition: .3s ease;
+.btn-confirmar-eliminar {
+    background: linear-gradient(135deg, #f44336, #e53935);
+    color: white;
 }
 
-.input:focus {
-    background: #F2F2F2;
-    border: 1px outset #4B00C7;
-    border-radius: 6px;
-}
-
-.input::placeholder {
-    color: #DDDDDD;
-}
-
-
-/* ======= COMBOBOX MODAL======= */
-
-.combo-wrap {
-    display: inline-block;
-    padding: 3px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    background: linear-gradient(135deg, #7b5cff 0%, #b389ff 50%, #cfa7ff 100%);
-    box-shadow: 0 6px 18px rgba(123, 92, 255, 0.12);
-    transition: transform .18s ease;
-}
-
-.combo-wrap:hover {
+.btn-confirmar-eliminar:hover {
+    background: linear-gradient(135deg, #e53935, #d32f2f);
     transform: translateY(-2px);
 }
 
-.fancy-select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    border: 1;
-    outline: none;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%);
-    padding: 12px 44px 12px 16px;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    color: #7b5cff;
-    min-width: 620px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(34, 34, 34, 0.06) inset;
-    transition: box-shadow .18s ease, transform .12s ease;
+/* ============================================ */
+/*          RESPONSIVE                         */
+/* ============================================ */
+
+@media (max-width: 1024px) {
+    .evaluacion-stats {
+        gap: 15px;
+    }
+
+    .stat-item {
+        padding: 6px 12px;
+    }
 }
 
-.fancy-select:focus {
-    box-shadow: 0 6px 18px rgba(87, 49, 255, 0.705), 0 4px 12px rgba(34, 34, 34, 0.04) inset;
-}
+@media (max-width: 768px) {
+    .evaluacion-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 
+    .evaluacion-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .table-header,
+    .calificacion-item {
+        grid-template-columns: 40px 1.5fr 0.8fr 1fr 0.8fr;
+        font-size: 0.85rem;
+    }
+
+    .table-header .carnet,
+    .calificacion-item .info:nth-child(3),
+    .table-header .comentario,
+    .calificacion-item .info:nth-child(5) {
+        display: none;
+    }
+
+    .btn-action {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+}
 
 
