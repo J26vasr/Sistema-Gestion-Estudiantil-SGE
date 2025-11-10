@@ -67,17 +67,25 @@ function clasificarReportes(reportes) {
       
       if (sevStr.includes('LEVE') || sevStr.includes('BAJO') || sevStr === '1') {
         clasificados.leves.push(reporte);
-      } else if (sevStr.includes('FUERTE') || sevStr.includes('MEDIO') || sevStr === '2') {
+      } else if (sevStr.includes('FUERTE') || sevStr.includes('MEDIO') || sevStr.includes('MODERADO') || sevStr === '2') {
         clasificados.fuertes.push(reporte);
       } else if (sevStr.includes('GRAVE') || sevStr.includes('ALTO') || sevStr === '3') {
         clasificados.graves.push(reporte);
       } else {
         // Por defecto, los reportes sin clasificar van a leves
+        console.warn('⚠️ Reporte sin clasificación clara:', reporte.id, 'severidad:', severidad);
         clasificados.leves.push(reporte);
       }
     } else {
+      console.warn('⚠️ Reporte sin severidad:', reporte.id);
       clasificados.leves.push(reporte);
     }
+  });
+
+  console.log('📊 Reportes clasificados:', {
+    leves: clasificados.leves.length,
+    fuertes: clasificados.fuertes.length,
+    graves: clasificados.graves.length
   });
 
   return clasificados;
@@ -252,6 +260,9 @@ async function agregarReporte(estudianteId, severidad, descripcion) {
     const userData = JSON.parse(localStorage.getItem('userData') || '{}');
     const usuarioId = userData.id || userData.usuarioId;
 
+    console.log('👤 Usuario actual:', userData);
+    console.log('🆔 Usuario ID:', usuarioId);
+
     if (!usuarioId) {
       await sweetAlert(2, 'No se pudo identificar el usuario. Por favor, inicia sesión nuevamente.', false);
       return false;
@@ -261,31 +272,65 @@ async function agregarReporte(estudianteId, severidad, descripcion) {
     const params = new URLSearchParams(window.location.search);
     const cursoId = params.get('cursoId');
 
-    // Crear el payload según la estructura esperada por la API
-    const payload = {
-      estudianteId: estudianteId,
-      usuarioId: usuarioId,
-      descripcion: descripcion,
-      severidad: severidad, // 'LEVE', 'FUERTE', o 'GRAVE'
-      tipo: 'CONDUCTA' // Tipo por defecto
-    };
+    console.log('📋 Datos para crear reporte:', {
+      estudianteId,
+      usuarioId,
+      descripcion,
+      severidad,
+      cursoId
+    });
 
-    // Si hay cursoId en la URL, agregarlo al payload
-    if (cursoId) {
-      payload.cursoId = cursoId;
+    // Validar que cursoId esté presente
+    if (!cursoId) {
+      throw new Error('El cursoId es requerido para crear el reporte');
     }
 
-    // Llamar al servicio de creación
-    await createReporte(payload);
+    // Crear el payload según la estructura esperada por la API
+    // POST /api/reportes
+    const payload = {
+      estudianteId: estudianteId,
+      cursoId: cursoId,
+      tipo: 'CONDUCTA',
+      titulo: `Reporte de conducta - Nivel ${severidad}`,
+      descripcion: descripcion,
+      creadoPorId: usuarioId
+    };
 
-    // Recargar reportes
+    console.log('📦 Payload a enviar:', payload);
+
+    // Llamar al servicio de creación
+    const reporteCreado = await createReporte(payload);
+    
+    console.log('✅ Reporte creado exitosamente:', reporteCreado);
+
+    // Recargar reportes para mostrar el nuevo reporte en la tabla correspondiente
     await cargarReportes();
 
-    await sweetAlert(1, 'Reporte agregado exitosamente', false);
+    // Mostrar mensaje de éxito específico según la severidad
+    let mensajeSeveridad = '';
+    if (severidad === 'LEVE') {
+      mensajeSeveridad = 'leve';
+    } else if (severidad === 'FUERTE') {
+      mensajeSeveridad = 'fuerte';
+    } else if (severidad === 'GRAVE') {
+      mensajeSeveridad = 'grave';
+    }
+
+    await sweetAlert(1, `El reporte ha sido agregado correctamente en la categoría ${mensajeSeveridad}`, false);
     return true;
   } catch (error) {
-    console.error('Error al crear reporte:', error);
-    await sweetAlert(2, 'No se pudo crear el reporte. Verifica los datos e intenta nuevamente.', false);
+    console.error('❌ Error completo al crear reporte:', error);
+    console.error('❌ Mensaje de error:', error.message);
+    console.error('❌ Stack:', error.stack);
+    
+    // Intentar obtener más información del error
+    if (error.response) {
+      console.error('❌ Response data:', error.response);
+    }
+    
+    // Mostrar el error real al usuario para que pueda ayudarnos a diagnosticar
+    const mensajeError = error.message || 'No se pudo crear el reporte. Error interno del servidor.';
+    await sweetAlert(2, `Error al crear reporte: ${mensajeError}`, false);
     return false;
   }
 }
@@ -363,14 +408,30 @@ guardarNotaBtn.addEventListener('click', async () => {
         return;
     }
 
+    // Deshabilitar botón mientras se procesa
+    guardarNotaBtn.disabled = true;
+    guardarNotaBtn.textContent = 'Guardando...';
+    guardarNotaBtn.style.opacity = '0.6';
+
     try {
         // Buscar estudiante por código
+        console.log('🔍 Buscando estudiante con código:', carnet);
+        
         const estudiante = await getEstudianteByCodigo(carnet);
         
+        console.log('👨‍🎓 Estudiante encontrado:', estudiante);
+        
         if (!estudiante || !estudiante.id) {
+            console.error('❌ Estudiante no encontrado o sin ID');
             await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
+            // Rehabilitar botón
+            guardarNotaBtn.disabled = false;
+            guardarNotaBtn.textContent = 'Guardar Reporte';
+            guardarNotaBtn.style.opacity = '1';
             return;
         }
+
+        console.log('✅ ID del estudiante:', estudiante.id);
 
         // Mapear nivel a severidad
         const severidadMap = {
@@ -381,6 +442,14 @@ guardarNotaBtn.addEventListener('click', async () => {
 
         const severidad = severidadMap[nivel];
 
+        console.log('📝 Creando reporte con datos:', {
+            estudiante: estudiante.usuario?.nombre || estudiante.nombre,
+            codigo: carnet,
+            estudianteId: estudiante.id,
+            severidad: severidad,
+            descripcion: razon
+        });
+
         // Crear el reporte
         const exito = await agregarReporte(estudiante.id, severidad, razon);
 
@@ -390,10 +459,25 @@ guardarNotaBtn.addEventListener('click', async () => {
             document.getElementById('carnetRepo').value = '';
             document.getElementById('razonRepo').value = '';
             nivelSelect.value = '';
+            
+            // Rehabilitar botón
+            guardarNotaBtn.disabled = false;
+            guardarNotaBtn.textContent = 'Guardar Reporte';
+            guardarNotaBtn.style.opacity = '1';
+        } else {
+            // Si falla, rehabilitar botón sin cerrar modal
+            guardarNotaBtn.disabled = false;
+            guardarNotaBtn.textContent = 'Guardar Reporte';
+            guardarNotaBtn.style.opacity = '1';
         }
     } catch (error) {
         console.error('Error al buscar estudiante:', error);
         await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
+        
+        // Rehabilitar botón
+        guardarNotaBtn.disabled = false;
+        guardarNotaBtn.textContent = 'Guardar Reporte';
+        guardarNotaBtn.style.opacity = '1';
     }
 });
 
