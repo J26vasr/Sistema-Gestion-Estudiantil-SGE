@@ -62,6 +62,9 @@ function renderTable(inscripciones) {
       ?? item?.estudiante?.codigo
       ?? '-';
 
+    // ID del estudiante para navegación
+    const estudianteId = item?.estudiante?.id ?? null;
+
     // Nombre del curso: preferir asignatura.nombre, luego nombreGrupo
     const cursoNombre = item?.curso?.asignatura?.nombre
       ?? item?.curso?.nombreGrupo
@@ -73,14 +76,31 @@ function renderTable(inscripciones) {
     const estado = String(estadoRaw).charAt(0).toUpperCase() + String(estadoRaw).slice(1);
 
     const tr = document.createElement('tr');
+    tr.style.cursor = estudianteId ? 'pointer' : 'default';
     tr.innerHTML = `
       <td>${fotoEstudianteUrl ? `<img src="${fotoEstudianteUrl}" alt="foto" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : ''}</td>
       <td>${estudianteNombre}</td>
       <td>${estudianteCodigo}</td>
       <td>${cursoNombre}</td>
-      <td>${(fecha)}</td>
+      <td>${formatDate(fecha)}</td>
       <td>${estado}</td>
     `;
+
+    // Agregar evento de clic para ir al perfil del estudiante
+    if (estudianteId) {
+      tr.addEventListener('click', () => {
+        localStorage.setItem('estudianteId', estudianteId);
+        window.location.href = `../vista/perfil-estudiante.html?estudianteId=${encodeURIComponent(estudianteId)}`;
+      });
+
+      tr.addEventListener('mouseenter', () => {
+        tr.style.backgroundColor = '#f0f0f0';
+      });
+      tr.addEventListener('mouseleave', () => {
+        tr.style.backgroundColor = '';
+      });
+    }
+
     tbody.appendChild(tr);
   });
 
