@@ -227,10 +227,44 @@ const agregarEventListenersEliminar = () => {
         boton.addEventListener('click', async (e) => {
             const actividadId = e.target.dataset.id;
             
-            // Confirmar eliminación
+            // Modal personalizado para elegir tipo de eliminación
+            const tipoEliminacion = await swal({
+                title: '¿Cómo deseas eliminar esta actividad?',
+                text: 'Selecciona el tipo de eliminación:',
+                icon: 'warning',
+                buttons: {
+                    cancel: {
+                        text: 'Cancelar',
+                        value: null,
+                        visible: true,
+                        className: 'swal-button--cancel'
+                    },
+                    soft: {
+                        text: '🗑️ Eliminación Suave',
+                        value: 'soft',
+                        visible: true,
+                        className: 'swal-button--soft'
+                    },
+                    permanent: {
+                        text: '❌ Eliminación Definitiva',
+                        value: 'permanent',
+                        visible: true,
+                        className: 'swal-button--danger'
+                    }
+                },
+                dangerMode: true
+            });
+            
+            if (!tipoEliminacion) return; // Usuario canceló
+            
+            // Confirmar eliminación según el tipo
+            const mensajeConfirmacion = tipoEliminacion === 'soft'
+                ? '¿Estás seguro de eliminar esta actividad? Podrás restaurarla después.'
+                : '⚠️ ¿Estás seguro? Esta acción es PERMANENTE y NO se puede deshacer.';
+            
             const confirmar = await swal({
-                title: '¿Estás seguro?',
-                text: 'Esta acción eliminará la actividad de forma permanente.',
+                title: tipoEliminacion === 'soft' ? 'Confirmar eliminación suave' : '⚠️ CONFIRMAR ELIMINACIÓN DEFINITIVA',
+                text: mensajeConfirmacion,
                 icon: 'warning',
                 buttons: ['Cancelar', 'Sí, eliminar'],
                 dangerMode: true
@@ -238,11 +272,16 @@ const agregarEventListenersEliminar = () => {
             
             if (confirmar) {
                 try {
-                    // Importar dinámicamente el servicio de eliminación
-                    const { deleteActividad } = await import('../services/actividad.service.js');
-                    await deleteActividad(actividadId);
-                    
-                    await sweetAlert(1, 'Actividad eliminada correctamente', true);
+                    // Importar el servicio correspondiente
+                    if (tipoEliminacion === 'soft') {
+                        const { deleteActividad } = await import('../services/actividad.service.js');
+                        await deleteActividad(actividadId);
+                        await sweetAlert(1, 'Actividad eliminada correctamente (eliminación suave)', true);
+                    } else {
+                        const { permanentDeleteActividad } = await import('../services/actividad.service.js');
+                        await permanentDeleteActividad(actividadId);
+                        await sweetAlert(1, 'Actividad eliminada permanentemente', true);
+                    }
                     
                     // Recargar actividades
                     await cargarActividades();

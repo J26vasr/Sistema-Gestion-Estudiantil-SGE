@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Editar Actividad</title>
+    <title>Editar Actividad</title>
     <link rel="stylesheet" href="../recursos/css/menu.css">
     <link rel="stylesheet" href="../recursos/css/agregar-act.css">
 </head>
@@ -15,138 +15,113 @@
     </div>
     <h3 class="TituloVentana">Editar Actividad</h3>
     <div class="container">
-        <div class="column-left">
-            <div class="card-subir-imagen">
-                <img id="img" src="../recursos/img/Subir-Img-Act.png" />
-                <h4>Agregar Una imagen</h3>
-                    <input type="file" id="file" accept="image/*" onchange="mostrar() " class="btn-view" />
+        <form id="actividadForm">
+            <div class="column-left">
+                <div class="card-subir-imagen">
+                    <img id="imagenPreview" src="../recursos/img/Subir-Img-Act.png" alt="Vista previa"/>
+                    <h4>Cambiar Imagen</h4>
+                    <input type="file" id="imagenActividad" accept="image/jpeg,image/jpg,image/png,image/webp,image/avif" class="btn-view" />
+                    <p class="error" id="imagenError"></p>
+                </div>
             </div>
-        </div>
 
-        <div class="column-right">
-            <div class="container-materia">
-                <h2>Información actividad</h2>
-                <div class="cards-grid">
-                    <div class="card">
-                        <div class="card-content">
-                            <div class="card-header">
-                                <div class="container-ComboBox">
-                                    <h3>Actividad de la materia:</h3>
-                                    <div id="materia">
-                                        <p>Matemáticas</p>
+            <div class="column-right">
+                <div class="container-materia">
+                    <h2>Información de la Actividad</h2>
+                    <div class="cards-grid">
+                        <div class="card">
+                            <div class="card-content">
+
+                                <!-- Curso (Asignatura-Profesor) -->
+                                <div class="card-header">
+                                    <div class="container-ComboBox">
+                                        <h3>Seleccione el curso (Asignatura):</h3>
+                                        <div class="combo-wrap">
+                                            <select id="curso" class="fancy-select" required>
+                                                <option value="">Cargando cursos...</option>
+                                            </select>
+                                        </div>
+                                        <p class="error" id="cursoError"></p>
                                     </div>
                                 </div>
-                            </div>
-                            <h3>Ingrese el titulo de la actividad:</h3>
-                            <div class="custom_input">
-                                <input type="text" id="TituloActividad" name="TituloActividad" required minlength="4"
-                                    maxlength="8" size="100" class="input" />
-                            </div>
-                            <h3>Ingrese la Descripción de la actividad:</h3>
-                            <div class="custom_input">
-                                <input type="text" id="DescripAct" name="DescripAct" required minlength="4"
-                                    maxlength="8" size="100" class="input" />
-                            </div>
-                            <h3>Ingrese la fecha en que se abre la actividad:</h3>
-                            <div class="custom_input">
-                                <input id="FechaIn" name="FechaIn" type="date" class="input" />
-                            </div>
 
-                            <h3>Ingrese la fecha en que se cierra la actividad:</h3>
-                            <div class="custom_input">
-                                <input id="FechaCie" name="FechaCie" type="date" class="input" />
-                            </div>
-                            <h3>Agregar documento para subir archivo:</h3>
-                            <div class="custom_input">
-                                <input id="ArchivoSubir" name="ArchivoSubir" type="file" class="input"
-                                    onchange="mostrarDocumento()" />
-                            </div>
-                            <!-- Contenedor separado para mostrar el documento -->
-                            <div id="documento-container"
-                                style="margin-top: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 10px; background: #f9f9f9;">
-                                <p>Documento cargado aparecerá aquí:</p>
-                                <div id="documento"></div>
-                            </div>
-                            <div class="footer">
-                                <a href="../vista/7A.html" class="btn-view">Editar Actividad</a>
+                                <!-- Título -->
+                                <h3>Título de la actividad:</h3>
+                                <div class="custom_input">
+                                    <input type="text" id="titulo" name="titulo" required maxlength="200" class="input" placeholder="Ej: Tarea de investigación sobre algoritmos" />
+                                    <p class="error" id="tituloError"></p>
+                                </div>
+
+                                <!-- Descripción -->
+                                <h3>Descripción de la actividad:</h3>
+                                <div class="custom_input">
+                                    <textarea id="descripcion" name="descripcion" required rows="4" class="input" placeholder="Describe detalladamente la actividad..." style="resize: vertical; min-height: 80px;"></textarea>
+                                    <p class="error" id="descripcionError"></p>
+                                </div>
+
+                                <!-- Fecha Apertura -->
+                                <h3>Fecha y hora de apertura:</h3>
+                                <div class="custom_input">
+                                    <input id="fechaApertura" name="fechaApertura" type="datetime-local" required class="input" />
+                                    <p class="error" id="fechaAperturaError"></p>
+                                </div>
+
+                                <!-- Fecha Cierre -->
+                                <h3>Fecha y hora de cierre:</h3>
+                                <div class="custom_input">
+                                    <input id="fechaCierre" name="fechaCierre" type="datetime-local" required class="input" />
+                                    <p class="error" id="fechaCierreError"></p>
+                                </div>
+
+                                <!-- Documento -->
+                                <h3>Documento adjunto (opcional):</h3>
+                                <div class="custom_input">
+                                    <input id="documentoActividad" name="documentoActividad" type="file" class="input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" />
+                                    <p class="file-info">Formatos permitidos: PDF, Word, Excel, PowerPoint, TXT (máx. 10MB)</p>
+                                    <p class="error" id="documentoError"></p>
+                                </div>
+
+                                <!-- Vista previa del documento -->
+                                <div id="documentoPreview" style="margin-top: 15px; border: 1px solid #ccc; padding: 10px; border-radius: 8px; background: #f9f9f9; min-height: 60px; max-height: 300px; overflow-y: auto;">
+                                    <p style="color: #666; font-size: 0.9rem;">📄 La vista previa del documento aparecerá aquí</p>
+                                </div>
+
+                                <!-- Estado Activo -->
+                                <div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="activo" name="activo" checked style="width: 20px; height: 20px; cursor: pointer;" />
+                                    <label for="activo" style="cursor: pointer; font-weight: 500;">Actividad activa</label>
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="footer" style="margin-top: 30px;">
+                                    <a href="../vista/vista-actividades.html" class="btn-view" style="background: linear-gradient(135deg, #6c757d, #868e96);">Cancelar</a>
+                                    <button type="submit" id="btnGuardar" class="btn-view">Guardar Cambios</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
     </div>
 
-    </div>
-    
-  <!-- SweetAlert Library -->
-  <script src="../controladores/lib/sweetalert.min.js"></script>
+    <!-- SweetAlert Library -->
+    <script src="../controladores/lib/sweetalert.min.js"></script>
 
-    <script>
-        // Aplica modo oscuro inmediatamente si está activado
-        if (localStorage.getItem("darkMode") === "true") {
-            document.documentElement.classList.add("dark");
-        }
-
-        function mostrar() {
-            var archivo = document.getElementById("file").files[0];
-            var reader = new FileReader();
-            if (file) {
-                reader.readAsDataURL(archivo);
-                reader.onloadend = function () {
-                    document.getElementById("img").src = reader.result;
-                }
-            }
-        }
-
-        function mostrarDocumento() {
-            var archivo = document.getElementById("ArchivoSubir").files[0];
-            var contenedor = document.getElementById("documento");
-            contenedor.innerHTML = ""; // Limpiar contenido anterior
-
-            if (!archivo) return;
-
-            var nombre = archivo.name;
-            var tipo = archivo.type;
-
-            if (tipo === "application/pdf") {
-                // Previsualizar PDF
-                var iframe = document.createElement("iframe");
-                iframe.src = URL.createObjectURL(archivo);
-                iframe.width = "100%";
-                iframe.height = "500px";
-                iframe.style.border = "none";
-                contenedor.appendChild(iframe);
-            } else {
-                // Otros documentos: mostrar un enlace de descarga
-                var enlace = document.createElement("a");
-                enlace.href = URL.createObjectURL(archivo);
-                enlace.download = nombre;
-                enlace.textContent = "Descargar: " + nombre;
-                enlace.style.display = "block";
-                enlace.style.color = "#4B00C7";
-                enlace.style.fontWeight = "bold";
-                contenedor.appendChild(enlace);
-            }
-        }
-
-    </script>
-
-
-    <!-- Menú dinámico -->
-    <div id="menu"></div>
+    <!-- Script principal -->
+    <script type="module" src="../controladores/js/editar-actividad.js"></script>
 
     <script>
         // Cargar el menú desde menu.html
         fetch("../vista/menu.html")
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById("menu").innerHTML = data;
-          const script = document.createElement("script");
-          script.type = "module";
-          script.src = "../controladores/js/menu.js";
-          document.body.appendChild(script);
-        });
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
     </script>
 </body>
 

@@ -7,10 +7,15 @@
 
 body {
     background: #f9fafc;
-    padding: 40px;
+    padding: 20px 40px; /* Reducido el padding superior */
+    padding-left: 100px; /* Espacio para el menú lateral */
     display: flex;
     justify-content: center;
-    transition: background 0.4s ease, color 0.4s ease;
+    transition: background 0.4s ease, color 0.4s ease, padding-left 0.3s ease;
+}
+
+body.menu-expanded {
+    padding-left: 280px; /* Espacio cuando el menú está expandido */
 }
 
 /* ======= TITULO SUPERIOR ======= */
@@ -53,11 +58,10 @@ hr.style-two {
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* 1 columna pequeña y 2 columnas para el contenido */
-    gap: 40px;
-    /* espacio entre columnas */
-    max-width: 2100px;
-    margin-top: 80px;
+    gap: 30px; /* Reducido de 40px a 30px */
+    max-width: 1600px; /* Reducido para centrar mejor el contenido */
+    margin: 100px auto 0; /* Centrado horizontal con auto */
+    width: 95%; /* Usar 95% del ancho disponible */
 }
 
 /* ======= COMBOBOX ======= */
@@ -136,30 +140,24 @@ hr.style-two {
 
 /* Estilo para la primera columna */
 .column-left {
-    margin-top: 94px;
+    margin-top: 20px; /* Reducido significativamente */
     display: flex;
-    /* Habilita flexbox */
     flex-direction: column;
-    /* Apila los elementos uno encima del otro */
-    justify-content: center;
-    /* Centra verticalmente dentro de la columna */
-    align-items: center;
-    /* Centra horizontalmente */
+    justify-content: flex-start; /* Cambio de center a flex-start */
     align-items: center;
     background: #f9fafc;
     border-radius: 15px;
     border-style: dashed;
-    height: 60%;
+    height: fit-content; /* Ajusta al contenido */
+    padding: 20px;
 }
 
 .card-subir-imagen {
     display: flex;
     flex-direction: column;
-    /* Apila imagen, h3 y botón */
     justify-content: center;
-    gap: 20px;
-    /* Espacio entre imagen, título y botón */
-    padding: 20px;
+    gap: 15px; /* Reducido de 20px a 15px */
+    padding: 10px;
     border-radius: 10px;
 }
 
@@ -247,6 +245,23 @@ hr.style-two {
     background: #F2F2F2;
     border: 1px outset #4B00C7;
     border-radius: 6px;
+}
+
+/* ======= MENSAJES DE ERROR Y AYUDA ======= */
+.error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+    font-weight: 500;
+}
+
+.file-info {
+    color: #6c757d;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+    font-style: italic;
 }
 
 /* ======= TARJETAS ======= */
@@ -386,6 +401,17 @@ hr.style-two {
 /* ===== RESPONSIVE PEQUEÑAS ===== */
 @media (max-width: 664px) {
 
+    /* Body sin padding lateral en móvil */
+    body {
+        padding: 20px;
+        padding-left: 20px;
+        padding-top: 100px; /* Espacio para el título */
+    }
+
+    body.menu-expanded {
+        padding-left: 20px;
+    }
+
     /* Título */
     .TituloVentana {
         left: 0;
@@ -400,8 +426,8 @@ hr.style-two {
     .container {
         margin-top: 80px;
         /* espacio por el título */
-        margin-left: 60px;
-        /* elimina margen lateral del menú */
+        margin-left: 0;
+        /* Sin margen lateral adicional, ya lo maneja el body */
         padding: 0 15px;
         /* padding interno */
         width: 100%;
