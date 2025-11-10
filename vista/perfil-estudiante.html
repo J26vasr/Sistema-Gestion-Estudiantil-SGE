@@ -19,13 +19,18 @@
     </div>
 
     <div class="botones-perfil">
-      <button class="btn-perfil btn-asistencia" id="btnAsistencia">Ver Asistencia</button>
-      <button class="btn-perfil btn-notas" id="btnBoleta">Ver Boleta de Notas</button>
+     
       <button class="btn-perfil btn-volver" onclick="window.history.back()">← Volver</button>
     </div>
   </div>
 
   <div id="menu"></div>
+  <script>
+  // Aplica modo oscuro inmediatamente si está activado
+  if (localStorage.getItem("darkMode") === "true") {
+    document.documentElement.classList.add("dark");
+  }
+</script>
 
   <!-- SweetAlert Library -->
   <script src="../controladores/lib/sweetalert.min.js"></script>
