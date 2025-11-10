@@ -7,6 +7,67 @@ let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 let selectedDate = null;
 
+// ========== FUNCIONES DE LOCALSTORAGE ==========
+
+/**
+ * Obtiene todas las actividades guardadas en localStorage
+ * @returns {Array} Array de objetos con las actividades
+ */
+function obtenerActividades() {
+  const actividades = localStorage.getItem('actividadesAgenda');
+  return actividades ? JSON.parse(actividades) : [];
+}
+
+/**
+ * Guarda una nueva actividad en localStorage
+ * @param {Object} actividad - Objeto con fecha, hora, descripcion, prioridad
+ */
+function guardarActividad(actividad) {
+  const actividades = obtenerActividades();
+  actividades.push({
+    ...actividad,
+    id: Date.now() // ID único basado en timestamp
+  });
+  localStorage.setItem('actividadesAgenda', JSON.stringify(actividades));
+}
+
+/**
+ * Elimina una actividad por su ID
+ * @param {number} id - ID de la actividad a eliminar
+ */
+function eliminarActividad(id) {
+  let actividades = obtenerActividades();
+  actividades = actividades.filter(act => act.id !== id);
+  localStorage.setItem('actividadesAgenda', JSON.stringify(actividades));
+}
+
+/**
+ * Obtiene actividades de una fecha específica
+ * @param {Date} fecha - Fecha a buscar
+ * @returns {Array} Actividades de esa fecha
+ */
+function obtenerActividadesPorFecha(fecha) {
+  const actividades = obtenerActividades();
+  // Normalizar fecha para comparación (día/mes/año)
+  const fechaBuscar = fecha.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit', 
+    year: 'numeric'
+  });
+  
+  return actividades.filter(act => {
+    // Normalizar la fecha guardada también
+    const fechaAct = new Date(act.fecha).toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+    return fechaAct === fechaBuscar || act.fecha === fechaBuscar;
+  });
+}
+
+// ========== FIN FUNCIONES LOCALSTORAGE ==========
+
 // Llenar selects
 for (let i = 0; i < 12; i++) {
   const option = document.createElement("option");
@@ -62,6 +123,28 @@ function showCalendar(month, year) {
         break;
       } else {
         cell.textContent = date;
+        
+        // Verificar si hay actividades en esta fecha
+        const fechaCell = new Date(year, month, date);
+        const actividadesDia = obtenerActividadesPorFecha(fechaCell);
+        
+        // Debug: mostrar en consola
+        if (actividadesDia.length > 0) {
+          console.log(`📅 Día ${date}: ${actividadesDia.length} actividad(es)`, actividadesDia);
+        }
+        
+        // Aplicar color según la prioridad más alta del día
+        if (actividadesDia.length > 0) {
+          const prioridades = actividadesDia.map(a => a.prioridad);
+          if (prioridades.includes('alta')) {
+            cell.classList.add('alta');
+          } else if (prioridades.includes('media')) {
+            cell.classList.add('media');
+          } else if (prioridades.includes('baja')) {
+            cell.classList.add('baja');
+          }
+        }
+        
         cell.addEventListener("click", () => openModal(date, month, year, cell));
         date++;
       }
@@ -69,6 +152,9 @@ function showCalendar(month, year) {
     }
     calendarBody.appendChild(row);
   }
+  
+  // Cargar actividades en la tabla
+  cargarTablaActividades();
 }
 
 // Modal
@@ -97,25 +183,85 @@ agendar.addEventListener("click", () => {
     return;
   }
 
-  // Cambiar color de la celda según prioridad
-  selectedCell.classList.remove("alta", "media", "baja");
-  selectedCell.classList.add(prioridad);
+  // Guardar en localStorage con formato consistente
+  const fechaFormateada = selectedDate.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit', 
+    year: 'numeric'
+  });
+  
+  const nuevaActividad = {
+    fecha: fechaFormateada,
+    hora: hora,
+    descripcion: actividad,
+    prioridad: prioridad
+  };
+  
+  guardarActividad(nuevaActividad);
+  
+  console.log('✅ Actividad guardada:', nuevaActividad);
 
-  // Agregar a tabla
-  const tabla = document.querySelector("#tabla-actividades tbody");
-  const fila = document.createElement("tr");
-  fila.innerHTML = `
-    <td>${selectedDate.toLocaleDateString()}</td>
-    <td>${hora}</td>
-    <td>${actividad}</td>
-    <td>${prioridad.charAt(0).toUpperCase() + prioridad.slice(1)}</td>
-  `;
-  tabla.appendChild(fila);
+  // Mostrar mensaje de éxito
+  if (typeof swal !== 'undefined') {
+    swal("¡Actividad agendada!", "La actividad se guardó correctamente", "success");
+  } else {
+    alert("Actividad agendada correctamente");
+  }
 
+  // Actualizar calendario para mostrar el color
+  showCalendar(currentMonth, currentYear);
+
+  // Cerrar modal y limpiar campos
   modal.style.display = "none";
   document.getElementById("actividad").value = "";
   document.getElementById("hora").value = "";
+  document.getElementById("prioridad").value = "baja";
 });
+
+/**
+ * Carga todas las actividades en la tabla
+ */
+function cargarTablaActividades() {
+  const tabla = document.querySelector("#tabla-actividades tbody");
+  tabla.innerHTML = "";
+  
+  const actividades = obtenerActividades();
+  
+  // Ordenar por fecha y hora
+  actividades.sort((a, b) => {
+    const fechaA = new Date(a.fecha + ' ' + a.hora);
+    const fechaB = new Date(b.fecha + ' ' + b.hora);
+    return fechaA - fechaB;
+  });
+  
+  if (actividades.length === 0) {
+    tabla.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#999;">No hay actividades agendadas</td></tr>';
+    return;
+  }
+  
+  actividades.forEach(act => {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${act.fecha}</td>
+      <td>${act.hora}</td>
+      <td>${act.descripcion}</td>
+      <td>${act.prioridad.charAt(0).toUpperCase() + act.prioridad.slice(1)}</td>
+      <td><button class="btn-eliminar" data-id="${act.id}">🗑️</button></td>
+    `;
+    tabla.appendChild(fila);
+  });
+  
+  // Agregar eventos para eliminar
+  document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = parseInt(e.target.dataset.id);
+      if (confirm('¿Estás seguro de eliminar esta actividad?')) {
+        eliminarActividad(id);
+        showCalendar(currentMonth, currentYear); // Recargar calendario
+      }
+    });
+  });
+}
 
 // Mostrar calendario al cargar
 showCalendar(currentMonth, currentYear);

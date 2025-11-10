@@ -202,11 +202,29 @@ td:hover {
 #tabla-actividades th, #tabla-actividades td {
   border: 1px solid #ccc;
   padding: 8px;
+  text-align: center;
 }
 
 #tabla-actividades th {
   background-color: #f2f0ff;
   color: #3c3cc9;
+}
+
+/* Botón eliminar en tabla */
+.btn-eliminar {
+  background: linear-gradient(135deg, #ff4757, #ff6b81);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-eliminar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(255, 71, 87, 0.3);
 }
 
 .activities-container h3 {

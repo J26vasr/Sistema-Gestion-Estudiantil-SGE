@@ -1,5 +1,7 @@
 package com.example.api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,8 +58,11 @@ public class Reporte extends BaseEntity {
      * Enum para el tipo de reporte
      */
     public enum TipoReporte {
+        @JsonProperty("CONDUCTA")
         conducta,
+        @JsonProperty("ACADEMICO")
         academico,
+        @JsonProperty("OTRO")
         otro
     }
 
@@ -65,8 +70,11 @@ public class Reporte extends BaseEntity {
      * Enum para el peso/severidad del reporte
      */
     public enum PesoReporte {
+        @JsonProperty("LEVE")
         leve,
+        @JsonProperty("MODERADO")
         moderado,
+        @JsonProperty("GRAVE")
         grave
     }
 }

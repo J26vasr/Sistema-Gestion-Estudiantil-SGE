@@ -285,12 +285,20 @@ async function agregarReporte(estudianteId, severidad, descripcion) {
       throw new Error('El cursoId es requerido para crear el reporte');
     }
 
+    // Mapear severidad a PesoReporte (LEVE, MODERADO, GRAVE)
+    const pesoMap = {
+      'LEVE': 'LEVE',
+      'FUERTE': 'MODERADO',  // FUERTE se mapea a MODERADO
+      'GRAVE': 'GRAVE'
+    };
+
     // Crear el payload según la estructura esperada por la API
-    // POST /api/reportes
+    // POST /api/reportes - CreateReporteRequest
     const payload = {
       estudianteId: estudianteId,
       cursoId: cursoId,
       tipo: 'CONDUCTA',
+      peso: pesoMap[severidad], // Campo requerido: LEVE, MODERADO o GRAVE
       titulo: `Reporte de conducta - Nivel ${severidad}`,
       descripcion: descripcion,
       creadoPorId: usuarioId
