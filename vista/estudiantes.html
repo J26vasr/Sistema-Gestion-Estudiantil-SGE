@@ -16,83 +16,7 @@
   <div class="container">
     <h2>Mis Clases</h2>
 
-    <div class="cards-grid">
-      <div class="card">
-        <div class="card-img">
-          <img src="../recursos/img/Estudiantes-img1.jpg">
-        </div>
-        <div class="card-content">
-          <div class="card-header">
-            <h3>Septimo grado "A"</h3>
-          </div>
-          <div class="tags">
-            <span>Matematicas</span>
-          </div>
-          <div class="footer">
-            <p><strong>Inicio:</strong> 16 enero</p>
-            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-        
-          <img src="../recursos/img/Estudiantes-img1.jpg">
-        </div>
-        <div class="card-content">
-          <div class="card-header">
-            <h3>Septimo grado "C"</h3>
-          </div><div class="tags">
-            <span>Ciencias Naturales</span>
-          </div>
-          <div class="footer">
-            <p><strong>Inicio:</strong>14 enero</p>
-            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
-          
-          </div>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-img">
-        
-          <img src="../recursos/img/Estudiantes-img1.jpg">
-        </div>
-        <div class="card-content">
-          <div class="card-header">
-            <h3>Octavo grado "D"</h3>
-          </div>
-          <div class="tags">
-            <span>Ciencias Naturales</span>
-          </div>
-          <div class="footer">
-            <p><strong>Inicia:</strong> 20 enero</p>
-            <a href="../vista/7A.html" class="btn-view">Ver Más</a>
-          
-          </div>
-        </div>
-      </div>
-      
-      <div class="card">
-        <div class="card-img">
-        
-          <img src="../recursos/img/Estudiantes-img1.jpg">
-        </div>
-        <div class="card-content">
-          <div class="card-header">
-            <h3>Noveno grado "A"</h3>
-          </div><div class="tags">
-            <span>Ciencias Naturales</span>
-          </div>
-          <div class="footer">
-            <p><strong>Inicio:</strong>14 enero</p>
-           <a href="../vista/7A.html" class="btn-view">Ver Más</a>
-          
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="cards-grid cards"></div>
   </div>
 
 
@@ -108,6 +32,8 @@
     document.documentElement.classList.add("dark");
   }
 </script>
+ <!-- Script para cargar los cursos dinámicamente -->
+  <script type="module" src="../controladores/js/cursos.js"></script>
 
 
     <script>

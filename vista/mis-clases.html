@@ -23,43 +23,16 @@
 
   <!-- Contenedor principal -->
   <div class="container">
-    <section class="cards">
-      <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-        <img src="../recursos/img/7g.jpg" alt="7G">
-        <div class="card-body">
-          <h3>Septimo grado A</h3>
-          <p>56 Estudiantes</p>
-        </div>
-      </div>
-
-      <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-        <img src="../recursos/img/7g.jpg" alt="7G">
-        <div class="card-body">
-          <h3>Septimo grado C</h3>
-          <p>56 Estudiantes </p>
-        </div>
-      </div>
-
-      <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-        <img src="../recursos/img/8g.jpg" alt="8G">
-        <div class="card-body">
-          <h3>Octavo grado D</h3>
-          <p>68 Estudiantes </p>
-        </div>
-      </div>
-
-      <div class="card" onclick="window.location.href='material.html'" style="cursor:pointer;">
-        <img src="../recursos/img/9g.jpg" alt="9G">
-        <div class="card-body">
-          <h3>Noveno Grado</h3>
-          <p>46 Estudiantes </p>
-        </div>
-      </div>
+    <section class="cards" id="assignedCourses">
+      <!-- Los cursos se cargarán dinámicamente aquí por cursos-asignados.js -->
     </section>
   </div>
 
   <!-- SweetAlert Library -->
   <script src="../controladores/lib/sweetalert.min.js"></script>
+
+  <!-- Cargar los cursos asignados dinámicamente -->
+  <script type="module" src="../controladores/js/cursos-asignados.js"></script>
 
   <div id="menu"></div>
 

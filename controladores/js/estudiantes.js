@@ -1,6 +1,7 @@
 // ...existing code...
-import { getAllInscripciones } from '../services/inscripcion.service.js';
+import { getAllInscripciones, getInscripcionesByCursoId } from '../services/inscripcion.service.js';
 import { sweetAlert } from '../utils/sweetAlert.js';
+import { getImageUrl } from '../utils/fileUrl.js';
 
 const listaEstudiantes = document.getElementById('lista-estudiantes');
 
@@ -34,7 +35,7 @@ function renderTable(inscripciones) {
   table.innerHTML = `
     <thead>
       <tr>
-        <th>#</th>
+        <th>Foto</th>
         <th>Estudiante</th>
         <th>Código</th>
         <th>Curso</th>
@@ -47,6 +48,10 @@ function renderTable(inscripciones) {
   const tbody = table.querySelector('tbody');
 
   inscripciones.forEach((item, idx) => {
+    // Obtener foto del estudiante (EstudianteResponse.fotoUrl)
+    const fotoEstudiantePath = item?.estudiante?.fotoUrl ?? item?.estudiante?.usuario?.fotoPerfilUrl ?? null;
+    const fotoEstudianteUrl = getImageUrl(fotoEstudiantePath, null);
+
     // Nombre del estudiante: preferir usuario.nombre
     const estudianteNombre = item?.estudiante?.usuario?.nombre
       ?? item?.estudiante?.nombre
@@ -69,11 +74,11 @@ function renderTable(inscripciones) {
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${idx + 1}</td>
+      <td>${fotoEstudianteUrl ? `<img src="${fotoEstudianteUrl}" alt="foto" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : ''}</td>
       <td>${estudianteNombre}</td>
       <td>${estudianteCodigo}</td>
       <td>${cursoNombre}</td>
-      <td>${formatDate(fecha)}</td>
+      <td>${(fecha)}</td>
       <td>${estado}</td>
     `;
     tbody.appendChild(tr);
@@ -109,9 +114,19 @@ export async function loadInscripciones(page = '0', size = '20') { // Cambia el 
 
   listaEstudiantes.innerHTML = `<p style="color:gray; text-align:center; margin-top:1rem;">Cargando inscripciones...</p>`;
 
+  // Obtener cursoId desde la query string de la URL
+  const params = new URLSearchParams(window.location.search);
+  const cursoId = params.get('cursoId');
+
   try {
-    // La API devuelve un objeto paginado { content: [...], totalElements, number, size, ... }
-    const res = await getAllInscripciones(Number(page), Number(size));
+    let res;
+    if (cursoId) {
+      // Usar endpoint específico por curso
+      res = await getInscripcionesByCursoId(cursoId);
+    } else {
+      // Fallback: obtener todas las inscripciones paginadas
+      res = await getAllInscripciones(Number(page), Number(size));
+    }
 
     // Normalizar la respuesta para obtener el array de inscripciones
     const inscripciones = normalizeResponse(res);
@@ -124,26 +139,13 @@ export async function loadInscripciones(page = '0', size = '20') { // Cambia el 
       return;
     }
 
-    // Renderizar la tabla con los objetos del array (res.content)
+    // Renderizar la tabla con los objetos del array
     renderTable(inscripciones);
-
-    // (Opcional) podríamos mostrar información de paginación en la UI más adelante
   } catch (err) {
     console.error('Error al obtener inscripciones:', err);
 
-    // Fallback: mock data para desarrollo local
-    const mock = [
-      { estudianteNombre: 'Juan Pérez', cursoNombre: 'Matemáticas I', fechaInscripcion: new Date().toISOString(), estado: 'ACTIVO' },
-      { estudianteNombre: 'María López', cursoNombre: 'Historia', fechaInscripcion: new Date().toISOString(), estado: 'PENDIENTE' }
-    ];
-
-    // Si quieres ver error real en UI, usa renderError con detalles
     renderError('No se pudo conectar al servidor. Se muestran datos de ejemplo.', String(err?.message ?? err));
 
-    // Mostrar mock debajo o comentar la siguiente línea si no deseas mock automático
-    // renderTable(mock);
-
-    // Mostrar alerta segura (fallback a window.alert si sweetAlert falla o no está definida)
     try {
       if (typeof sweetAlert === 'function') {
         await sweetAlert(2, 'No se pudieron cargar las inscripciones desde el servidor.', false);
