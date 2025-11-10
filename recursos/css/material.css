@@ -12,113 +12,319 @@ body {
   color: #333;
 }
 
-    /* 🔹 Estilos del botón Agregar */
-    .btn-agregar {
-    
-        margin-top: -70px;
-        margin-left: 250px;
-      display: inline-block;
-      background-color: #6a1b9a;
-      color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-bottom: 15px;
-      float: right;
-    }
-
-    .btn-agregar:hover {
-      background-color: #6a1b9a;
-      transform: scale(1.05);
-    }
-
-    /* Ajuste responsivo */
-    @media (max-width: 600px) {
-      .btn-agregar {
-        float: none;
-        display: block;
-        width: 100%;
-        text-align: center;
-      }
-    }
-
-
-
 .container {
   width: 90%;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
 }
-.imagen{
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  }
 
 h1 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   color: #2e2e2e;
+  font-size: 2rem;
 }
 
-/* Grid Layout */
-.grid {
+/* 🔹 Estilos del botón Agregar */
+.boton-container {
+  text-align: right;
+  margin-bottom: 30px;
+}
+
+.btn-agregar {
+  display: inline-block;
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(106, 27, 154, 0.3);
+}
+
+.btn-agregar:hover {
+  background: linear-gradient(135deg, #8e24aa, #6a1b9a);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(106, 27, 154, 0.4);
+}
+
+/* 🔹 Secciones de cursos */
+.curso-section {
+  margin-bottom: 40px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.curso-titulo {
+  font-size: 1.5rem;
+  color: #6a1b9a;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #f0f0f0;
+}
+
+/* 🔹 Grid de clases */
+.clases-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
 }
 
-/* Community card styling */
-.community-card {
-  background-color: #fff;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* 🔹 Tarjetas de clases */
+.clase-card {
+  background: linear-gradient(135deg, #fff, #f9f9f9);
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
 }
 
-.community-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+.clase-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
 }
 
-.community-card img {
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-}
-
-.info {
-  padding: 15px;
-  text-align: center;
-}
-
-.info h3 {
-  font-size: 1.2rem;
-  margin-bottom: 10px;
-  color: #4e4e4e;
-}
-
-.info p {
+.clase-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
-  font-size: 1rem;
-  color: #7a7a7a;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #f0f0f0;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #be4eff;
-  border: none;
+.clase-header h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+.unidad-badge {
+  background: linear-gradient(135deg, #6a1b9a, #8e24aa);
   color: white;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-button:hover {
-  background-color: #500a70;
+/* 🔹 Información de la clase */
+.clase-info {
+  margin-bottom: 15px;
+}
+
+.clase-info p {
+  margin: 8px 0;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.clase-info strong {
+  color: #333;
+}
+
+.documento-link {
+  color: #6a1b9a;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.documento-link:hover {
+  color: #8e24aa;
+  text-decoration: underline;
+}
+
+/* 🔹 Botones de acciones */
+.clase-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-editar, .btn-eliminar {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-editar {
+  background: linear-gradient(135deg, #4caf50, #66bb6a);
+  color: white;
+}
+
+.btn-editar:hover {
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  transform: scale(1.05);
+}
+
+.btn-eliminar {
+  background: linear-gradient(135deg, #f44336, #e57373);
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background: linear-gradient(135deg, #e57373, #f44336);
+  transform: scale(1.05);
+}
+
+/* 🔹 Sin datos */
+.no-data {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.no-data p {
+  font-size: 1.3rem;
+  color: #999;
+  margin: 10px 0;
+}
+
+/* 🔹 Modal de eliminación */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background-color: white;
+  margin: 10% auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.modal-content p {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 1rem;
+}
+
+.modal-options {
+  margin: 20px 0;
+}
+
+.radio-option {
+  display: block;
+  padding: 12px;
+  margin: 10px 0;
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radio-option:hover {
+  background: #f0f0f0;
+  border-color: #6a1b9a;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.btn-cancelar-modal, .btn-confirmar-modal {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar-modal {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.btn-cancelar-modal:hover {
+  background: #d0d0d0;
+}
+
+.btn-confirmar-modal {
+  background: linear-gradient(135deg, #f44336, #e57373);
+  color: white;
+}
+
+.btn-confirmar-modal:hover {
+  background: linear-gradient(135deg, #e57373, #f44336);
+}
+
+/* 🔹 Responsive */
+@media (max-width: 768px) {
+  .clases-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .clase-actions {
+    flex-direction: column;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  .boton-container {
+    text-align: center;
+  }
 }

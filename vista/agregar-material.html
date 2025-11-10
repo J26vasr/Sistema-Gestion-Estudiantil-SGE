@@ -1,82 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestión de Archivos</title>
+  <title>Agregar Material (Clase)</title>
+  <link rel="stylesheet" href="../recursos/css/menu.css">
   <link rel="stylesheet" href="../recursos/css/agregar-material.css">
 </head>
+
 <body>
-  
-  <h2 class="titulo">📂 Gestión de Archivos</h2>
-  
-
-  <div class="container">
-    <!-- Vista previa -->
-    <div class="preview">
-      <img id="fileIcon" src="https://cdn-icons-png.flaticon.com/512/833/833524.png" alt="Vista previa">
-      <button id="btnSubir">📎 Agregar documento</button>
-      <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.xls,.xlsx" hidden>
-    </div>
-
-    <!-- Formulario -->
-    <div class="form">
-      <label for="titulo">Título de archivo</label>
-      <input type="text" id="titulo" placeholder="Ej: Actividad Semana 1" required>
-
-      <label for="semana">Semana</label>
-      <input type="text" id="semana" placeholder="Ej: Semana 1" required>
-
-      <div class="botones">
-        <button class="btn agregar">Agregar</button>
-        <button class="btn editar">Editar</button>
-        <button class="btn eliminar">Eliminar</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const fileInput = document.getElementById("fileInput");
-    const btnSubir = document.getElementById("btnSubir");
-    const fileIcon = document.getElementById("fileIcon");
-
-    btnSubir.addEventListener("click", () => fileInput.click());
-
-    fileInput.addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      if (!file) return;
-      const ext = file.name.split('.').pop().toLowerCase();
-
-      switch (ext) {
-        case "pdf":
-          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/337/337946.png";
-          break;
-        case "doc":
-        case "docx":
-          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/281/281760.png";
-          break;
-        case "xls":
-        case "xlsx":
-          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/732/732220.png";
-          break;
-        default:
-          alert("Formato no permitido. Solo PDF, Word o Excel.");
-          fileInput.value = "";
-          fileIcon.src = "https://cdn-icons-png.flaticon.com/512/833/833524.png";
-      }
-    });
-  </script>
-
+  <!-- Menú dinámico -->
   <div id="menu"></div>
+  
+  <h3 class="TituloVentana">Agregar Material (Clase)</h3>
+  
+  <div class="container-material">
+    <form id="claseForm">
+      <div class="form-card">
+        
+        <!-- Tema -->
+        <div class="form-group">
+          <label for="tema">� Tema:</label>
+          <select id="tema" class="form-control" name="tema" required>
+            <option value="">Cargando temas...</option>
+          </select>
+          <p class="error" id="temaError"></p>
+        </div>
+
+        <!-- Fecha -->
+        <div class="form-group">
+          <label for="fecha">📅 Fecha de la clase:</label>
+          <input type="date" id="fecha" name="fecha" required class="form-control" />
+          <p class="error" id="fechaError"></p>
+        </div>
+
+        <!-- Hora Inicio y Fin -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inicio">🕐 Hora de inicio:</label>
+            <input type="time" id="inicio" name="inicio" required class="form-control" />
+            <p class="error" id="inicioError"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="fin">🕐 Hora de fin:</label>
+            <input type="time" id="fin" name="fin" required class="form-control" />
+            <p class="error" id="finError"></p>
+          </div>
+        </div>
+
+        <!-- Notas -->
+        <div class="form-group">
+          <label for="notas">📝 Notas de la clase (opcional):</label>
+          <textarea id="notas" name="notas" rows="4" class="form-control" placeholder="Notas adicionales sobre la clase..."></textarea>
+          <p class="error" id="notasError"></p>
+        </div>
+
+        <!-- Documento -->
+        <div class="form-group">
+          <label for="documentoClase">📄 Documento de la clase:</label>
+          <input type="file" id="documentoClase" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" class="form-control-file" />
+          <small class="form-text">Formatos permitidos: PDF, Word, Excel, PowerPoint, TXT (máx. 10MB)</small>
+          <p class="error" id="documentoError"></p>
+        </div>
+
+        <!-- Vista previa del documento -->
+        <div id="documentoPreview" class="documento-preview">
+          <p class="preview-placeholder">📄 Vista previa del documento aparecerá aquí</p>
+        </div>
+
+        <!-- Botones -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" id="btnCancelar">
+            ❌ Cancelar
+          </button>
+          <button type="submit" id="btnGuardar" class="btn-guardar">
+            💾 Guardar Clase
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 
   <!-- SweetAlert Library -->
   <script src="../controladores/lib/sweetalert.min.js"></script>
 
-  <script>
-    if (localStorage.getItem("darkMode") === "true") {
-      document.documentElement.classList.add("dark");
-    }
+  <!-- Script principal -->
+  <script type="module" src="../controladores/js/agregar-material.js"></script>
 
+  <script>
+    // Cargar el menú desde menu.html
     fetch("../vista/menu.html")
       .then(res => res.text())
       .then(data => {
@@ -88,5 +102,6 @@
       });
   </script>
 </body>
+
 </html>
 

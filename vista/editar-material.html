@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Material (Clase)</title>
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/agregar-material.css">
+</head>
+<body>
+    <!-- Menú dinámico -->
+    <div id="menu"></div>
+    
+    <h3 class="TituloVentana">Editar Material (Clase)</h3>
+    
+    <div class="container-material">
+        <form id="claseForm">
+            <div class="form-card">
+                
+                <!-- Tema -->
+                <div class="form-group">
+                    <label for="tema">� Tema:</label>
+                    <select id="tema" class="form-control" name="tema" required>
+                        <option value="">Cargando temas...</option>
+                    </select>
+                    <p class="error" id="temaError"></p>
+                </div>
+
+                <!-- Fecha -->
+                <div class="form-group">
+                    <label for="fecha">📅 Fecha de la clase:</label>
+                    <input type="date" id="fecha" name="fecha" required class="form-control" />
+                    <p class="error" id="fechaError"></p>
+                </div>
+
+                <!-- Hora Inicio y Fin -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="inicio">🕐 Hora de inicio:</label>
+                        <input type="time" id="inicio" name="inicio" required class="form-control" />
+                        <p class="error" id="inicioError"></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fin">🕐 Hora de fin:</label>
+                        <input type="time" id="fin" name="fin" required class="form-control" />
+                        <p class="error" id="finError"></p>
+                    </div>
+                </div>
+
+                <!-- Notas -->
+                <div class="form-group">
+                    <label for="notas">📝 Notas de la clase (opcional):</label>
+                    <textarea id="notas" name="notas" rows="4" class="form-control" placeholder="Notas adicionales sobre la clase..."></textarea>
+                    <p class="error" id="notasError"></p>
+                </div>
+
+                <!-- Documento -->
+                <div class="form-group">
+                    <label for="documentoClase">📄 Cambiar documento de la clase:</label>
+                    <input type="file" id="documentoClase" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt" class="form-control-file" />
+                    <small class="form-text">Formatos permitidos: PDF, Word, Excel, PowerPoint, TXT (máx. 10MB)</small>
+                    <p class="error" id="documentoError"></p>
+                </div>
+
+                <!-- Vista previa del documento -->
+                <div id="documentoPreview" class="documento-preview">
+                    <p class="preview-placeholder">📄 Vista previa del documento aparecerá aquí</p>
+                </div>
+
+                <!-- Botones -->
+                <div class="form-actions">
+                    <button type="button" class="btn-cancelar" id="btnCancelar">
+                        ❌ Cancelar
+                    </button>
+                    <button type="submit" id="btnGuardar" class="btn-guardar">
+                        💾 Guardar Cambios
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- SweetAlert Library -->
+    <script src="../controladores/lib/sweetalert.min.js"></script>
+
+    <!-- Script principal -->
+    <script type="module" src="../controladores/js/editar-material.js"></script>
+
+    <script>
+        // Cargar el menú desde menu.html
+        fetch("../vista/menu.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+</body>
+</html>

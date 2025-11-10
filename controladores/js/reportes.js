@@ -1,5 +1,6 @@
 // Importar servicios y utilidades
 import { getAllReportes, createReporte, deleteReporte } from '../services/reporte.service.js';
+import { getEstudianteByCodigo } from '../services/estudiante.service.js';
 import { getImageUrl } from '../utils/fileUrl.js';
 import { sweetAlert } from '../utils/sweetAlert.js';
 
@@ -31,7 +32,7 @@ function renderEstudianteReporte(reporte) {
   const descripcion = reporte.descripcion || 'Sin descripción';
 
   return `
-    <div class="student" data-reporte-id="${reporte.id}">
+    <div class="student" data-reporte-id="${reporte.id}" style="position: relative;">
       <img src="${fotoUrl}" alt="Foto estudiante" onerror="this.src='https://randomuser.me/api/portraits/men/32.jpg'">
       <div class="info">
         <h4>${nombre}</h4>
@@ -42,6 +43,9 @@ function renderEstudianteReporte(reporte) {
       <div class="info">
         <h4>${descripcion}</h4>
       </div>
+      <button class="btn-eliminar-reporte" data-reporte-id="${reporte.id}" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">
+        🗑️ Eliminar
+      </button>
     </div>
   `;
 }
@@ -87,6 +91,14 @@ function renderizarReportes(reportes) {
   if (contenedorLeves) {
     if (clasificados.leves.length > 0) {
       contenedorLeves.innerHTML = clasificados.leves.map(r => renderEstudianteReporte(r)).join('');
+      // Agregar event listeners a los botones de eliminar
+      contenedorLeves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          eliminarReporte(reporteId);
+        });
+      });
     } else {
       contenedorLeves.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes leves.</p>';
     }
@@ -96,6 +108,14 @@ function renderizarReportes(reportes) {
   if (contenedorFuertes) {
     if (clasificados.fuertes.length > 0) {
       contenedorFuertes.innerHTML = clasificados.fuertes.map(r => renderEstudianteReporte(r)).join('');
+      // Agregar event listeners a los botones de eliminar
+      contenedorFuertes.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          eliminarReporte(reporteId);
+        });
+      });
     } else {
       contenedorFuertes.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes fuertes.</p>';
     }
@@ -105,6 +125,14 @@ function renderizarReportes(reportes) {
   if (contenedorGraves) {
     if (clasificados.graves.length > 0) {
       contenedorGraves.innerHTML = clasificados.graves.map(r => renderEstudianteReporte(r)).join('');
+      // Agregar event listeners a los botones de eliminar
+      contenedorGraves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          eliminarReporte(reporteId);
+        });
+      });
     } else {
       contenedorGraves.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes graves.</p>';
     }
@@ -182,28 +210,107 @@ function filtrarReportes(textoBusqueda) {
 
   renderizarReportes(reportesFiltrados);
 }
+
+// Función para eliminar un reporte
+async function eliminarReporte(reporteId) {
+  if (!reporteId) {
+    await sweetAlert(2, 'ID de reporte no válido', false);
+    return;
+  }
+
+  try {
+    // Confirmar eliminación
+    const confirmacion = confirm('¿Está seguro de que desea eliminar este reporte?');
+    if (!confirmacion) return;
+
+    // Llamar al servicio de eliminación
+    await deleteReporte(reporteId);
+
+    // Mostrar animación de éxito
+    const fullNotif = document.getElementById('fullNotif');
+    if (fullNotif) {
+      fullNotif.classList.add('show');
+      setTimeout(() => {
+        fullNotif.classList.remove('show');
+      }, 3000);
+    }
+
+    // Recargar reportes
+    await cargarReportes();
+    
+    await sweetAlert(1, 'Reporte eliminado exitosamente', false);
+  } catch (error) {
+    console.error('Error al eliminar reporte:', error);
+    await sweetAlert(2, 'No se pudo eliminar el reporte. Intenta nuevamente.', false);
+  }
+}
+
+// Función para agregar un nuevo reporte
+async function agregarReporte(estudianteId, severidad, descripcion) {
+  try {
+    // Obtener el usuario actual del localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const usuarioId = userData.id || userData.usuarioId;
+
+    if (!usuarioId) {
+      await sweetAlert(2, 'No se pudo identificar el usuario. Por favor, inicia sesión nuevamente.', false);
+      return false;
+    }
+
+    // Obtener cursoId desde la URL si existe
+    const params = new URLSearchParams(window.location.search);
+    const cursoId = params.get('cursoId');
+
+    // Crear el payload según la estructura esperada por la API
+    const payload = {
+      estudianteId: estudianteId,
+      usuarioId: usuarioId,
+      descripcion: descripcion,
+      severidad: severidad, // 'LEVE', 'FUERTE', o 'GRAVE'
+      tipo: 'CONDUCTA' // Tipo por defecto
+    };
+
+    // Si hay cursoId en la URL, agregarlo al payload
+    if (cursoId) {
+      payload.cursoId = cursoId;
+    }
+
+    // Llamar al servicio de creación
+    await createReporte(payload);
+
+    // Recargar reportes
+    await cargarReportes();
+
+    await sweetAlert(1, 'Reporte agregado exitosamente', false);
+    return true;
+  } catch (error) {
+    console.error('Error al crear reporte:', error);
+    await sweetAlert(2, 'No se pudo crear el reporte. Verifica los datos e intenta nuevamente.', false);
+    return false;
+  }
+}
 const modalHTML = `
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
     <h2>Agregar Reporte</h2>
-    <p><strong>Seleccione el nivel del reporte</strong></p>
+    <p><strong>Seleccione el nivel de severidad del reporte</strong></p>
     <!-- Combobox-->
             <div class="combo-wrap">
-                <select class="fancy-select" aria-label="Seleccione un nivel">
+                <select class="fancy-select" id="nivelSeveridad" aria-label="Seleccione un nivel">
                     <option value="" disabled selected>Seleccione un nivel...</option>
-                    <option value="1">Leve</option>
-                    <option value="2">Fuerte</option>
-                    <option value="3">Grave</option>
+                    <option value="1">😶 Leve</option>
+                    <option value="2">🤐 Fuerte</option>
+                    <option value="3">😠 Grave</option>
                 </select>
             </div>
-    <p><strong>Escriba el carnet del estudiante a agregar el reporte:</strong></p>
+    <p><strong>Código del estudiante:</strong></p>
      <div class="custom_input">
-      <input type="text" name="carnetRepo" id="carnetRepo" class="input" placeholder="Carnet">
+      <input type="text" name="carnetRepo" id="carnetRepo" class="input" placeholder="Ej: EST-2024-001">
     </div>
-    <p><strong>Escriba la razón del reporte:</strong></p>
-      <textarea name="razonRepo" id="razonRepo" class="input" placeholder="Razón del reporte"></textarea>
+    <p><strong>Descripción del reporte:</strong></p>
+      <textarea name="razonRepo" id="razonRepo" class="input" placeholder="Describe la razón del reporte..." rows="4"></textarea>
     <div class="modal-footer">
-      <button id="guardarNota">Guardar</button>
+      <button id="guardarNota">Guardar Reporte</button>
       <button id="cerrarModal">Cancelar</button>
     </div>
   </div>
@@ -226,6 +333,68 @@ abrirModalBtn.addEventListener('click', (e) => {
 // Cerrar modal
 cerrarModalBtn.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
+    // Limpiar campos
+    document.getElementById('carnetRepo').value = '';
+    document.getElementById('razonRepo').value = '';
+    document.querySelector('.fancy-select').value = '';
+});
+
+// Guardar reporte
+const guardarNotaBtn = document.getElementById('guardarNota');
+guardarNotaBtn.addEventListener('click', async () => {
+    const carnet = document.getElementById('carnetRepo').value.trim();
+    const razon = document.getElementById('razonRepo').value.trim();
+    const nivelSelect = document.querySelector('.fancy-select');
+    const nivel = nivelSelect.value;
+
+    // Validaciones
+    if (!carnet) {
+        await sweetAlert(2, 'Por favor, ingresa el código del estudiante', false);
+        return;
+    }
+
+    if (!nivel) {
+        await sweetAlert(2, 'Por favor, selecciona el nivel del reporte', false);
+        return;
+    }
+
+    if (!razon) {
+        await sweetAlert(2, 'Por favor, describe la razón del reporte', false);
+        return;
+    }
+
+    try {
+        // Buscar estudiante por código
+        const estudiante = await getEstudianteByCodigo(carnet);
+        
+        if (!estudiante || !estudiante.id) {
+            await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
+            return;
+        }
+
+        // Mapear nivel a severidad
+        const severidadMap = {
+            '1': 'LEVE',
+            '2': 'FUERTE',
+            '3': 'GRAVE'
+        };
+
+        const severidad = severidadMap[nivel];
+
+        // Crear el reporte
+        const exito = await agregarReporte(estudiante.id, severidad, razon);
+
+        if (exito) {
+            // Cerrar modal y limpiar campos
+            modalOverlay.style.display = 'none';
+            document.getElementById('carnetRepo').value = '';
+            document.getElementById('razonRepo').value = '';
+            nivelSelect.value = '';
+        }
+    } catch (error) {
+        console.error('Error al buscar estudiante:', error);
+        await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
+    }
 });
 
 
@@ -256,14 +425,10 @@ for (let i = 0; i < 50; i++) {
     bgStars.appendChild(star);
 }
 
-// Mostrar overlay al eliminar
-btnEliminar.addEventListener('click', (e) => {
+// Botón "Eliminar reporte" en el header - mostrar información
+btnEliminar.addEventListener('click', async (e) => {
     e.preventDefault();
-    fullNotif.classList.add('show');
-
-    setTimeout(() => {
-        fullNotif.classList.remove('show');
-    }, 4000); // duración total del efecto
+    await sweetAlert(3, 'Para eliminar un reporte específico, haz clic en el botón "🗑️ Eliminar" que aparece en cada reporte de la lista.', false);
 });
 
 // Inicialización al cargar la página

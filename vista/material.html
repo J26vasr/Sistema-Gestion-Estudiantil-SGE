@@ -3,71 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis clases</title>
+  <title>Mis Clases - Material</title>
   <link rel="stylesheet" href="../recursos/css/material.css">
   <link rel="stylesheet" href="../recursos/css/menu.css">
 </head>
 <body>
   <div class="container">
-    <h1>Mis clases</h1>
-      <!-- Botón Agregar -->
-  <div class="boton-container">
-    <a href="../vista/agregar-material.html">
-      
-    <button class="btn-agregar" id="btnAgregar">➕ Agregar</button>
-
-    </a>
+    <h1>📚 Mis Clases - Material Educativo</h1>
+    
+    <!-- Botón Agregar -->
+    <div class="boton-container">
+      <button class="btn-agregar" id="btnAgregarClase">
+        ➕ Agregar Nueva Clase
+      </button>
+    </div>
+    
+    <!-- Contenedor dinámico de clases -->
+    <div id="clasesContainer">
+      <!-- Las clases se cargarán dinámicamente aquí -->
+      <div style="text-align: center; padding: 40px; color: #999;">
+        <p>⏳ Cargando clases...</p>
+      </div>
+    </div>
   </div>
-    <div class="grid">
-      <div class="community-card">
-        <img class="imagen"src="../recursos/img/img-matematica-material.jpg" alt="Marketing">
-        <div class="info">
-          <h3>Presentacion 1</h3>
-          <p>Semana 1</p>
-           <a href="../recursos/material/Presentación de clase 01102025 (2).pdf" class="">
-          <button>Ver Presentación</button>
-          </a>
-        </div>
+  
+  <!-- Modal de eliminación -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h2>🗑️ Eliminar Clase</h2>
+      <p>Selecciona el tipo de eliminación:</p>
+      
+      <div class="modal-options">
+        <label class="radio-option">
+          <input type="radio" name="deleteType" value="soft">
+          <span>🔄 Eliminación suave (se puede recuperar)</span>
+        </label>
+        
+        <label class="radio-option">
+          <input type="radio" name="deleteType" value="permanent">
+          <span>⚠️ Eliminación permanente (no se puede recuperar)</span>
+        </label>
       </div>
-      <div class="community-card">
-        <img src="../recursos/img/img-ciencias-material.jpg" alt="UI/UX">
-        <div class="info">
-         <h3>Presentacion 1</h3>
-          <p>Semana 1</p>
-          <a href="../recursos/material/Presentación de clase 01102025 (2).pdf" class="">
-          <button>Ver Presentación</button>
-          </a>
-        </div>
-      </div>
-      <div class="community-card">
-        <img src="../recursos/img/img-ciencias-material.jpg" alt="Creativo">
-        <div class="info">
-        <h3>Presentacion 1</h3>
-          <p>Semana 1</p>
-        <a href="../recursos/material/Presentación de clase 01102025 (2).pdf" class="">
-          <button>Ver Presentación</button>
-          </a>
-        </div>
-      </div>
-      <div class="community-card">
-        <img src="../recursos/img/img-matematica-material.jpg" alt="Historia de Éxito">
-        <div class="info">
-         <h3>Presentacion 1</h3>
-          <p>Semana 1</p>
-         <a href="../recursos/material/Presentación de clase 01102025 (2).pdf" class="">
-          <button>Ver Presentación</button>
-          </a>
-        </div>
-      </div>
-      <div class="community-card">
-        <img src="../recursos/img/img-matematica-material.jpg" alt="Red Social">
-        <div class="info">
-          <h3>Presentacion 1</h3>
-          <p>Semana 1</p>
-         <a href="../recursos/material/Presentación de clase 01102025 (2).pdf" class="">
-          <button>Ver Presentación</button>
-          </a>
-        </div>
+      
+      <div class="modal-buttons">
+        <button class="btn-cancelar-modal" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-confirmar-modal" onclick="confirmarEliminacion()">Confirmar</button>
       </div>
     </div>
   </div>
@@ -78,12 +58,11 @@
   <script src="../controladores/lib/sweetalert.min.js"></script>
 
   <script>
-  // Aplica modo oscuro inmediatamente si está activado
-  if (localStorage.getItem("darkMode") === "true") {
-    document.documentElement.classList.add("dark");
-  }
-</script>
-
+    // Aplica modo oscuro inmediatamente si está activado
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
 
   <script>
     // Cargar el menú de forma dinámica
@@ -97,5 +76,8 @@
           document.body.appendChild(script);
         });
   </script>
+  
+  <!-- Script principal de material -->
+  <script type="module" src="../controladores/js/material.js"></script>
 </body>
 </html>
