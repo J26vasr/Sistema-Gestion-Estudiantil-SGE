@@ -143,9 +143,12 @@ body.menu-expanded .horario-container {
 
 .tabla-horario tbody td.celda-hora {
     background: linear-gradient(135deg, #d4bfea 0%, #e0d0f2 100%);
-    font-weight: 600;
+    font-weight: 700;
     color: #6b4a8e;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    padding: 20px 15px;
+    min-width: 120px;
+    vertical-align: middle;
 }
 
 .tabla-horario tbody td.celda-vacia {
