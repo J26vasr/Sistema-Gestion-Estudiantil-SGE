@@ -78,7 +78,7 @@ function renderTable(inscripciones) {
     const tr = document.createElement('tr');
     tr.style.cursor = estudianteId ? 'pointer' : 'default';
     tr.innerHTML = `
-      <td>${fotoEstudianteUrl ? `<img src="${fotoEstudianteUrl}" alt="foto" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">` : ''}</td>
+      <td>${fotoEstudianteUrl ? `<img src="${fotoEstudianteUrl}" alt="foto" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">` : ''}</td>
       <td>${estudianteNombre}</td>
       <td>${estudianteCodigo}</td>
       <td>${cursoNombre}</td>
