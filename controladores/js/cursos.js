@@ -19,13 +19,18 @@ function renderCursoCards(cursos) {
 		// Card HTML
 		const card = document.createElement('div');
 		card.className = 'card';
-			card.innerHTML = `
-				<img src="${imgSrc}" alt="Imagen del curso">
-				<div class="card-body">
-					<h3>${nombre}</h3>
-					<a href="../vista/7A.html?cursoId=${encodeURIComponent(curso.id)}" class="btn-view">Ver Más</a>
-				</div>
-			`;
+		card.innerHTML = `
+			<img src="${imgSrc}" alt="Imagen del curso">
+			<div class="card-body">
+				<h3>${nombre}</h3>
+				<div class="card-info" style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">
+                    <p><strong>Aula:</strong> ${curso.aulaDefault ?? 'No asignada'}</p>
+                    <p><strong>Periodo:</strong> ${curso.periodo?.nombre ?? 'No asignado'}</p>
+                    <p><strong>Cupo:</strong> ${curso.cupo ?? 'No definido'}</p>
+                </div>
+				<a href="../vista/7A.html?cursoId=${encodeURIComponent(curso.id)}" class="btn-view">Ver Más</a>
+			</div>
+		`;
 		cardsContainer.appendChild(card);
 	});
 }
