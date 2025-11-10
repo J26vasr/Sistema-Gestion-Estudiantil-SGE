@@ -1,13 +1,27 @@
 // Importar servicios y utilidades
 import { getAllReportes, createReporte, deleteReporte } from '../services/reporte.service.js';
 import { getEstudianteByCodigo } from '../services/estudiante.service.js';
+import { getInscripcionesByCursoId } from '../services/inscripcion.service.js';
 import { getImageUrl } from '../utils/fileUrl.js';
 import { sweetAlert } from '../utils/sweetAlert.js';
 
 // Contenedores de reportes por severidad
-const contenedorLeves = document.querySelector('.container-reporter:nth-of-type(1) .student-list');
-const contenedorFuertes = document.querySelector('.container-reporter:nth-of-type(2) .student-list');
-const contenedorGraves = document.querySelector('.container-reporter:nth-of-type(3) .student-list');
+// Obtener todos los .container-reporter en orden
+const todosContenedores = document.querySelectorAll('.container-reporter');
+console.log('📦 Total de contenedores encontrados:', todosContenedores.length);
+
+// El primer .container-reporter contiene reportes LEVES
+// El segundo .container-reporter contiene reportes FUERTES
+// El tercer .container-reporter contiene reportes GRAVES
+const contenedorLeves = todosContenedores[0]?.querySelector('.student-list');
+const contenedorFuertes = todosContenedores[1]?.querySelector('.student-list');
+const contenedorGraves = todosContenedores[2]?.querySelector('.student-list');
+
+console.log('✅ Contenedores seleccionados:', {
+  leves: contenedorLeves ? 'OK' : 'ERROR',
+  fuertes: contenedorFuertes ? 'OK' : 'ERROR',
+  graves: contenedorGraves ? 'OK' : 'ERROR'
+});
 
 let reportesCache = [];
 
@@ -50,7 +64,7 @@ function renderEstudianteReporte(reporte) {
   `;
 }
 
-// Función para clasificar reportes por severidad
+// Función para clasificar reportes por severidad/peso
 function clasificarReportes(reportes) {
   const clasificados = {
     leves: [],
@@ -59,10 +73,29 @@ function clasificarReportes(reportes) {
   };
 
   reportes.forEach(reporte => {
-    const severidad = reporte.severidad || reporte.nivelSeveridad || reporte.tipo;
+    // Buscar en el campo 'peso' primero (el más actualizado)
+    const peso = reporte.peso;
+    const severidad = reporte.severidad || reporte.nivelSeveridad;
     
-    // Clasificar según diferentes posibles valores
-    if (severidad) {
+    console.log(`🔍 Clasificando reporte ${reporte.id}:`, { peso, severidad });
+    
+    // Clasificar según el campo 'peso' (LEVE, MODERADO, GRAVE)
+    if (peso) {
+      const pesoStr = String(peso).toUpperCase();
+      
+      if (pesoStr === 'LEVE') {
+        clasificados.leves.push(reporte);
+      } else if (pesoStr === 'MODERADO') {
+        clasificados.fuertes.push(reporte);
+      } else if (pesoStr === 'GRAVE') {
+        clasificados.graves.push(reporte);
+      } else {
+        console.warn('⚠️ Reporte con peso desconocido:', reporte.id, 'peso:', peso);
+        clasificados.leves.push(reporte);
+      }
+    } 
+    // Si no tiene peso, intentar clasificar por severidad
+    else if (severidad) {
       const sevStr = String(severidad).toUpperCase();
       
       if (sevStr.includes('LEVE') || sevStr.includes('BAJO') || sevStr === '1') {
@@ -72,12 +105,11 @@ function clasificarReportes(reportes) {
       } else if (sevStr.includes('GRAVE') || sevStr.includes('ALTO') || sevStr === '3') {
         clasificados.graves.push(reporte);
       } else {
-        // Por defecto, los reportes sin clasificar van a leves
         console.warn('⚠️ Reporte sin clasificación clara:', reporte.id, 'severidad:', severidad);
         clasificados.leves.push(reporte);
       }
     } else {
-      console.warn('⚠️ Reporte sin severidad:', reporte.id);
+      console.warn('⚠️ Reporte sin peso ni severidad:', reporte.id);
       clasificados.leves.push(reporte);
     }
   });
@@ -99,6 +131,8 @@ function renderizarReportes(reportes) {
   if (contenedorLeves) {
     if (clasificados.leves.length > 0) {
       contenedorLeves.innerHTML = clasificados.leves.map(r => renderEstudianteReporte(r)).join('');
+      // Aplicar scroll si hay más de 5 reportes
+      aplicarScroll(contenedorLeves, clasificados.leves.length);
       // Agregar event listeners a los botones de eliminar
       contenedorLeves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -109,6 +143,8 @@ function renderizarReportes(reportes) {
       });
     } else {
       contenedorLeves.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes leves.</p>';
+      contenedorLeves.style.maxHeight = 'none';
+      contenedorLeves.style.overflowY = 'visible';
     }
   }
 
@@ -116,6 +152,8 @@ function renderizarReportes(reportes) {
   if (contenedorFuertes) {
     if (clasificados.fuertes.length > 0) {
       contenedorFuertes.innerHTML = clasificados.fuertes.map(r => renderEstudianteReporte(r)).join('');
+      // Aplicar scroll si hay más de 5 reportes
+      aplicarScroll(contenedorFuertes, clasificados.fuertes.length);
       // Agregar event listeners a los botones de eliminar
       contenedorFuertes.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -126,6 +164,8 @@ function renderizarReportes(reportes) {
       });
     } else {
       contenedorFuertes.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes fuertes.</p>';
+      contenedorFuertes.style.maxHeight = 'none';
+      contenedorFuertes.style.overflowY = 'visible';
     }
   }
 
@@ -133,6 +173,8 @@ function renderizarReportes(reportes) {
   if (contenedorGraves) {
     if (clasificados.graves.length > 0) {
       contenedorGraves.innerHTML = clasificados.graves.map(r => renderEstudianteReporte(r)).join('');
+      // Aplicar scroll si hay más de 5 reportes
+      aplicarScroll(contenedorGraves, clasificados.graves.length);
       // Agregar event listeners a los botones de eliminar
       contenedorGraves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -143,7 +185,35 @@ function renderizarReportes(reportes) {
       });
     } else {
       contenedorGraves.innerHTML = '<p style="color:gray; text-align:center; margin:1rem 0;">No hay reportes graves.</p>';
+      contenedorGraves.style.maxHeight = 'none';
+      contenedorGraves.style.overflowY = 'visible';
     }
+  }
+}
+
+/**
+ * Aplica scroll dinámico a un contenedor según la cantidad de reportes
+ * @param {HTMLElement} contenedor - El contenedor de la lista de estudiantes
+ * @param {number} cantidad - Cantidad de reportes en el contenedor
+ */
+function aplicarScroll(contenedor, cantidad) {
+  console.log(`📏 Aplicando scroll: ${cantidad} reportes`);
+  
+  if (cantidad > 5) {
+    // Si hay más de 5 reportes, aplicar scroll
+    // Cada reporte mide aproximadamente 80px (60px img + 20px padding)
+    // Más 10px de gap entre elementos = 90px por reporte
+    // Para mostrar 5 reportes: 90px * 5 = 450px
+    contenedor.style.maxHeight = '500px'; // Altura para ~5 reportes visibles
+    contenedor.style.overflowY = 'auto';
+    contenedor.style.paddingRight = '10px';
+    console.log('✅ Scroll activado');
+  } else {
+    // Si hay 5 o menos, sin scroll
+    contenedor.style.maxHeight = 'none';
+    contenedor.style.overflowY = 'visible';
+    contenedor.style.paddingRight = '0';
+    console.log('➖ Sin scroll (5 o menos reportes)');
   }
 }
 
@@ -154,6 +224,8 @@ async function cargarReportes() {
     const params = new URLSearchParams(window.location.search);
     const cursoId = params.get('cursoId');
 
+    console.log('🔍 CursoId desde URL:', cursoId);
+
     // Mostrar loading
     if (contenedorLeves) contenedorLeves.innerHTML = '<p style="color:gray; text-align:center;">Cargando reportes...</p>';
     if (contenedorFuertes) contenedorFuertes.innerHTML = '<p style="color:gray; text-align:center;">Cargando reportes...</p>';
@@ -163,16 +235,39 @@ async function cargarReportes() {
     const res = await getAllReportes(0, 100);
     let reportes = normalizeResponse(res);
 
+    console.log('📊 Total de reportes recibidos desde API:', reportes.length);
+    console.log('📋 Reportes completos:', reportes);
+
+    // **TEMPORAL: DESACTIVAR FILTRO PARA VER TODOS LOS REPORTES**
     // Filtrar por curso si existe cursoId en la URL
+    /*
     if (cursoId) {
+      console.log('🎯 Filtrando reportes por curso:', cursoId);
+      
+      const reportesAntesDelFiltro = reportes.length;
+      
       reportes = reportes.filter(reporte => {
-        // El reporte puede tener relación con curso a través del estudiante o directamente
-        const cursosEstudiante = reporte.estudiante?.inscripciones?.map(i => i.curso?.id) || [];
-        const cursoReporte = reporte.curso?.id || reporte.cursoId;
+        const cursoReporte = reporte.curso?.id;
+        const coincide = cursoReporte === cursoId;
         
-        return cursoReporte === cursoId || cursosEstudiante.includes(cursoId);
+        console.log(`  📄 Reporte ${reporte.id.substring(0, 8)}...`, {
+          estudiante: reporte.estudiante?.usuario?.nombre,
+          peso: reporte.peso,
+          cursoReporte: cursoReporte,
+          cursoIdBuscado: cursoId,
+          coincide: coincide ? '✅' : '❌'
+        });
+        
+        return coincide;
       });
+      
+      console.log(`✅ Filtrado completo: ${reportesAntesDelFiltro} → ${reportes.length} reportes`);
+    } else {
+      console.log('⚠️ No hay cursoId en la URL - Mostrando TODOS los reportes');
     }
+    */
+    
+    console.log('⚠️⚠️⚠️ FILTRO DESACTIVADO - MOSTRANDO TODOS LOS REPORTES ⚠️⚠️⚠️');
 
     reportesCache = reportes;
 
@@ -292,6 +387,7 @@ async function agregarReporte(estudianteId, severidad, descripcion) {
       'GRAVE': 'GRAVE'
     };
 
+
     // Crear el payload según la estructura esperada por la API
     // POST /api/reportes - CreateReporteRequest
     const payload = {
@@ -347,21 +443,26 @@ const modalHTML = `
   <div class="modal">
     <h2>Agregar Reporte</h2>
     <p><strong>Seleccione el nivel de severidad del reporte</strong></p>
-    <!-- Combobox-->
-            <div class="combo-wrap">
-                <select class="fancy-select" id="nivelSeveridad" aria-label="Seleccione un nivel">
-                    <option value="" disabled selected>Seleccione un nivel...</option>
-                    <option value="1">😶 Leve</option>
-                    <option value="2">🤐 Fuerte</option>
-                    <option value="3">😠 Grave</option>
-                </select>
-            </div>
-    <p><strong>Código del estudiante:</strong></p>
-     <div class="custom_input">
-      <input type="text" name="carnetRepo" id="carnetRepo" class="input" placeholder="Ej: EST-2024-001">
+    <!-- Combobox Severidad-->
+    <div class="combo-wrap">
+      <select class="fancy-select" id="nivelSeveridad" aria-label="Seleccione un nivel">
+        <option value="" disabled selected>Seleccione un nivel...</option>
+        <option value="1">😶 Leve</option>
+        <option value="2">🤐 Fuerte (Moderado)</option>
+        <option value="3">😠 Grave</option>
+      </select>
     </div>
+    
+    <p><strong>Seleccione el estudiante:</strong></p>
+    <div class="combo-wrap">
+      <select class="fancy-select" id="estudianteSelect" aria-label="Seleccione un estudiante">
+        <option value="" disabled selected>Cargando estudiantes...</option>
+      </select>
+    </div>
+    
     <p><strong>Descripción del reporte:</strong></p>
-      <textarea name="razonRepo" id="razonRepo" class="input" placeholder="Describe la razón del reporte..." rows="4"></textarea>
+    <textarea name="razonRepo" id="razonRepo" class="input" placeholder="Describe la razón del reporte..." rows="4"></textarea>
+    
     <div class="modal-footer">
       <button id="guardarNota">Guardar Reporte</button>
       <button id="cerrarModal">Cancelar</button>
@@ -377,32 +478,81 @@ const abrirModalBtn = document.getElementById('btnAgregarRepo');
 const modalOverlay = document.getElementById('modalOverlay');
 const cerrarModalBtn = document.getElementById('cerrarModal');
 
-// Abrir modal
-abrirModalBtn.addEventListener('click', (e) => {
+// Función para cargar estudiantes del curso en el select
+async function cargarEstudiantesCurso() {
+  const estudianteSelect = document.getElementById('estudianteSelect');
+  
+  try {
+    // Obtener cursoId desde la URL
+    const params = new URLSearchParams(window.location.search);
+    const cursoId = params.get('cursoId');
+    
+    if (!cursoId) {
+      estudianteSelect.innerHTML = '<option value="" disabled selected>No hay curso seleccionado</option>';
+      await sweetAlert(2, 'No se puede agregar reportes sin seleccionar un curso', false);
+      return;
+    }
+    
+    // Cargar inscripciones del curso
+    console.log('📚 Cargando estudiantes del curso:', cursoId);
+    const inscripciones = await getInscripcionesByCursoId(cursoId);
+    
+    console.log('👥 Inscripciones encontradas:', inscripciones);
+    
+    if (!inscripciones || inscripciones.length === 0) {
+      estudianteSelect.innerHTML = '<option value="" disabled selected>No hay estudiantes en este curso</option>';
+      return;
+    }
+    
+    // Limpiar select y agregar opciones
+    estudianteSelect.innerHTML = '<option value="" disabled selected>Seleccione un estudiante...</option>';
+    
+    inscripciones.forEach(inscripcion => {
+      const estudiante = inscripcion.estudiante;
+      if (estudiante && estudiante.id) {
+        const nombre = estudiante.usuario?.nombre || estudiante.nombre || 'Sin nombre';
+        const codigo = estudiante.codigoEstudiante || 'Sin código';
+        const option = document.createElement('option');
+        option.value = estudiante.id;
+        option.textContent = `${codigo} - ${nombre}`;
+        estudianteSelect.appendChild(option);
+      }
+    });
+    
+    console.log('✅ Estudiantes cargados en el select');
+  } catch (error) {
+    console.error('❌ Error al cargar estudiantes:', error);
+    estudianteSelect.innerHTML = '<option value="" disabled selected>Error al cargar estudiantes</option>';
+    await sweetAlert(2, 'No se pudieron cargar los estudiantes del curso', false);
+  }
+}
+
+// Abrir modal y cargar estudiantes
+abrirModalBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     modalOverlay.style.display = 'flex';
+    await cargarEstudiantesCurso();
 });
 
 // Cerrar modal
 cerrarModalBtn.addEventListener('click', () => {
     modalOverlay.style.display = 'none';
     // Limpiar campos
-    document.getElementById('carnetRepo').value = '';
+    document.getElementById('estudianteSelect').value = '';
     document.getElementById('razonRepo').value = '';
-    document.querySelector('.fancy-select').value = '';
+    document.getElementById('nivelSeveridad').value = '';
 });
 
 // Guardar reporte
 const guardarNotaBtn = document.getElementById('guardarNota');
 guardarNotaBtn.addEventListener('click', async () => {
-    const carnet = document.getElementById('carnetRepo').value.trim();
+    const estudianteId = document.getElementById('estudianteSelect').value;
     const razon = document.getElementById('razonRepo').value.trim();
-    const nivelSelect = document.querySelector('.fancy-select');
-    const nivel = nivelSelect.value;
+    const nivel = document.getElementById('nivelSeveridad').value;
 
     // Validaciones
-    if (!carnet) {
-        await sweetAlert(2, 'Por favor, ingresa el código del estudiante', false);
+    if (!estudianteId) {
+        await sweetAlert(2, 'Por favor, selecciona un estudiante', false);
         return;
     }
 
@@ -422,51 +572,32 @@ guardarNotaBtn.addEventListener('click', async () => {
     guardarNotaBtn.style.opacity = '0.6';
 
     try {
-        // Buscar estudiante por código
-        console.log('🔍 Buscando estudiante con código:', carnet);
-        
-        const estudiante = await getEstudianteByCodigo(carnet);
-        
-        console.log('👨‍🎓 Estudiante encontrado:', estudiante);
-        
-        if (!estudiante || !estudiante.id) {
-            console.error('❌ Estudiante no encontrado o sin ID');
-            await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
-            // Rehabilitar botón
-            guardarNotaBtn.disabled = false;
-            guardarNotaBtn.textContent = 'Guardar Reporte';
-            guardarNotaBtn.style.opacity = '1';
-            return;
-        }
-
-        console.log('✅ ID del estudiante:', estudiante.id);
+        console.log('✅ Estudiante ID seleccionado:', estudianteId);
 
         // Mapear nivel a severidad
         const severidadMap = {
             '1': 'LEVE',
-            '2': 'FUERTE',
+            '2': 'FUERTE',  // Se mapeará a MODERADO en agregarReporte
             '3': 'GRAVE'
         };
 
         const severidad = severidadMap[nivel];
 
         console.log('📝 Creando reporte con datos:', {
-            estudiante: estudiante.usuario?.nombre || estudiante.nombre,
-            codigo: carnet,
-            estudianteId: estudiante.id,
+            estudianteId: estudianteId,
             severidad: severidad,
             descripcion: razon
         });
 
         // Crear el reporte
-        const exito = await agregarReporte(estudiante.id, severidad, razon);
+        const exito = await agregarReporte(estudianteId, severidad, razon);
 
         if (exito) {
             // Cerrar modal y limpiar campos
             modalOverlay.style.display = 'none';
-            document.getElementById('carnetRepo').value = '';
+            document.getElementById('estudianteSelect').value = '';
             document.getElementById('razonRepo').value = '';
-            nivelSelect.value = '';
+            document.getElementById('nivelSeveridad').value = '';
             
             // Rehabilitar botón
             guardarNotaBtn.disabled = false;
@@ -479,8 +610,8 @@ guardarNotaBtn.addEventListener('click', async () => {
             guardarNotaBtn.style.opacity = '1';
         }
     } catch (error) {
-        console.error('Error al buscar estudiante:', error);
-        await sweetAlert(2, 'No se encontró un estudiante con ese código', false);
+        console.error('❌ Error al crear reporte:', error);
+        await sweetAlert(2, 'Ocurrió un error al crear el reporte', false);
         
         // Rehabilitar botón
         guardarNotaBtn.disabled = false;

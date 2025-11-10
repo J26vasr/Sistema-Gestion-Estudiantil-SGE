@@ -145,14 +145,19 @@ body.menu-expanded .TituloGrado {
     margin-right: auto;
     display: block; /* quitar flex para que no afecte al buscador */
 }
+
 /* ===== container-reporter ===== */
 .container-reporter {
     background: #ffffff;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    max-height: 90vh;
-    overflow-y: auto;
+    margin-bottom: 20px; /* Espacio entre tablas */
+}
+
+.container-reporter h2{
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 /* Encabezado de la "tabla" */
@@ -177,6 +182,29 @@ body.menu-expanded .TituloGrado {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    /* El scroll se aplicará dinámicamente desde JS */
+    scroll-behavior: smooth; /* Scroll suave */
+    position: relative;
+}
+
+/* Estilos del scrollbar para .student-list */
+.student-list::-webkit-scrollbar {
+    width: 10px; /* Aumentado a 10px para mejor visibilidad */
+}
+
+
+.student-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.student-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #7b5cff, #b389ff);
+    border-radius: 10px;
+}
+
+.student-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #6b46ff, #9c74ff);
 }
 
 /* Cada fila de estudiante */
@@ -209,16 +237,6 @@ body.menu-expanded .TituloGrado {
     font-size: 0.9rem;
     color: #333;
     margin: 0;
-}
-
-/* Scroll */
-.container-reporter::-webkit-scrollbar {
-    width: 6px;
-}
-
-.container-reporter::-webkit-scrollbar-thumb {
-    background: #bbb;
-    border-radius: 4px;
 }
 
 /* ======= HR ======= */
