@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mis-clases</title>
+
+  <link rel="stylesheet" href="../recursos/css/menu.css">
+  <link rel="stylesheet" href="../recursos/css/cursos-reportes.css">
+  <!-- Agregamos Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+  <div class="buscador-container">
+    <input type="text" id="buscador" placeholder="🔍 Buscar grado..." />
+  </div>
+
+  
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <section class="cards" id="assignedCourses">
+      <!-- Los cursos se cargarán dinámicamente aquí por cursos-asignados.js -->
+    </section>
+  </div>
+
+  <!-- SweetAlert Library -->
+  <script src="../controladores/lib/sweetalert.min.js"></script>
+
+  <!-- Cargar los cursos asignados dinámicamente -->
+  <script type="module" src="../controladores/js/cursos-reportes.js"></script>
+
+  <div id="menu"></div>
+
+  
+  <script>
+    // Aplica modo oscuro inmediatamente si está activado
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+    }
+  </script>
+
+  <script>
+    // Cargar el menú de forma dinámica
+    fetch("../vista/menu.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("menu").innerHTML = data;
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "../controladores/js/menu.js";
+        document.body.appendChild(script);
+      });
+  </script>
+
+  
+
+  <!-- Acción del botón Agregar -->
+  <script>
+    document.getElementById('btnAgregar').addEventListener('click', () => {
+      // 👉 Aquí puedes cambiar la acción según lo que quieras que haga:
+      // ejemplo: abrir un modal, mostrar un formulario o redirigir
+      sweetAlert(1, 'Aquí puedes agregar una nueva clase o grupo.', false);
+      // o redirigir:
+      // window.location.href = 'agregar-clase.html';
+    });
+  </script>
+
+</body>
+</html>
