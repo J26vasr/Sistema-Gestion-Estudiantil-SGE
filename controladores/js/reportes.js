@@ -1,5 +1,5 @@
 // Importar servicios y utilidades
-import { getAllReportes, createReporte, deleteReporte } from '../services/reporte.service.js';
+import { getAllReportes, createReporte, deleteReporte, updateReporte } from '../services/reporte.service.js';
 import { getEstudianteByCodigo } from '../services/estudiante.service.js';
 import { getInscripcionesByCursoId } from '../services/inscripcion.service.js';
 import { getImageUrl } from '../utils/fileUrl.js';
@@ -57,9 +57,14 @@ function renderEstudianteReporte(reporte) {
       <div class="info">
         <h4>${descripcion}</h4>
       </div>
-      <button class="btn-eliminar-reporte" data-reporte-id="${reporte.id}" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">
-        🗑️ Eliminar
-      </button>
+      <div class="btn-group-actions" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: flex; gap: 5px;">
+        <button class="btn-editar-reporte" data-reporte-id="${reporte.id}" style="background: #4CAF50; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">
+          ✏️ Editar
+        </button>
+        <button class="btn-eliminar-reporte" data-reporte-id="${reporte.id}" style="background: #ff4444; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">
+          🗑️ Eliminar
+        </button>
+      </div>
     </div>
   `;
 }
@@ -133,12 +138,19 @@ function renderizarReportes(reportes) {
       contenedorLeves.innerHTML = clasificados.leves.map(r => renderEstudianteReporte(r)).join('');
       // Aplicar scroll si hay más de 5 reportes
       aplicarScroll(contenedorLeves, clasificados.leves.length);
-      // Agregar event listeners a los botones de eliminar
+      // Agregar event listeners a los botones
       contenedorLeves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const reporteId = btn.getAttribute('data-reporte-id');
           eliminarReporte(reporteId);
+        });
+      });
+      contenedorLeves.querySelectorAll('.btn-editar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          abrirModalEditar(reporteId);
         });
       });
     } else {
@@ -154,12 +166,19 @@ function renderizarReportes(reportes) {
       contenedorFuertes.innerHTML = clasificados.fuertes.map(r => renderEstudianteReporte(r)).join('');
       // Aplicar scroll si hay más de 5 reportes
       aplicarScroll(contenedorFuertes, clasificados.fuertes.length);
-      // Agregar event listeners a los botones de eliminar
+      // Agregar event listeners a los botones
       contenedorFuertes.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const reporteId = btn.getAttribute('data-reporte-id');
           eliminarReporte(reporteId);
+        });
+      });
+      contenedorFuertes.querySelectorAll('.btn-editar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          abrirModalEditar(reporteId);
         });
       });
     } else {
@@ -175,12 +194,19 @@ function renderizarReportes(reportes) {
       contenedorGraves.innerHTML = clasificados.graves.map(r => renderEstudianteReporte(r)).join('');
       // Aplicar scroll si hay más de 5 reportes
       aplicarScroll(contenedorGraves, clasificados.graves.length);
-      // Agregar event listeners a los botones de eliminar
+      // Agregar event listeners a los botones
       contenedorGraves.querySelectorAll('.btn-eliminar-reporte').forEach(btn => {
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const reporteId = btn.getAttribute('data-reporte-id');
           eliminarReporte(reporteId);
+        });
+      });
+      contenedorGraves.querySelectorAll('.btn-editar-reporte').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const reporteId = btn.getAttribute('data-reporte-id');
+          abrirModalEditar(reporteId);
         });
       });
     } else {
@@ -348,6 +374,91 @@ async function eliminarReporte(reporteId) {
   }
 }
 
+// Función para abrir modal de edición
+async function abrirModalEditar(reporteId) {
+  const reporte = reportesCache.find(r => r.id === reporteId);
+  
+  if (!reporte) {
+    await sweetAlert(2, 'No se encontró el reporte', false);
+    return;
+  }
+
+  console.log('📝 Editando reporte:', reporte);
+
+  // Llenar los campos del modal de edición
+  document.getElementById('editReporteId').value = reporte.id;
+  document.getElementById('editEstudianteNombre').value = reporte.estudiante?.usuario?.nombre || 'Sin nombre';
+  document.getElementById('editRazonRepo').value = reporte.descripcion || '';
+  
+  // Mapear el peso actual al select
+  const pesoMap = {
+    'LEVE': '1',
+    'MODERADO': '2',
+    'GRAVE': '3'
+  };
+  document.getElementById('editNivelSeveridad').value = pesoMap[reporte.peso] || '1';
+
+  // Mostrar el modal
+  document.getElementById('modalEditarOverlay').style.display = 'flex';
+}
+
+// Función para editar un reporte
+async function editarReporte(reporteId, severidad, descripcion) {
+  try {
+    // Obtener el usuario actual del localStorage
+    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const usuarioId = userData.id || userData.usuarioId;
+
+    if (!usuarioId) {
+      await sweetAlert(2, 'No se pudo identificar el usuario. Por favor, inicia sesión nuevamente.', false);
+      return false;
+    }
+
+    // Mapear severidad a PesoReporte
+    const pesoMap = {
+      'LEVE': 'LEVE',
+      'FUERTE': 'MODERADO',
+      'GRAVE': 'GRAVE'
+    };
+
+    // Buscar el reporte en el cache para obtener los datos completos
+    const reporteOriginal = reportesCache.find(r => r.id === reporteId);
+    
+    if (!reporteOriginal) {
+      throw new Error('No se encontró el reporte original');
+    }
+
+    // Crear el payload para actualizar
+    const payload = {
+      estudianteId: reporteOriginal.estudiante.id,
+      cursoId: reporteOriginal.curso.id,
+      tipo: reporteOriginal.tipo || 'CONDUCTA',
+      peso: pesoMap[severidad],
+      titulo: `Reporte de conducta - Nivel ${severidad}`,
+      descripcion: descripcion,
+      creadoPorId: reporteOriginal.creadoPor.id
+    };
+
+    console.log('📦 Payload para actualizar:', payload);
+
+    // Llamar al servicio de actualización
+    await updateReporte(reporteId, payload);
+    
+    console.log('✅ Reporte actualizado exitosamente');
+
+    // Recargar reportes
+    await cargarReportes();
+
+    await sweetAlert(1, 'El reporte ha sido actualizado correctamente', false);
+    return true;
+  } catch (error) {
+    console.error('❌ Error al actualizar reporte:', error);
+    const mensajeError = error.message || 'No se pudo actualizar el reporte.';
+    await sweetAlert(2, `Error al actualizar reporte: ${mensajeError}`, false);
+    return false;
+  }
+}
+
 // Función para agregar un nuevo reporte
 async function agregarReporte(estudianteId, severidad, descripcion) {
   try {
@@ -471,7 +582,39 @@ const modalHTML = `
 </div>
 `;
 
+// Modal de EDITAR
+const modalEditarHTML = `
+<div class="modal-overlay" id="modalEditarOverlay">
+  <div class="modal">
+    <h2>Editar Reporte</h2>
+    <input type="hidden" id="editReporteId">
+    
+    <p><strong>Estudiante:</strong></p>
+    <input type="text" id="editEstudianteNombre" class="input" readonly style="background: #f0f0f0; cursor: not-allowed;">
+    
+    <p><strong>Seleccione el nivel de severidad del reporte</strong></p>
+    <div class="combo-wrap">
+      <select class="fancy-select" id="editNivelSeveridad" aria-label="Seleccione un nivel">
+        <option value="" disabled>Seleccione un nivel...</option>
+        <option value="1">😶 Leve</option>
+        <option value="2">🤐 Fuerte (Moderado)</option>
+        <option value="3">😠 Grave</option>
+      </select>
+    </div>
+    
+    <p><strong>Descripción del reporte:</strong></p>
+    <textarea name="editRazonRepo" id="editRazonRepo" class="input" placeholder="Describe la razón del reporte..." rows="4"></textarea>
+    
+    <div class="modal-footer">
+      <button id="guardarEditarBtn">Actualizar Reporte</button>
+      <button id="cerrarEditarModal">Cancelar</button>
+    </div>
+  </div>
+</div>
+`;
+
 document.body.insertAdjacentHTML('beforeend', modalHTML);
+document.body.insertAdjacentHTML('beforeend', modalEditarHTML);
 
 // Seleccionar elementos
 const abrirModalBtn = document.getElementById('btnAgregarRepo');
@@ -627,6 +770,104 @@ const textarea = document.getElementById('razonRepo');
 textarea.addEventListener('input', () => {
     textarea.style.height = 'auto'; // resetea la altura
     textarea.style.height = textarea.scrollHeight + 'px'; // ajusta a contenido
+});
+
+// Textarea del modal de editar
+const textareaEditar = document.getElementById('editRazonRepo');
+
+textareaEditar.addEventListener('input', () => {
+    textareaEditar.style.height = 'auto';
+    textareaEditar.style.height = textareaEditar.scrollHeight + 'px';
+});
+
+// ========== EVENT LISTENERS MODAL EDITAR ==========
+const modalEditarOverlay = document.getElementById('modalEditarOverlay');
+const cerrarEditarModalBtn = document.getElementById('cerrarEditarModal');
+const guardarEditarBtn = document.getElementById('guardarEditarBtn');
+
+// Cerrar modal de editar
+cerrarEditarModalBtn.addEventListener('click', () => {
+    modalEditarOverlay.style.display = 'none';
+    // Limpiar campos
+    document.getElementById('editReporteId').value = '';
+    document.getElementById('editEstudianteNombre').value = '';
+    document.getElementById('editRazonRepo').value = '';
+    document.getElementById('editNivelSeveridad').value = '';
+});
+
+// Guardar edición de reporte
+guardarEditarBtn.addEventListener('click', async () => {
+    const reporteId = document.getElementById('editReporteId').value;
+    const razon = document.getElementById('editRazonRepo').value.trim();
+    const nivel = document.getElementById('editNivelSeveridad').value;
+
+    // Validaciones
+    if (!reporteId) {
+        await sweetAlert(2, 'Error: No se encontró el ID del reporte', false);
+        return;
+    }
+
+    if (!nivel) {
+        await sweetAlert(2, 'Por favor, selecciona el nivel del reporte', false);
+        return;
+    }
+
+    if (!razon) {
+        await sweetAlert(2, 'Por favor, describe la razón del reporte', false);
+        return;
+    }
+
+    // Deshabilitar botón mientras se procesa
+    guardarEditarBtn.disabled = true;
+    guardarEditarBtn.textContent = 'Actualizando...';
+    guardarEditarBtn.style.opacity = '0.6';
+
+    try {
+        // Mapear nivel a severidad
+        const severidadMap = {
+            '1': 'LEVE',
+            '2': 'FUERTE',
+            '3': 'GRAVE'
+        };
+
+        const severidad = severidadMap[nivel];
+
+        console.log('📝 Actualizando reporte:', {
+            reporteId,
+            severidad,
+            descripcion: razon
+        });
+
+        // Actualizar el reporte
+        const exito = await editarReporte(reporteId, severidad, razon);
+
+        if (exito) {
+            // Cerrar modal y limpiar campos
+            modalEditarOverlay.style.display = 'none';
+            document.getElementById('editReporteId').value = '';
+            document.getElementById('editEstudianteNombre').value = '';
+            document.getElementById('editRazonRepo').value = '';
+            document.getElementById('editNivelSeveridad').value = '';
+            
+            // Rehabilitar botón
+            guardarEditarBtn.disabled = false;
+            guardarEditarBtn.textContent = 'Actualizar Reporte';
+            guardarEditarBtn.style.opacity = '1';
+        } else {
+            // Si falla, rehabilitar botón sin cerrar modal
+            guardarEditarBtn.disabled = false;
+            guardarEditarBtn.textContent = 'Actualizar Reporte';
+            guardarEditarBtn.style.opacity = '1';
+        }
+    } catch (error) {
+        console.error('❌ Error al actualizar reporte:', error);
+        await sweetAlert(2, 'Ocurrió un error al actualizar el reporte', false);
+        
+        // Rehabilitar botón
+        guardarEditarBtn.disabled = false;
+        guardarEditarBtn.textContent = 'Actualizar Reporte';
+        guardarEditarBtn.style.opacity = '1';
+    }
 });
 
 
