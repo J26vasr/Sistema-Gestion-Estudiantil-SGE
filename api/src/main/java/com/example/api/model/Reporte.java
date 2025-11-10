@@ -37,6 +37,10 @@ public class Reporte extends BaseEntity {
     @Column(name = "tipo", length = 9)
     private TipoReporte tipo = TipoReporte.otro;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "peso", length = 10)
+    private PesoReporte peso = PesoReporte.leve;
+
     @Column(name = "titulo", length = 200)
     private String titulo;
 
@@ -55,5 +59,14 @@ public class Reporte extends BaseEntity {
         conducta,
         academico,
         otro
+    }
+
+    /**
+     * Enum para el peso/severidad del reporte
+     */
+    public enum PesoReporte {
+        leve,
+        moderado,
+        grave
     }
 }

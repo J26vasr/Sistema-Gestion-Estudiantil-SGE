@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horario de Clases</title>
+    <link rel="stylesheet" href="../recursos/css/menu.css">
+    <link rel="stylesheet" href="../recursos/css/bloques-horarios.css">
+</head>
+<body>
+    <!-- Menú lateral -->
+    <div id="menu"></div>
+
+    <!-- Contenedor principal -->
+    <div class="horario-container">
+        <!-- Botón compartir -->
+        <div class="compartir-btn">
+            <button>Compartir 🔗</button>
+        </div>
+
+        <!-- Título -->
+        <h1 class="titulo-horario">Horario de clases</h1>
+
+        <!-- Tabla de horario -->
+        <div class="tabla-wrapper">
+            <table class="tabla-horario">
+                <thead>
+                    <tr>
+                        <th class="columna-hora">Hora</th>
+                        <th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miercoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="celda-hora"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                    </tr>
+                    <tr>
+                        <td class="celda-hora"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                    </tr>
+                    <tr>
+                        <td class="celda-hora"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                    </tr>
+                    <tr>
+                        <td class="celda-hora"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                    </tr>
+                    <tr>
+                        <td class="celda-hora"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                        <td class="celda-vacia"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Decoración floral -->
+       
+    </div>
+
+    <!-- SweetAlert Library -->
+    <script src="../controladores/lib/sweetalert.min.js"></script>
+
+    <!-- Scripts -->
+    <script>
+        // Aplica modo oscuro si está activado
+        if (localStorage.getItem("darkMode") === "true") {
+            document.documentElement.classList.add("dark");
+        }
+
+        // Cargar el menú de forma dinámica
+        fetch("../vista/menu.html")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("menu").innerHTML = data;
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "../controladores/js/menu.js";
+                document.body.appendChild(script);
+            });
+    </script>
+    <script type="module" src="../controladores/js/bloques-horarios.js"></script>
+</body>
+</html>

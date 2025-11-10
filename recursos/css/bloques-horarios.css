@@ -1,0 +1,316 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #e8d5ff 0%, #f5e6ff 50%, #e8d5ff 100%);
+    min-height: 100vh;
+    display: flex;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Decoración de fondo con flores */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: url('../img/flores-moradas.png') no-repeat;
+    background-size: contain;
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    height: 250px;
+    background: url('../img/flores-moradas.png') no-repeat;
+    background-size: contain;
+    opacity: 0.3;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Contenedor principal */
+.horario-container {
+    margin-left: 80px;
+    padding: 30px 40px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+    transition: margin-left 0.3s ease;
+}
+
+body.menu-expanded .horario-container {
+    margin-left: 260px;
+}
+
+/* Botón compartir */
+.compartir-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    z-index: 10;
+}
+
+.compartir-btn button {
+    background: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.compartir-btn button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Título principal */
+.titulo-horario {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: #8b5fbf;
+    text-align: left;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Wrapper de la tabla */
+.tabla-wrapper {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+/* Tabla de horario */
+.tabla-horario {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 15px;
+}
+
+/* Cabecera de la tabla */
+.tabla-horario thead tr {
+    background: transparent;
+}
+
+.tabla-horario thead th {
+    background: linear-gradient(135deg, #a67bc7 0%, #b98dd4 100%);
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(166, 123, 199, 0.3);
+    min-width: 140px;
+}
+
+.tabla-horario thead th.columna-hora {
+    background: linear-gradient(135deg, #9370c0 0%, #a582ce 100%);
+}
+
+/* Celdas del cuerpo */
+.tabla-horario tbody td {
+    background: #f8f3ff;
+    padding: 30px 15px;
+    text-align: center;
+    border-radius: 15px;
+    min-height: 80px;
+    vertical-align: middle;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.tabla-horario tbody td.celda-hora {
+    background: linear-gradient(135deg, #d4bfea 0%, #e0d0f2 100%);
+    font-weight: 600;
+    color: #6b4a8e;
+    font-size: 0.95rem;
+}
+
+.tabla-horario tbody td.celda-vacia {
+    background: #faf8ff;
+    cursor: pointer;
+}
+
+.tabla-horario tbody td.celda-vacia:hover {
+    background: #f0e8ff;
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(166, 123, 199, 0.2);
+}
+
+/* Filas alternas con efecto sutil */
+.tabla-horario tbody tr:nth-child(odd) td.celda-vacia {
+    background: #fcfaff;
+}
+
+.tabla-horario tbody tr:nth-child(even) td.celda-vacia {
+    background: #f7f3ff;
+}
+
+/* Decoración floral inferior */
+.decoracion-flores {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    height: 300px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.flores-inferior {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.6;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .titulo-horario {
+        font-size: 3rem;
+    }
+
+    .tabla-horario thead th {
+        min-width: 120px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 1200px) {
+    .horario-container {
+        padding: 20px 30px;
+    }
+
+    .titulo-horario {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+
+    .tabla-wrapper {
+        padding: 15px;
+    }
+
+    .tabla-horario {
+        border-spacing: 10px;
+    }
+
+    .tabla-horario thead th {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+        min-width: 100px;
+    }
+
+    .tabla-horario tbody td {
+        padding: 25px 10px;
+    }
+}
+
+@media (max-width: 900px) {
+    .horario-container {
+        margin-left: 60px;
+        padding: 20px;
+    }
+
+    .titulo-horario {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .compartir-btn {
+        position: static;
+        text-align: right;
+        margin-bottom: 15px;
+    }
+
+    .tabla-wrapper {
+        overflow-x: scroll;
+    }
+
+    .tabla-horario {
+        min-width: 800px;
+    }
+
+    .decoracion-flores {
+        width: 250px;
+        height: 200px;
+    }
+}
+
+@media (max-width: 600px) {
+    .horario-container {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    .titulo-horario {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .compartir-btn {
+        text-align: center;
+    }
+
+    .compartir-btn button {
+        font-size: 0.85rem;
+        padding: 8px 16px;
+    }
+
+    body::before,
+    body::after {
+        display: none;
+    }
+
+    .decoracion-flores {
+        display: none;
+    }
+}
+
+/* Efecto hover en días de la semana */
+.tabla-horario thead th:not(.columna-hora):hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(166, 123, 199, 0.4);
+    cursor: pointer;
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tabla-wrapper {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.titulo-horario {
+    animation: fadeInUp 0.4s ease-out;
+}
